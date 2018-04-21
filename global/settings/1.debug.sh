@@ -5,7 +5,11 @@
 # since:    21/04/2018
 
 # Open debug mode will log almost every action in the script
-export MYZS_DEBUG_MODE="full" # none|debug|full
+# 1. none  - never log or print everything
+# 2. debug - print loading result only
+# 3. file  - log output to log file only
+# 4. full  - print and log everything
+export MYZS_DEBUG_MODE="file" # none|debug|file|full
 
 # FUNCTION SESSION
 # BE AWARE

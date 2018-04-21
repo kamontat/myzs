@@ -47,6 +47,7 @@ if_debug_print() {
 
 if_fully_debug_print() {
 	[[ $MYZS_DEBUG_MODE != "full" ]] &&
+		[[ $MYZS_DEBUG_MODE != "file" ]] &&
 		return 0
 
 	_print "$@" >>"${MYZS_LOG_FILE}"
@@ -122,7 +123,6 @@ raw_load() {
 
 SECONDS=0
 
-if_debug_print "load" "settings"
 raw_load "$MYZS_SETTING"
 
 if_debug_print "load" "libraries"
