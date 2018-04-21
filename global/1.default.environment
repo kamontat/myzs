@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC1090,SC2015
+
+# maintain: Kamontat Chantrachirathumrong
+# version:  1.1.0
+# since:    26/03/2018
+
+# vim key
+set -o vi
+
+# default path
+# set bin library location
+export PATH="/usr/local/bin"        # local user bin
+
+export PATH="$PATH:/usr/bin"        # user bin
+export PATH="$PATH:/bin"            # bin
+export PATH="$PATH:/usr/local/sbin" # local user sbin
+export PATH="$PATH:/usr/sbin"       # user sbin
+export PATH="$PATH:/sbin"           # sbin
+
+export ARCHFLAGS="-arch x86_64"

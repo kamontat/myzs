@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC1090,SC2015
+
+# maintain: Kamontat Chantrachirathumrong
+# version:  1.1.0
+# since:    26/03/2018
+
+if_command_exist "neofetch" &&
+	if_file_exist "$HOME/.config/neofetch/config" &&
+	alias sysinfo='neofetch --config ~/.config/neofetch/config' &&
+	if_fully_debug_print "alias" "sysinfo => neofetch (show system info)" ||
+	if_fully_debug_print_error "alias" "neofetch not exist!"
+
+if_command_exist "ranger" &&
+	alias ui='ranger' &&
+	if_fully_debug_print "alias" "ui => ranger (show file tree as ui)" ||
+	if_fully_debug_print_error "alias" "ranger not exist!"
+
+if_command_exist "gnomon" &&
+	alias atime='gnomon' &&
+	if_fully_debug_print "alias" "atime => gnomon (estimate time)" ||
+	if_fully_debug_print_error "alias" "gnomon not exist!"
+
+if_command_exist "gnomon" &&
+	alias stime='gnomon' &&
+	if_fully_debug_print "alias" "stime => gnomon (estimate time)"
+
+# my dot template (https://github.com/kamontat/dot-github-mini)
+if_file_exist "$HOME/.github/dotgithub" &&
+	alias dotgithub='$HOME/.github/dotgithub' &&
+	if_fully_debug_print "alias" "dotgithub => $HOME/.github/dotgithub (https://github.com/kamontat/dot-github-mini)" ||
+	if_fully_debug_print_error "alias" "dotgithub not exist!"
+
+# bash template (https://github.com/Template-Generating/script-genrating)
+if_command_exist "generator" &&
+	alias template='generator' &&
+	alias template_update='template --reinstall' &&
+	if_fully_debug_print "alias" "template => generator (hhttps://github.com/Template-Generating/script-genrating)" &&
+	if_fully_debug_print "alias" "template_update => generator --reinstall (hhttps://github.com/Template-Generating/script-genrating)" ||
+	if_fully_debug_print_error "alias" "generator not exist!"
+
+alias color-test='bash <(curl -sL https://raw.githubusercontent.com/kamontat/bash-color/master/color_test.sh)'
+
+alias split='bash <(curl -sL https://gist.github.com/kamontat/97ea3378c5d323b9b430aeda8b5f80df/raw/f1f0e3c2a2712c74a30c33d3247deb3f5dd96724/sep.sh)'
+
+# angular custom
+# alias ngg='git clone https://github.com/Template-Generating/angular-4-browser-sync.git'

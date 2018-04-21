@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC1090,SC2015
+
+# maintain: Kamontat Chantrachirathumrong
+# version:  1.0.0
+# since:    21/04/2018
+
+# cat as syntax hightlight
+if_command_exist "cat-syntax" &&
+	alias cat='cat-syntax' &&
+	if_fully_debug_print "alias" "cat => cat-syntax" ||
+	if_fully_debug_print_error "alias" "cat-syntax not exist!"
+
+# brew coreutils
+if_command_exist "gls" &&
+	alias ls='gls --hyperlink=always --indicator-style=classify --color=auto' &&
+	if_fully_debug_print "alias" "ls => gls" ||
+	if_fully_debug_print_error "alias" "gls not exist!"
+
+# beta application
+if [[ "$MYZS_USE_EDITOR" == "code" ]]; then
+	if_fully_debug_print "editor" "code"
+	! if_command_exist "code" && alias code='code-insiders'
+
+	alias newcode='code --new-window'
+	alias ccode='code --reuse-window'
+
+elif [[ "$MYZS_USE_EDITOR" == "atom" ]]; then
+	if_fully_debug_print "editor" "atom"
+	! if_command_exist "atom" && alias atom='atom-beta'
+else
+	if_fully_debug_print "editor" "none"
+fi
