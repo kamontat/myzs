@@ -133,23 +133,6 @@ get_full_path() {
 	echo "$path"               # echo result
 }
 
-# @explain    - exit non zero code with message
-# @params - 1 - error message
-#           2 - error code (optional) -- if don't have error log only not exit
-throw() {
-	printf '%s\n' "$1" >&2 && is_integer "$2" && exit "$2"
-	return 0
-}
-
-# @explain    - exit non zero code with message
-# @params - 1 - error header
-#           2 - error message
-#           3 - error code (optional) -- if don't have error log only not exit
-throw_with_header() {
-	printf '%s: %s\n' "$1" "$2" >&2 && is_integer "$3" && exit "$3"
-	return 0
-}
-
 log_to() {
 	exec >>"$1"
 	while IFS= read -r line; do
@@ -171,21 +154,10 @@ new_line() {
 	echo
 }
 
-# export -f is_boolean
-# export -f is_integer
-# export -f is_sign_integer
-# export -f is_decimal
-# export -f is_sign_decimal
+get_work_location() {
+	echo "${MYZS_WORK_ROOT}/$1"
+}
 
-# export -f if_command_exist
-# export -f if_file_exist
-# export -f if_folder_exist
-# export -f has_internet
-
-# export -f get_abs_filename
-# export -f get_full_path
-
-# export -f new_line
-
-# export -f throw
-# export -f throw_with_header
+to_work_location() {
+	cd "$(get_work_location "$1")" || return 1
+}

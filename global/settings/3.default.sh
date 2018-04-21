@@ -14,7 +14,7 @@ export LC_ALL="en_US.UTF-8"
 export SHELL="/bin/zsh"
 
 export EDITOR='nvim'
-export VISUAL='code'
+export VISUAL='code-insiders'
 
 # FUNCTION SESSION
 # BE AWARE

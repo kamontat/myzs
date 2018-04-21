@@ -6,10 +6,10 @@
 
 export MYZS_WORK_ROOT="${HOME}/Desktop"
 
-export MYZS_WORKSPACE_DIRNAME="workspaces" # place of work
-export MYZS_PROJECT_DIRNAME="projects"     # place of play
-export MYZS_LAB_DIRNAME="labs"             # place of test
-export MYZS_LIBRARY_DIRNAME="libs"         # place of library
+export MYZS_WORKSPACE_DIRNAME="Workspaces" # place of work
+export MYZS_PROJECT_DIRNAME="Projects"     # place of play
+export MYZS_LAB_DIRNAME="Labs"             # place of test
+export MYZS_LIBRARY_DIRNAME="Libraries"    # place of library
 
 # FUNCTION SESSION
 # BE AWARE

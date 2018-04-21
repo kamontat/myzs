@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC1090,SC2015
+
+# maintain: Kamontat Chantrachirathumrong
+# version:  1.0.0
+# since:    21/04/2018
+
+utils_for_workspace() {
+	wcd() {
+		export MYZS_PREVIOUS_DIRNAME="$PWD" &&
+			to_work_location "$MYZS_WORKSPACE_DIRNAME"
+	}
+
+	back() {
+		test -n "$MYZS_PREVIOUS_DIRNAME" &&
+			test -d "$MYZS_PREVIOUS_DIRNAME" &&
+			cd "$MYZS_PREVIOUS_DIRNAME" || return 1
+	}
+
+	wmk() {
+		local dir="$1"
+		wcd &&
+			mkdir -p "$dir" &&
+			cd "$dir" || return 1
+	}
+
+	wcf() {
+		local file="$1"
+		wcd &&
+			touch "$file" &&
+			"$VISUAL" "$file" || return 1
+	}
+
+	wrm() {
+		local in="$1"
+		wcd &&
+			rm -r "$in"
+	}
+
+	whelp() {
+		echo "
+Variable name: MYZS_WORKSPACE_DIRNAME
+Folder: $(get_work_location "$MYZS_WORKSPACE_DIRNAME")
+Show help of workspace utils
+    1. wcd - cd to WORKSPACE
+    2. wmk - create dir to WORKSPACE
+    3. wcf - create file to WORKSPACE
+    4. wrm - remove file/folder in WORKSPACE
+Extra command
+    1. back  - cd back to previous directory
+        "
+	}
+
+	wh() {
+		whelp
+	}
+
+	if_fully_debug_print "alias" "back => cd back to previous directory"
+
+	if_fully_debug_print "alias" "wcd => cd to $(get_work_location "$MYZS_WORKSPACE_DIRNAME")"
+	if_fully_debug_print "alias" "wmk => create dir to $(get_work_location "$MYZS_WORKSPACE_DIRNAME")"
+	if_fully_debug_print "alias" "wcf => create file to $(get_work_location "$MYZS_WORKSPACE_DIRNAME")"
+	if_fully_debug_print "alias" "wrm => remove file/folder in $(get_work_location "$MYZS_WORKSPACE_DIRNAME")"
+	if_fully_debug_print "alias" "wh => show help command"
+
+}
+
+test -n "$MYZS_WORKSPACE_DIRNAME" && utils_for_workspace

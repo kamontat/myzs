@@ -77,7 +77,7 @@ is_integer() {
 }
 
 throw() {
-	printf '%s\n' "$1" >&2 && is_integer "$2" && exit "$2"
+	printf '%s\n' "$1" >&2 && is_integer "$2" && return "$2"
 	return 0
 }
 
@@ -111,7 +111,7 @@ _loop_load() {
 
 load() {
 	local folder="$1"
-	! test -d "$folder" && throw "$folder Not EXIST!" 5
+	! test -d "$folder" && throw "$folder Not EXIST!" && return 5
 	_loop_load "$folder"
 }
 
