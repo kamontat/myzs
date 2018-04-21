@@ -41,6 +41,7 @@ utils_for_workspace() {
 		echo "
 Variable name: MYZS_WORKSPACE_DIRNAME
 Folder: $(get_work_location "$MYZS_WORKSPACE_DIRNAME")
+Concept: Workspace for working
 Show help of workspace utils
     1. wcd - cd to WORKSPACE
     2. wmk - create dir to WORKSPACE

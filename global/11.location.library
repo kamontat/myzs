@@ -35,6 +35,7 @@ utils_for_library() {
 		echo "
 Variable name: MYZS_LIBRARY_DIRNAME
 Folder: $(get_work_location "$MYZS_LIBRARY_DIRNAME")
+Concept: Library for keeping project, library or personal container files
 Show help of library utils
     1. wcd - cd to LIBRARY
     2. wmk - create dir to LIBRARY

@@ -35,6 +35,7 @@ utils_for_lab() {
 		echo "
 Variable name: MYZS_LAB_DIRNAME
 Folder: $(get_work_location "$MYZS_LAB_DIRNAME")
+Concept: Lab for testing and playground new language or framework
 Show help of lab utils
     1. wcd - cd to LAB
     2. wmk - create dir to LAB

@@ -35,6 +35,7 @@ utils_for_project() {
 		echo "
 Variable name: MYZS_PROJECT_DIRNAME
 Folder: $(get_work_location "$MYZS_PROJECT_DIRNAME")
+Concept: Project for playing and personal project
 Show help of project utils
     1. wcd - cd to PROJECT
     2. wmk - create dir to PROJECT
