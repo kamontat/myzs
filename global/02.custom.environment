@@ -66,7 +66,9 @@ if $MYZS_USE_PYTHON && if_folder_exist "$HOME/miniconda3"; then
 fi
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/usr/local/etc/google-cloud-sdk/path.zsh.inc' ]; then source '/usr/local/etc/google-cloud-sdk/path.zsh.inc'; fi
+# if [ -f '/usr/local/etc/google-cloud-sdk/path.zsh.inc' ]; then source '/usr/local/etc/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/usr/local/etc/google-cloud-sdk/completion.zsh.inc' ]; then source '/usr/local/etc/google-cloud-sdk/completion.zsh.inc'; fi
+# if [ -f '/usr/local/etc/google-cloud-sdk/completion.zsh.inc' ]; then source '/usr/local/etc/google-cloud-sdk/completion.zsh.inc'; fi
+
+if_file_exist "$HOME/.travis/travis.sh" && _load "$HOME/.travis/travis.sh"

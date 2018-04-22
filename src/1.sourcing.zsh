@@ -5,8 +5,6 @@
 # version:  1.0.0
 # since:    21/04/2018
 
-if_file_exist "$HOME/.travis/travis.sh" && _load "$HOME/.travis/travis.sh"
-
 if [[ $MYZS_USE_ITERM == true ]] && if_file_exist "${HOME}/.iterm2_shell_integration.zsh"; then
 	_load "${HOME}/.iterm2_shell_integration.zsh"
 else

@@ -23,8 +23,8 @@ export MYZS_CUSTOM="${MYZS_ROOT}/custom.lib"
 export MYZS_TEMP_FOLDER="/tmp/myzs"
 mkdir $MYZS_TEMP_FOLDER &>/dev/null
 export MYZS_TEMP_FILE="$MYZS_TEMP_FOLDER/temp"
-export MYZS_LOG_FILE="$MYZS_TEMP_FOLDER/myzs.log"
-export MYZS_ERROR_FILE="$MYZS_TEMP_FOLDER/myzs.error"
+export MYZS_LOG_FILE="$MYZS_TEMP_FOLDER/loading.log"
+export MYZS_ERROR_FILE="$MYZS_TEMP_FOLDER/loading.error"
 
 _print() {
 	local date_char=15 head_char="${MYZS_HEADER_SIZE:-15}" nl="\n"
@@ -143,5 +143,6 @@ sec="$((duration % 60))"
 
 if_debug_print "STATUS" "--------------INSTALL COMPLETELY--------------"
 if_debug_print "time" "$min minutes $sec seconds elapsed"
+if_full_debug_print "time" "$min minutes $sec seconds elapsed"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
