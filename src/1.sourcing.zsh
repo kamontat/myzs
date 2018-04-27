@@ -11,3 +11,5 @@ else
 	curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | zsh
 	_load "${HOME}/.iterm2_shell_integration.zsh"
 fi
+
+# source <(kubectl completion zsh)

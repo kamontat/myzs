@@ -6,15 +6,17 @@
 # since:    21/04/2018
 
 utils_for_workspace() {
+	wname() {
+		echo "$MYZS_WORKSPACE_DIRNAME"
+	}
+
+	wlo() {
+		get_work_location "$MYZS_WORKSPACE_DIRNAME"
+	}
+
 	wcd() {
 		export MYZS_PREVIOUS_DIRNAME="$PWD" &&
 			to_work_location "$MYZS_WORKSPACE_DIRNAME"
-	}
-
-	back() {
-		test -n "$MYZS_PREVIOUS_DIRNAME" &&
-			test -d "$MYZS_PREVIOUS_DIRNAME" &&
-			cd "$MYZS_PREVIOUS_DIRNAME" || return 1
 	}
 
 	wmk() {
@@ -37,16 +39,28 @@ utils_for_workspace() {
 			rm -r "$in"
 	}
 
+	wls() {
+		wcd && ls && back
+	}
+
+	wla() {
+		wcd && la && back
+	}
+
 	whelp() {
 		echo "
 Variable name: MYZS_WORKSPACE_DIRNAME
 Folder: $(get_work_location "$MYZS_WORKSPACE_DIRNAME")
 Concept: Workspace for working
 Show help of workspace utils
-    1. wcd - cd to WORKSPACE
-    2. wmk - create dir to WORKSPACE
-    3. wcf - create file to WORKSPACE
-    4. wrm - remove file/folder in WORKSPACE
+    1. wname - get WORKSPACE directory name
+    2. wlo   - get location of WORKSPACE
+    3. wcd   - cd to WORKSPACE
+    4. wmk   - create dir to WORKSPACE
+    5. wcf   - create file to WORKSPACE
+    6. wrm   - remove file/folder in WORKSPACE
+    7. wls   - list file and folder in WORKSPACE
+    8. wla   - list every file and folder in WORKSPACE
 Extra command
     1. back  - cd back to previous directory
         "
@@ -56,14 +70,16 @@ Extra command
 		whelp
 	}
 
-	if_fully_debug_print "alias" "back => cd back to previous directory"
-
+	if_fully_debug_print "alias" "wname => get '$MYZS_WORKSPACE_DIRNAME'"
+	if_fully_debug_print "alias" "wlo => get '$(get_work_location "$MYZS_WORKSPACE_DIRNAME")'"
 	if_fully_debug_print "alias" "wcd => cd to $(get_work_location "$MYZS_WORKSPACE_DIRNAME")"
 	if_fully_debug_print "alias" "wmk => create dir to $(get_work_location "$MYZS_WORKSPACE_DIRNAME")"
 	if_fully_debug_print "alias" "wcf => create file to $(get_work_location "$MYZS_WORKSPACE_DIRNAME")"
 	if_fully_debug_print "alias" "wrm => remove file/folder in $(get_work_location "$MYZS_WORKSPACE_DIRNAME")"
+	if_fully_debug_print "alias" "wls => list file/folder in $(get_work_location "$MYZS_WORKSPACE_DIRNAME")"
+	if_fully_debug_print "alias" "wla => list all file/folder in $(get_work_location "$MYZS_WORKSPACE_DIRNAME")"
 	if_fully_debug_print "alias" "wh => show help command"
-
+	return 0
 }
 
-test -n "$MYZS_WORKSPACE_DIRNAME" && utils_for_workspace
+test -n "$MYZS_WORKSPACE_DIRNAME" && utils_for_workspace || if_fully_debug_print "location" "workspace not exist"

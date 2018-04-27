@@ -21,6 +21,7 @@ if $MYZS_USE_GIT; then
 		if_fully_debug_print_error "alias" "hub not exist!"
 
 	alias g='git'
+    alias gi='git init'
 	alias gs='git status'
 	alias gd='git diff'
 	alias ga='git add'

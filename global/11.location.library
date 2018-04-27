@@ -6,6 +6,14 @@
 # since:    21/04/2018
 
 utils_for_library() {
+	liname() {
+		echo "$MYZS_LIBRARY_DIRNAME"
+	}
+
+	lilo() {
+		get_work_location "$MYZS_LIBRARY_DIRNAME"
+	}
+
 	licd() {
 		export MYZS_PREVIOUS_DIRNAME="$PWD" &&
 			to_work_location "$MYZS_LIBRARY_DIRNAME"
@@ -13,22 +21,30 @@ utils_for_library() {
 
 	limk() {
 		local dir="$1"
-		wcd &&
+		licd &&
 			mkdir -p "$dir" &&
 			cd "$dir" || return 1
 	}
 
 	licf() {
 		local file="$1"
-		wcd &&
+		licd &&
 			touch "$file" &&
 			"$VISUAL" "$file" || return 1
 	}
 
 	lirm() {
 		local in="$1"
-		wcd &&
+		licd &&
 			rm -r "$in"
+	}
+
+	lils() {
+		licd && ls && back
+	}
+
+	lila() {
+		licd && la && back
 	}
 
 	lihelp() {
@@ -37,10 +53,14 @@ Variable name: MYZS_LIBRARY_DIRNAME
 Folder: $(get_work_location "$MYZS_LIBRARY_DIRNAME")
 Concept: Library for keeping project, library or personal container files
 Show help of library utils
-    1. wcd - cd to LIBRARY
-    2. wmk - create dir to LIBRARY
-    3. wcf - create file to LIBRARY
-    4. wrm - remove file/folder in LIBRARY
+    1. liname - get LIBRARY directory name
+    2. lilo   - get location of LIBRARY
+    1. licd - cd to LIBRARY
+    2. limk - create dir to LIBRARY
+    3. licf - create file to LIBRARY
+    4. lirm - remove file/folder in LIBRARY
+    5. lils - list file and folder in LIBRARY
+    6. lila - list every file and folder in LIBRARY
 Extra command
     1. back  - cd back to previous directory
         "
@@ -50,11 +70,15 @@ Extra command
 		lihelp
 	}
 
+	if_fully_debug_print "alias" "liname => get '$MYZS_LIBRARY_DIRNAME'"
+	if_fully_debug_print "alias" "lilo => get '$(get_work_location "$MYZS_LIBRARY_DIRNAME")'"
 	if_fully_debug_print "alias" "licd => cd to $(get_work_location "$MYZS_LIBRARY_DIRNAME")"
 	if_fully_debug_print "alias" "limk => create dir to $(get_work_location "$MYZS_LIBRARY_DIRNAME")"
 	if_fully_debug_print "alias" "licf => create file to $(get_work_location "$MYZS_LIBRARY_DIRNAME")"
 	if_fully_debug_print "alias" "lirm => remove file/folder in $(get_work_location "$MYZS_LIBRARY_DIRNAME")"
+	if_fully_debug_print "alias" "lils => list file/folder in $(get_work_location "$MYZS_LIBRARY_DIRNAME")"
+	if_fully_debug_print "alias" "lila => list all file/folder in $(get_work_location "$MYZS_LIBRARY_DIRNAME")"
 	if_fully_debug_print "alias" "lih => show help command"
 }
 
-test -n "$MYZS_LIBRARY_DIRNAME" && utils_for_library
+test -n "$MYZS_LIBRARY_DIRNAME" && utils_for_library || if_fully_debug_print "location" "library not exist"

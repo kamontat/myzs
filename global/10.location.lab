@@ -6,6 +6,14 @@
 # since:    21/04/2018
 
 utils_for_lab() {
+	lname() {
+		echo "$MYZS_LAB_DIRNAME"
+	}
+
+	llo() {
+		get_work_location "$MYZS_LAB_DIRNAME"
+	}
+
 	lcd() {
 		export MYZS_PREVIOUS_DIRNAME="$PWD" &&
 			to_work_location "$MYZS_LAB_DIRNAME"
@@ -13,22 +21,30 @@ utils_for_lab() {
 
 	lmk() {
 		local dir="$1"
-		wcd &&
+		lcd &&
 			mkdir -p "$dir" &&
 			cd "$dir" || return 1
 	}
 
 	lcf() {
 		local file="$1"
-		wcd &&
+		lcd &&
 			touch "$file" &&
 			"$VISUAL" "$file" || return 1
 	}
 
 	lrm() {
 		local in="$1"
-		wcd &&
+		lcd &&
 			rm -r "$in"
+	}
+
+	lls() {
+		lcd && ls && back
+	}
+
+	lla() {
+		lcd && la && back
 	}
 
 	lhelp() {
@@ -37,10 +53,14 @@ Variable name: MYZS_LAB_DIRNAME
 Folder: $(get_work_location "$MYZS_LAB_DIRNAME")
 Concept: Lab for testing and playground new language or framework
 Show help of lab utils
-    1. wcd - cd to LAB
-    2. wmk - create dir to LAB
-    3. wcf - create file to LAB
-    4. wrm - remove file/folder in LAB
+    1. lname - get LAB directory name
+    2. llo   - get location of LAB
+    3. lcd - cd to LAB
+    4. lmk - create dir to LAB
+    5. lcf - create file to LAB
+    6. lrm - remove file/folder in LAB
+    7. lls - list file and folder in LAB
+    8. lla - list every file and folder in LAB
 Extra command
     1. back  - cd back to previous directory
         "
@@ -50,11 +70,15 @@ Extra command
 		lhelp
 	}
 
+	if_fully_debug_print "alias" "lname => get '$MYZS_LAB_DIRNAME'"
+	if_fully_debug_print "alias" "llo => get '$(get_work_location "$MYZS_LAB_DIRNAME")'"
 	if_fully_debug_print "alias" "lcd => cd to $(get_work_location "$MYZS_LAB_DIRNAME")"
 	if_fully_debug_print "alias" "lmk => create dir to $(get_work_location "$MYZS_LAB_DIRNAME")"
 	if_fully_debug_print "alias" "lcf => create file to $(get_work_location "$MYZS_LAB_DIRNAME")"
 	if_fully_debug_print "alias" "lrm => remove file/folder in $(get_work_location "$MYZS_LAB_DIRNAME")"
+	if_fully_debug_print "alias" "lls => list file/folder in $(get_work_location "$MYZS_LAB_DIRNAME")"
+	if_fully_debug_print "alias" "lla => list all file/folder in $(get_work_location "$MYZS_LAB_DIRNAME")"
 	if_fully_debug_print "alias" "lh => show help command"
 }
 
-test -n "$MYZS_LAB_DIRNAME" && utils_for_lab
+test -n "$MYZS_LAB_DIRNAME" && utils_for_lab || if_fully_debug_print "location" "lab not exist"
