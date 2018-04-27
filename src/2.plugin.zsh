@@ -5,7 +5,7 @@
 # version:  1.0.0
 # since:    21/04/2018
 
-[ "$MYZS_USE_ZPLUG" != true ] && if_debug_print "status" "no plugin loading" && return 1
+[ "$MYZS_USE_ZPLUG" != true ] && _myzs_if_debug_print "status" "no plugin loading" && return 1
 
 source "$ZPLUG_HOME/init.zsh"
 

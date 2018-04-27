@@ -2,7 +2,7 @@
 # shellcheck disable=SC1090,SC2015
 
 # maintain: Kamontat Chantrachirathumrong
-# version:  1.0.0
+# version:  1.1.0
 # since:    21/04/2018
 
 utils_for_workspace() {
@@ -11,12 +11,12 @@ utils_for_workspace() {
 	}
 
 	wlo() {
-		get_work_location "$MYZS_WORKSPACE_DIRNAME"
+		_myzs_get_work_location "$MYZS_WORKSPACE_DIRNAME"
 	}
 
 	wcd() {
 		export MYZS_PREVIOUS_DIRNAME="$PWD" &&
-			to_work_location "$MYZS_WORKSPACE_DIRNAME"
+			_myzs_to_work_location "$MYZS_WORKSPACE_DIRNAME"
 	}
 
 	wmk() {
@@ -50,7 +50,7 @@ utils_for_workspace() {
 	whelp() {
 		echo "
 Variable name: MYZS_WORKSPACE_DIRNAME
-Folder: $(get_work_location "$MYZS_WORKSPACE_DIRNAME")
+Folder: $(_myzs_get_work_location "$MYZS_WORKSPACE_DIRNAME")
 Concept: Workspace for working
 Show help of workspace utils
     1. wname - get WORKSPACE directory name
@@ -70,16 +70,16 @@ Extra command
 		whelp
 	}
 
-	if_fully_debug_print "alias" "wname => get '$MYZS_WORKSPACE_DIRNAME'"
-	if_fully_debug_print "alias" "wlo => get '$(get_work_location "$MYZS_WORKSPACE_DIRNAME")'"
-	if_fully_debug_print "alias" "wcd => cd to $(get_work_location "$MYZS_WORKSPACE_DIRNAME")"
-	if_fully_debug_print "alias" "wmk => create dir to $(get_work_location "$MYZS_WORKSPACE_DIRNAME")"
-	if_fully_debug_print "alias" "wcf => create file to $(get_work_location "$MYZS_WORKSPACE_DIRNAME")"
-	if_fully_debug_print "alias" "wrm => remove file/folder in $(get_work_location "$MYZS_WORKSPACE_DIRNAME")"
-	if_fully_debug_print "alias" "wls => list file/folder in $(get_work_location "$MYZS_WORKSPACE_DIRNAME")"
-	if_fully_debug_print "alias" "wla => list all file/folder in $(get_work_location "$MYZS_WORKSPACE_DIRNAME")"
-	if_fully_debug_print "alias" "wh => show help command"
+	_myzs_if_fully_debug_print "alias" "wname => get '$MYZS_WORKSPACE_DIRNAME'"
+	_myzs_if_fully_debug_print "alias" "wlo => get '$(_myzs_get_work_location "$MYZS_WORKSPACE_DIRNAME")'"
+	_myzs_if_fully_debug_print "alias" "wcd => cd to $(_myzs_get_work_location "$MYZS_WORKSPACE_DIRNAME")"
+	_myzs_if_fully_debug_print "alias" "wmk => create dir to $(_myzs_get_work_location "$MYZS_WORKSPACE_DIRNAME")"
+	_myzs_if_fully_debug_print "alias" "wcf => create file to $(_myzs_get_work_location "$MYZS_WORKSPACE_DIRNAME")"
+	_myzs_if_fully_debug_print "alias" "wrm => remove file/folder in $(_myzs_get_work_location "$MYZS_WORKSPACE_DIRNAME")"
+	_myzs_if_fully_debug_print "alias" "wls => list file/folder in $(_myzs_get_work_location "$MYZS_WORKSPACE_DIRNAME")"
+	_myzs_if_fully_debug_print "alias" "wla => list all file/folder in $(_myzs_get_work_location "$MYZS_WORKSPACE_DIRNAME")"
+	_myzs_if_fully_debug_print "alias" "wh => show help command"
 	return 0
 }
 
-test -n "$MYZS_WORKSPACE_DIRNAME" && utils_for_workspace || if_fully_debug_print "location" "workspace not exist"
+test -n "$MYZS_WORKSPACE_DIRNAME" && utils_for_workspace || _myzs_if_fully_debug_print "location" "workspace not exist"

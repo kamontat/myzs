@@ -13,15 +13,17 @@ alias srm='sudo rm -rf'
 alias rmf='rm -rf'
 alias la='ls --almost-all --no-group --human-readable --sort=time --format=verbose --time-style="+%d/%m/%Y-%H:%M:%S"'
 
+alias history='fc -El 1'
+
 # git alias
 if $MYZS_USE_GIT; then
-	if_command_exist "hub" &&
+	_myzs_if_command_exist "hub" &&
 		alias git='hub' &&
-		if_fully_debug_print "alias" "git => hub" ||
-		if_fully_debug_print_error "alias" "hub not exist!"
+		_myzs_if_fully_debug_print "alias" "git => hub" ||
+		_myzs_if_fully_debug_print_error "alias" "hub not exist!"
 
 	alias g='git'
-    alias gi='git init'
+	alias gi='git init'
 	alias gs='git status'
 	alias gd='git diff'
 	alias ga='git add'
@@ -55,28 +57,28 @@ if $MYZS_USE_GIT; then
 fi
 
 # gitmoji
-if $MYZS_USE_GITMOJI && if_command_exist "gitmoji"; then
-	if_fully_debug_print "alias" "gj => gitmoji"
+if $MYZS_USE_GITMOJI && _myzs_if_command_exist "gitmoji"; then
+	_myzs_if_fully_debug_print "alias" "gj => gitmoji"
 	alias gj='gitmoji'
 	alias gji='git init; gj -i'
 	alias gj_remove='gj --remove'
 	alias gjc='gj --commit'
 	alias gj_list='gj --list'
 	alias gj_update='gj --update'
-elif $MYZS_USE_GITMOJI && ! if_command_exist "gitmoji"; then
-	if_fully_debug_print_error "alias" "gitmoji not exist!"
+elif $MYZS_USE_GITMOJI && ! _myzs_if_command_exist "gitmoji"; then
+	_myzs_if_fully_debug_print_error "alias" "gitmoji not exist!"
 fi
 
-if $MYZS_USE_GITGO && if_command_exist "gitgo"; then
-	if_fully_debug_print "alias" "gg => gitgo"
+if $MYZS_USE_GITGO && _myzs_if_command_exist "gitgo"; then
+	_myzs_if_fully_debug_print "alias" "gg => gitgo"
 	alias gg=gitgo
-elif $MYZS_USE_GITGO && ! if_command_exist "gitgo"; then
-	if_fully_debug_print_error "alias" "gitgo not exist!"
+elif $MYZS_USE_GITGO && ! _myzs_if_command_exist "gitgo"; then
+	_myzs_if_fully_debug_print_error "alias" "gitgo not exist!"
 fi
 
 # vim
-if if_command_exist "nvim"; then
-	if_fully_debug_print "alias" "v,vi,vim => nvim"
+if _myzs_if_command_exist "nvim"; then
+	_myzs_if_fully_debug_print "alias" "v,vi,vim => nvim"
 	alias v='nvim'
 	alias vi='nvim'
 	alias vim='nvim'
@@ -92,15 +94,15 @@ fi
 
 # beta application
 if [[ "$MYZS_USE_EDITOR" == "code" ]]; then
-	if_fully_debug_print "editor" "code"
-	! if_command_exist "code" && alias code='code-insiders'
+	_myzs_if_fully_debug_print "editor" "code"
+	! _myzs_if_command_exist "code" && alias code='code-insiders'
 
 	alias newcode='code --new-window'
 	alias ccode='code --reuse-window'
 
 elif [[ "$MYZS_USE_EDITOR" == "atom" ]]; then
-	if_fully_debug_print "editor" "atom"
-	! if_command_exist "atom" && alias atom='atom-beta'
+	_myzs_if_fully_debug_print "editor" "atom"
+	! _myzs_if_command_exist "atom" && alias atom='atom-beta'
 else
-	if_fully_debug_print "editor" "none"
+	_myzs_if_fully_debug_print "editor" "none"
 fi

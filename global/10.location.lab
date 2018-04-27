@@ -2,7 +2,7 @@
 # shellcheck disable=SC1090,SC2015
 
 # maintain: Kamontat Chantrachirathumrong
-# version:  1.0.0
+# version:  1.1.0
 # since:    21/04/2018
 
 utils_for_lab() {
@@ -11,12 +11,12 @@ utils_for_lab() {
 	}
 
 	llo() {
-		get_work_location "$MYZS_LAB_DIRNAME"
+		_myzs_get_work_location "$MYZS_LAB_DIRNAME"
 	}
 
 	lcd() {
 		export MYZS_PREVIOUS_DIRNAME="$PWD" &&
-			to_work_location "$MYZS_LAB_DIRNAME"
+			_myzs_to_work_location "$MYZS_LAB_DIRNAME"
 	}
 
 	lmk() {
@@ -50,7 +50,7 @@ utils_for_lab() {
 	lhelp() {
 		echo "
 Variable name: MYZS_LAB_DIRNAME
-Folder: $(get_work_location "$MYZS_LAB_DIRNAME")
+Folder: $(_myzs_get_work_location "$MYZS_LAB_DIRNAME")
 Concept: Lab for testing and playground new language or framework
 Show help of lab utils
     1. lname - get LAB directory name
@@ -70,15 +70,15 @@ Extra command
 		lhelp
 	}
 
-	if_fully_debug_print "alias" "lname => get '$MYZS_LAB_DIRNAME'"
-	if_fully_debug_print "alias" "llo => get '$(get_work_location "$MYZS_LAB_DIRNAME")'"
-	if_fully_debug_print "alias" "lcd => cd to $(get_work_location "$MYZS_LAB_DIRNAME")"
-	if_fully_debug_print "alias" "lmk => create dir to $(get_work_location "$MYZS_LAB_DIRNAME")"
-	if_fully_debug_print "alias" "lcf => create file to $(get_work_location "$MYZS_LAB_DIRNAME")"
-	if_fully_debug_print "alias" "lrm => remove file/folder in $(get_work_location "$MYZS_LAB_DIRNAME")"
-	if_fully_debug_print "alias" "lls => list file/folder in $(get_work_location "$MYZS_LAB_DIRNAME")"
-	if_fully_debug_print "alias" "lla => list all file/folder in $(get_work_location "$MYZS_LAB_DIRNAME")"
-	if_fully_debug_print "alias" "lh => show help command"
+	_myzs_if_fully_debug_print "alias" "lname => get '$MYZS_LAB_DIRNAME'"
+	_myzs_if_fully_debug_print "alias" "llo => get '$(_myzs_get_work_location "$MYZS_LAB_DIRNAME")'"
+	_myzs_if_fully_debug_print "alias" "lcd => cd to $(_myzs_get_work_location "$MYZS_LAB_DIRNAME")"
+	_myzs_if_fully_debug_print "alias" "lmk => create dir to $(_myzs_get_work_location "$MYZS_LAB_DIRNAME")"
+	_myzs_if_fully_debug_print "alias" "lcf => create file to $(_myzs_get_work_location "$MYZS_LAB_DIRNAME")"
+	_myzs_if_fully_debug_print "alias" "lrm => remove file/folder in $(_myzs_get_work_location "$MYZS_LAB_DIRNAME")"
+	_myzs_if_fully_debug_print "alias" "lls => list file/folder in $(_myzs_get_work_location "$MYZS_LAB_DIRNAME")"
+	_myzs_if_fully_debug_print "alias" "lla => list all file/folder in $(_myzs_get_work_location "$MYZS_LAB_DIRNAME")"
+	_myzs_if_fully_debug_print "alias" "lh => show help command"
 }
 
-test -n "$MYZS_LAB_DIRNAME" && utils_for_lab || if_fully_debug_print "location" "lab not exist"
+test -n "$MYZS_LAB_DIRNAME" && utils_for_lab || _myzs_if_fully_debug_print "location" "lab not exist"

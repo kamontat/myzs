@@ -19,8 +19,8 @@ export VISUAL='code-insiders'
 # FUNCTION SESSION
 # BE AWARE
 
-if_fully_debug_print "variable" "user: $USER"
-if_fully_debug_print "variable" "lang, ctype, all: $LANG, $LC_CTYPE, $LC_ALL"
-if_fully_debug_print "variable" "shell: $SHELL"
-if_fully_debug_print "variable" "editor: $EDITOR"
-if_fully_debug_print "variable" "visual: $VISUAL"
+_myzs_if_fully_debug_print "variable" "user: $USER"
+_myzs_if_fully_debug_print "variable" "lang, ctype, all: $LANG, $LC_CTYPE, $LC_ALL"
+_myzs_if_fully_debug_print "variable" "shell: $SHELL"
+_myzs_if_fully_debug_print "variable" "editor: $EDITOR"
+_myzs_if_fully_debug_print "variable" "visual: $VISUAL"

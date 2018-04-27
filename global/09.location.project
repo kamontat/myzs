@@ -2,7 +2,7 @@
 # shellcheck disable=SC1090,SC2015
 
 # maintain: Kamontat Chantrachirathumrong
-# version:  1.0.0
+# version:  1.1.0
 # since:    21/04/2018
 
 utils_for_project() {
@@ -11,12 +11,12 @@ utils_for_project() {
 	}
 
 	plo() {
-		get_work_location "$MYZS_PROJECT_DIRNAME"
+		_myzs_get_work_location "$MYZS_PROJECT_DIRNAME"
 	}
 
 	pcd() {
 		export MYZS_PREVIOUS_DIRNAME="$PWD" &&
-			to_work_location "$MYZS_PROJECT_DIRNAME"
+			_myzs_to_work_location "$MYZS_PROJECT_DIRNAME"
 	}
 
 	pmk() {
@@ -50,7 +50,7 @@ utils_for_project() {
 	phelp() {
 		echo "
 Variable name: MYZS_PROJECT_DIRNAME
-Folder: $(get_work_location "$MYZS_PROJECT_DIRNAME")
+Folder: $(_myzs_get_work_location "$MYZS_PROJECT_DIRNAME")
 Concept: Project for playing and personal project
 Show help of project utils
     1. pname - get PROJECT directory name
@@ -70,15 +70,15 @@ Extra command
 		phelp
 	}
 
-	if_fully_debug_print "alias" "pname => get '$MYZS_PROJECT_DIRNAME'"
-	if_fully_debug_print "alias" "plo => get '$(get_work_location "$MYZS_PROJECT_DIRNAME")'"
-	if_fully_debug_print "alias" "pcd => cd to $(get_work_location "$MYZS_PROJECT_DIRNAME")"
-	if_fully_debug_print "alias" "pmk => create dir to $(get_work_location "$MYZS_PROJECT_DIRNAME")"
-	if_fully_debug_print "alias" "pcf => create file to $(get_work_location "$MYZS_PROJECT_DIRNAME")"
-	if_fully_debug_print "alias" "prm => remove file/folder in $(get_work_location "$MYZS_PROJECT_DIRNAME")"
-	if_fully_debug_print "alias" "pls => list file/folder in $(get_work_location "$MYZS_PROJECT_DIRNAME")"
-	if_fully_debug_print "alias" "pla => list all file/folder in $(get_work_location "$MYZS_PROJECT_DIRNAME")"
-	if_fully_debug_print "alias" "ph => show help command"
+	_myzs_if_fully_debug_print "alias" "pname => get '$MYZS_PROJECT_DIRNAME'"
+	_myzs_if_fully_debug_print "alias" "plo => get '$(_myzs_get_work_location "$MYZS_PROJECT_DIRNAME")'"
+	_myzs_if_fully_debug_print "alias" "pcd => cd to $(_myzs_get_work_location "$MYZS_PROJECT_DIRNAME")"
+	_myzs_if_fully_debug_print "alias" "pmk => create dir to $(_myzs_get_work_location "$MYZS_PROJECT_DIRNAME")"
+	_myzs_if_fully_debug_print "alias" "pcf => create file to $(_myzs_get_work_location "$MYZS_PROJECT_DIRNAME")"
+	_myzs_if_fully_debug_print "alias" "prm => remove file/folder in $(_myzs_get_work_location "$MYZS_PROJECT_DIRNAME")"
+	_myzs_if_fully_debug_print "alias" "pls => list file/folder in $(_myzs_get_work_location "$MYZS_PROJECT_DIRNAME")"
+	_myzs_if_fully_debug_print "alias" "pla => list all file/folder in $(_myzs_get_work_location "$MYZS_PROJECT_DIRNAME")"
+	_myzs_if_fully_debug_print "alias" "ph => show help command"
 }
 
-test -n "$MYZS_PROJECT_DIRNAME" && utils_for_project || if_fully_debug_print "location" "project not exist"
+test -n "$MYZS_PROJECT_DIRNAME" && utils_for_project || _myzs_if_fully_debug_print "location" "project not exist"

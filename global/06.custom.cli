@@ -5,7 +5,7 @@
 # version:  1.0.0
 # since:    21/04/2018
 
-if_command_exist "system_profiler" &&
+_myzs_if_command_exist "system_profiler" &&
 	alias batt='system_profiler SPPowerDataType'
 
 # ZSH COMPLETE
@@ -13,3 +13,5 @@ test -f "$GOPATH/src/github.com/urfave/cli/autocomplete/zsh_autocomplete" &&
 	source "$GOPATH/src/github.com/urfave/cli/autocomplete/zsh_autocomplete"
 
 export GO_ZSH_COMPLETE="$GOPATH/src/github.com/urfave/cli/autocomplete/zsh_autocomplete"
+
+return 0

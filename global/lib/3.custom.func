@@ -10,7 +10,7 @@
 #              length        like 14-55
 #              multiple      like 12,44,55
 cat-syntax() {
-	! if_command_exist "pygmentize" && echo "require pygmentize to run" && return 1
+	! _myzs_if_command_exist "pygmentize" && echo "require pygmentize to run" && return 1
 
 	if [ -f "$1" ]; then
 		local t
@@ -33,13 +33,13 @@ cat-syntax() {
 
 # countdown
 countdown() {
-	! if_command_exist "termdown" && echo "termdown not exist" && return 1
+	! _myzs_if_command_exist "termdown" && echo "termdown not exist" && return 1
 	local time="$1"
 	shift
 	termdown "$time" -v "Veena" "$@"
 }
 
 timer() {
-	! if_command_exist "termdown" && echo "termdown not exist" && return 1
+	! _myzs_if_command_exist "termdown" && echo "termdown not exist" && return 1
 	termdown
 }

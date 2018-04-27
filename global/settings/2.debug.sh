@@ -9,9 +9,9 @@
 # 2. debug - print loading result only
 # 3. file  - log output to log file only
 # 4. full  - print and log everything
-export MYZS_DEBUG_MODE="file" # none|debug|file|full
+export MYZS_DEBUG_MODE="full" # none|debug|file|full
 
 # FUNCTION SESSION
 # BE AWARE
 
-if_fully_debug_print "variable" "debug: $MYZS_DEBUG_MODE"
+_myzs_if_fully_debug_print "variable" "debug: $MYZS_DEBUG_MODE"

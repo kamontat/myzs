@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+
+# maintain: Kamontat Chantrachirathumrong
+# version:  1.0.0
+# since:    21/04/2018
+
+# -------------------------------------------------
+# Functions
+# -------------------------------------------------
+
+_myzs_to_lower_case() {
+	echo "$1" | tr '[:upper:]' '[:lower:]'
+}
+
+_myzs_to_upper_case() {
+	echo "$1" | tr '[:lower:]' '[:upper:]'
+}
+
+_myzs_if_file_exist() {
+	[ -f "$1" ]
+}
+
+_myzs_if_folder_exist() {
+	[ -d "$1" ]
+}
+
+_myzs_if_command_exist() {
+	command -v "$1" &>/dev/null
+}
+
+# @params - 1 - relative file path
+# @return     - absolute file path
+_myzs_get_abs_filename() {
+	curr="$PWD"
+	# $1 : relative filename
+	rel_filename="$1"
+	f="${rel_filename:0:1}"                  # first char
+	l="${rel_filename:${#rel_filename}-1:1}" # last char
+
+	[[ $l == "/" ]] &&
+		rel_filename="${rel_filename:0:${#rel_filename}-1}" # handle if input have / in the last char, REMOVE IT!
+	[[ $f == "/" ]] &&
+		echo "$rel_filename" &&
+		return 0 # handle input is already absolute path
+	echo "$(eval cd "$(dirname "$1")" && pwd)/$(basename "${rel_filename[*]}")"
+	cd "$curr" || return 1
+}
+
+# @explain    - get environment from terminal
+# @params - 1 - regex for variable name
+_myzs_get_env_value() {
+	# since 'printenv' only return the export function
+	# so 'sed /BASH_FUNC/,$d' will delete the line contains 'BASH_FUNC' until end of file
+	# BASH_FUNC - keyword that bash add when print function
+	# shellcheck disable=SC2015
+	_myzs_if_command_exist env &&
+		env | sed '/BASH_FUNC/,$d' | grep "$1" ||
+		printenv | sed '/BASH_FUNC/,$d' | grep "$1"
+}
+
+_myzs_get_work_location() {
+	echo "${MYZS_WORK_ROOT}/$1"
+}
+
+_myzs_to_work_location() {
+	cd "$(_myzs_get_work_location "$1")" || return 1
+}

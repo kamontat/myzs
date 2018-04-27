@@ -2,7 +2,7 @@
 # shellcheck disable=SC1090,SC2015
 
 # maintain: Kamontat Chantrachirathumrong
-# version:  1.0.0
+# version:  1.1.0
 # since:    21/04/2018
 
 utils_for_library() {
@@ -11,12 +11,12 @@ utils_for_library() {
 	}
 
 	lilo() {
-		get_work_location "$MYZS_LIBRARY_DIRNAME"
+		_myzs_get_work_location "$MYZS_LIBRARY_DIRNAME"
 	}
 
 	licd() {
 		export MYZS_PREVIOUS_DIRNAME="$PWD" &&
-			to_work_location "$MYZS_LIBRARY_DIRNAME"
+			_myzs_to_work_location "$MYZS_LIBRARY_DIRNAME"
 	}
 
 	limk() {
@@ -50,7 +50,7 @@ utils_for_library() {
 	lihelp() {
 		echo "
 Variable name: MYZS_LIBRARY_DIRNAME
-Folder: $(get_work_location "$MYZS_LIBRARY_DIRNAME")
+Folder: $(_myzs_get_work_location "$MYZS_LIBRARY_DIRNAME")
 Concept: Library for keeping project, library or personal container files
 Show help of library utils
     1. liname - get LIBRARY directory name
@@ -70,15 +70,15 @@ Extra command
 		lihelp
 	}
 
-	if_fully_debug_print "alias" "liname => get '$MYZS_LIBRARY_DIRNAME'"
-	if_fully_debug_print "alias" "lilo => get '$(get_work_location "$MYZS_LIBRARY_DIRNAME")'"
-	if_fully_debug_print "alias" "licd => cd to $(get_work_location "$MYZS_LIBRARY_DIRNAME")"
-	if_fully_debug_print "alias" "limk => create dir to $(get_work_location "$MYZS_LIBRARY_DIRNAME")"
-	if_fully_debug_print "alias" "licf => create file to $(get_work_location "$MYZS_LIBRARY_DIRNAME")"
-	if_fully_debug_print "alias" "lirm => remove file/folder in $(get_work_location "$MYZS_LIBRARY_DIRNAME")"
-	if_fully_debug_print "alias" "lils => list file/folder in $(get_work_location "$MYZS_LIBRARY_DIRNAME")"
-	if_fully_debug_print "alias" "lila => list all file/folder in $(get_work_location "$MYZS_LIBRARY_DIRNAME")"
-	if_fully_debug_print "alias" "lih => show help command"
+	_myzs_if_fully_debug_print "alias" "liname => get '$MYZS_LIBRARY_DIRNAME'"
+	_myzs_if_fully_debug_print "alias" "lilo => get '$(_myzs_get_work_location "$MYZS_LIBRARY_DIRNAME")'"
+	_myzs_if_fully_debug_print "alias" "licd => cd to $(_myzs_get_work_location "$MYZS_LIBRARY_DIRNAME")"
+	_myzs_if_fully_debug_print "alias" "limk => create dir to $(_myzs_get_work_location "$MYZS_LIBRARY_DIRNAME")"
+	_myzs_if_fully_debug_print "alias" "licf => create file to $(_myzs_get_work_location "$MYZS_LIBRARY_DIRNAME")"
+	_myzs_if_fully_debug_print "alias" "lirm => remove file/folder in $(_myzs_get_work_location "$MYZS_LIBRARY_DIRNAME")"
+	_myzs_if_fully_debug_print "alias" "lils => list file/folder in $(_myzs_get_work_location "$MYZS_LIBRARY_DIRNAME")"
+	_myzs_if_fully_debug_print "alias" "lila => list all file/folder in $(_myzs_get_work_location "$MYZS_LIBRARY_DIRNAME")"
+	_myzs_if_fully_debug_print "alias" "lih => show help command"
 }
 
-test -n "$MYZS_LIBRARY_DIRNAME" && utils_for_library || if_fully_debug_print "location" "library not exist"
+test -n "$MYZS_LIBRARY_DIRNAME" && utils_for_library || _myzs_if_fully_debug_print "location" "library not exist"
