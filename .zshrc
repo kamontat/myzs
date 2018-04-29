@@ -1,15 +1,16 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 # shellcheck disable=SC1090
 
 # maintain: Kamontat Chantrachirathumrong
 # version:  1.1.0
 # since:    21/04/2018
 
-# error: 5    - file/folder not exist
+# error: 2    - wrong call function or method
+#        5    - file/folder not exist
 #        10   - variable not exist
 #        199  - raw error
 
-# set -x # DEBUG
+SECONDS=0
 
 export MYZS_ROOT="${HOME}/.myzs"
 export MYZS_SRC="${HOME}/.myzs/src"
@@ -33,21 +34,16 @@ throw() {
 	return 0
 }
 
-_myzs_list_myzs_env() {
-	_myzs_get_env_value | grep "MYZS_"
-}
-
 _myzs__load() {
 	local file="$1" # temp
 
-	! [ -f "$file" ] && _myzs_if_debug_print_error "error" "file: ${file} NOT EXIST!"
+	! [ -f "$file" ] && _myzs_print_error_tofile "status" "file" "${file} NOT EXIST!"
 
-	if source "$file" 2>>${MYZS_ERROR_FILE} 3>>${MYZS_LOG_FILE}; then
-		# test -n "$temp" && echo "$temp"
-		_myzs_if_debug_print "load" "file: $file"
+	if source "$file"; then
+		_myzs_print_log_tostd "load" "file" "${file}"
 		return 0
 	else
-		_myzs_if_debug_print_error "error" "file: $file"
+		_myzs_print_error_tostd "load" "file" "${file} (code=$?)"
 		return 1
 	fi
 }
@@ -73,26 +69,24 @@ _myzs_raw_load() {
 	_myzs_loop_load "$folder"
 }
 
-SECONDS=0
-
-# _myzs_if_debug_print "load" "libraries"
 _myzs_raw_load "$MYZS_LIB"
 
+_myzs_print_log_seperate_tostd "setting"
 _myzs_raw_load "$MYZS_SETTING"
 
-_myzs_if_debug_print "load" "global files"
+_myzs_print_log_seperate_tostd "global"
 _myzs_load "$MYZS_GLOBAL"
 
-_myzs_if_debug_print "load" "oh-my-zsh custom setting files"
+_myzs_print_log_seperate_tostd "custom"
 _myzs_load "$MYZS_CUSTOM"
 
-_myzs_if_debug_print "load" "main script"
+_myzs_print_log_seperate_tostd "main"
 _myzs_load "$MYZS_SRC"
 
 duration=$SECONDS
 min="$((duration / 60))"
 sec="$((duration % 60))"
 
-_myzs_if_debug_print "STATUS" "--------------INSTALL COMPLETELY--------------"
-_myzs_if_debug_print "time" "$min minutes $sec seconds elapsed"
-_myzs_if_full_debug_print "time" "$min minutes $sec seconds elapsed"
+_myzs_print_log_seperate_tostd
+_myzs_print_log_tostd "status" "time" "$min minutes $sec seconds elapsed"
+_myzs_print_log_tofile "status" "time" "$min minutes $sec seconds elapsed"

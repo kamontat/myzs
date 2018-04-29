@@ -65,3 +65,7 @@ _myzs_get_work_location() {
 _myzs_to_work_location() {
 	cd "$(_myzs_get_work_location "$1")" || return 1
 }
+
+_myzs_list_myzs_env() {
+	_myzs_get_env_value "MYZS_"
+}

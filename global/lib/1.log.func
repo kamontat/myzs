@@ -1,90 +1,421 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2059
 
 # maintain: Kamontat Chantrachirathumrong
 # version:  1.0.0
 # since:    27/04/2018
 
-log_to() {
-	exec >>"$1"
-	while IFS= read -r line; do
-		printf '%s\n' "$line"
-	done
+########################
+# PRIVATE FUNCTION     #
+########################
+
+_myzs__count_line() {
+	local in="$1"
+	grep -c "" <<<"${in}"
 }
 
-_myzs_show_log() {
-	test -n "$MYZS_LOG_FILE" &&
-		cat "$MYZS_LOG_FILE"
+_myzs__check_debug_mode__full() {
+	[[ $MYZS_DEBUG_MODE == "full" ]]
 }
 
-_myzs_show_error() {
-	test -n "$MYZS_ERROR_FILE" &&
-		cat "$MYZS_ERROR_FILE"
+_myzs__check_debug_mode__file() {
+	[[ $MYZS_DEBUG_MODE == "file" ]]
 }
 
-_myzs_clear_log() {
-	test -n "$MYZS_LOG_FILE" &&
-		rm -f "$MYZS_LOG_FILE"
+_myzs__check_debug_mode__debug() {
+	[[ $MYZS_DEBUG_MODE == "debug" ]]
 }
 
-_myzs_clear_err() {
-	test -n "$MYZS_ERROR_FILE" &&
-		rm -f "$MYZS_ERROR_FILE"
+_myzs__check_debug_mode__none() {
+	[[ $MYZS_DEBUG_MODE == "none" ]]
 }
 
-_myzs_get_uuid() {
+_myzs__check_debug_mode__infile() {
+	_myzs__check_debug_mode__full ||
+		_myzs__check_debug_mode__file
+}
+
+_myzs__check_debug_mode__indebug() {
+	_myzs__check_debug_mode__full ||
+		_myzs__check_debug_mode__debug
+}
+
+_myzs__get_uuid() {
 	# shellcheck disable=SC2015
 	test -n "$LOG_UUID" &&
 		echo "$LOG_UUID" ||
-		throw "ERROR: UUID not exist!" 10
+		throw "UUID not exist!" 10
 }
 
-create_sub_log() {
-	local uuid=$(_myzs_get_uuid)
-	# if
+_myzs__get_file() {
+	local location="$1" name="$2" extension="$3"
+
+	test -z "$location" ||
+		[[ "$location" == "-" ]] &&
+		location="$(_myzs_get_log_storage)"
+	test -z "$name" ||
+		[[ "$name" == "-" ]] &&
+		name="$(_myzs__get_uuid)"
+
+	printf '%s/%s.%s\n' "$location" "$name" "$extension"
 }
 
+_myzs__print_route() {
+	local type="$1"
+	local direction="$2"
+	shift 2
+	local message="$*"
+
+	if [[ "$direction" == "HEAD" ]] ||
+		[[ "$direction" == "FILE" ]]; then
+		! _myzs__check_debug_mode__infile && return
+	fi
+
+	if [[ "$direction" == "STD" ]]; then
+		! _myzs__check_debug_mode__indebug && return
+	fi
+
+	if [[ $type == "SILLY" ]] ||
+		[[ $type == "DEBUG" ]] ||
+		[[ $type == "LOG" ]]; then
+		[[ "$direction" == "HEAD" ]] && printf '%s\n' "$message" >>"$(_myzs_get_head)" && return 0
+		[[ "$direction" == "FILE" ]] && printf '%s\n' "$message" >>"$(_myzs_get_logfile)" && return 0
+		[[ "$direction" == "STD" ]] && printf '%s\n' "$message" && return 0
+	elif [[ $type == "WARNING" ]] ||
+		[[ $type == "ERROR" ]]; then
+		[[ "$direction" == "HEAD" ]] && printf '%s\n' "$message" >>"$(_myzs_get_head)" && return 0
+		[[ "$direction" == "FILE" ]] && printf '%s\n' "$message" >>"$(_myzs_get_errfile)" && return 0
+		[[ "$direction" == "STD" ]] && printf '%s\n' "$message" >&2 && return 0
+	fi
+
+	return 1
+}
+
+# format:
+#          date :header: :subheader: [type]: message
+#          ------------------------------------------
+#          date       - MMM DD, YYYY; HH:MM:SS [TIMESTAMP]
+#          header     - [require]
+#          subheader  - [optional] pass - if don't want this
+#          type       - SILLY, DEBUG, LOG, WARNING, ERROR
+#                       SILLY:   absolute log everythings (logfile)
+#                       DEBUG:   log things for developer to debuging (logfile)
+#                       LOG:     log things for user to understand what they done (stdout)
+#                       WARNING: warning some error that no so important (errfile)
+#                       ERROR:   show very important error (stderr)
+#          message    - message to user/developer
 _myzs__print() {
-	local date_char=15 head_char="${MYZS_HEADER_SIZE:-15}" nl="\n"
-	local t="$1"
-	shift
-	local m="$*"
-	test -z "$m" && nl=""
-	printf "%-${date_char}s %${head_char}s - %s$nl" "$(date)" "$t" "$m"
+	local type="$1" \
+		direction="$2" \
+		header="$3" \
+		subheader="$4"
+
+	[ $# -lt 4 ] && throw "print should call with more than 4 parameters" 2
+	[ $? -eq 2 ] && return 2
+
+	! [[ $type == "SILLY" ]] &&
+		! [[ $type == "DEBUG" ]] &&
+		! [[ $type == "LOG" ]] &&
+		! [[ $type == "WARNING" ]] &&
+		! [[ $type == "ERROR" ]] &&
+		throw "type must be uppercase and match one of this..." &&
+		throw "SILLY, DEBUG, LOG, WARNING, ERROR" 2
+
+	[ $? -eq 2 ] && return 2
+
+	! [[ $direction == "HEAD" ]] &&
+		! [[ $direction == "FILE" ]] &&
+		! [[ $direction == "STD" ]] &&
+		throw "direction must be uppercase and match one of this..." &&
+		throw "HEAD, FILE, STD" 2
+
+	local date_text
+	date_text="$(date +"$MYZS_DATE_FORMAT")"
+
+	local date_size=10 \
+		head_size="${MYZS_HEADER_SIZE:-10}" \
+		subhead_size="${MYZS_HEADER_SIZE:-10}" \
+		type_size=7
+
+	shift 4
+	local message="$*"
+
+	[[ "$subheader" == "-" ]] && subheader=""
+
+	# shellcheck disable=SC1117
+	_myzs__print_route \
+		"$type" \
+		"$direction" \
+		"$(printf "%-${date_size}s :%-${head_size}s :%-${subhead_size}s [%-${type_size}s %s" "$date_text" "$header:" "$subheader:" "$type]:" "$message")"
 }
 
-# 1 - title
-# 2 - message
-_myzs_if_debug_print() {
-	[[ $MYZS_DEBUG_MODE != "debug" ]] &&
-		[[ $MYZS_DEBUG_MODE != "full" ]] &&
-		return 0
-
-	_myzs__print "$@"
+_myzs__print_seperate() {
+	local sub="$3"
+	test -z "$3" && sub="-"
+	_myzs__print "$1" "$2" "seperate" "$sub" "-----------------------------"
 }
 
-_myzs_if_fully_debug_print() {
-	[[ $MYZS_DEBUG_MODE != "full" ]] &&
-		[[ $MYZS_DEBUG_MODE != "file" ]] &&
-		return 0
-
-	_myzs__print "$@" >>"${MYZS_LOG_FILE}"
+_myzs__search_logfile() {
+	find "$MYZS_LOG_STORAGE" -maxdepth 1 -name "*$1*.$MYZS_LOG_EXTENSION"
 }
 
-_myzs_if_full_debug_print() {
-	_myzs_if_fully_debug_print "$@"
+_myzs__list_all_log() {
+	echo "${1}"/*."$MYZS_LOG_EXTENSION"
 }
 
-_myzs_if_debug_print_error() {
-	_myzs_if_debug_print "$@" >&2
+_myzs__search_errfile() {
+	find "$MYZS_LOG_STORAGE" -maxdepth 1 -name "*$1*.$MYZS_ERROR_EXTENSION"
 }
 
-_myzs_if_fully_debug_print_error() {
-	[[ $MYZS_DEBUG_MODE != "full" ]] &&
-		return 0
-
-	_myzs__print "$@" >>"${MYZS_ERROR_FILE}"
+_myzs__list_all_err() {
+	echo "${1}"/*."$MYZS_ERROR_EXTENSION"
 }
 
-_myzs_if_full_debug_print_error() {
-	_myzs_if_fully_debug_print_error "$@"
+_myzs__show_result_file() {
+	local result="$1" size
+	size="$(_myzs__count_line "$result")"
+	test -z "$size" && size=0
+	[ "$size" -ne 1 ] && throw "your value is too short or can't found in storage" 2
+
+	test -f "$result" &&
+		cat "$result"
 }
+
+_myzs__clear_result_file() {
+	local result="$1" size
+
+	size="$(_myzs__count_line "$result")"
+	test -z "$size" && size=0
+	[ "$size" -ne 1 ] && throw "your value is too short or can't found in storage" 2
+
+	test -f "$result" &&
+		rm -f "$result"
+}
+
+########################
+# PUBLIC FUNCTION      #
+########################
+
+_myzs_get_log_storage() {
+	test -n "$MYZS_LOG_STORAGE" &&
+		echo "$MYZS_LOG_STORAGE" ||
+		throw "STORAGE not exist!" 10
+}
+
+_myzs_get_head() {
+	echo "$MYZS_LOG_HEAD_FILE"
+}
+
+_myzs_get_logfile() {
+	_myzs__get_file "-" "-" "$MYZS_LOG_EXTENSION"
+}
+
+_myzs_get_errfile() {
+	_myzs__get_file "-" "-" "$MYZS_ERROR_EXTENSION"
+}
+
+_myzs_show_head() {
+	local h
+	h="$(_myzs_get_head)"
+	! test -f "$h" && return 1
+	cat "$h"
+}
+
+_myzs_show_latest_log() {
+	local log
+	log="$(_myzs_get_logfile)"
+	! test -f "$log" && return 1
+	cat "$log"
+}
+
+_myzs_show_latest_err() {
+	local err
+	err="$(_myzs_get_errfile)"
+	! test -f "$err" && return 1
+	cat "$err"
+}
+
+_myzs_show_log() {
+	local result input="$1"
+	test -z "$input" && throw "parameter is required" 2
+	[ $? -eq 2 ] && return 2
+
+	result="$(_myzs__search_logfile "$input")"
+	_myzs__show_result_file "$result"
+}
+
+_myzs_show_err() {
+	local result input="$1"
+	test -z "$input" && throw "parameter is required" 2
+	[ $? -eq 2 ] && return 2
+
+	result="$(_myzs__search_errfile "$input")"
+	_myzs__show_result_file "$result"
+}
+
+_myzs_list_all_storage_log() {
+	_myzs__list_all_log "$MYZS_LOG_STORAGE"
+}
+
+_myzs_list_all_storage_err() {
+	_myzs__list_all_err "$MYZS_LOG_STORAGE"
+}
+
+_myzs_clear_head() {
+	local h
+	h="$(_myzs_get_head)"
+	! test -f "$h" && return 1
+	rm -f "$h"
+}
+
+_myzs_clear_latest_log() {
+	local log
+	log="$(_myzs_get_logfile)"
+	test -f "$log" &&
+		rm -f "$log"
+}
+
+_myzs_clear_latest_err() {
+	local err
+	err="$(_myzs_get_errfile)"
+	test -f "$err" &&
+		rm -f "$err"
+}
+
+_myzs_clear_log() {
+	local result input="$1"
+	test -z "$input" && throw "parameter is required" 2
+	[ $? -eq 2 ] && return 2
+
+	result="$(_myzs__search_logfile "$input")"
+	_myzs__clear_result_file "$result"
+}
+
+_myzs_clear_err() {
+	local result input="$1"
+	test -z "$input" && throw "parameter is required" 2
+	[ $? -eq 2 ] && return 2
+
+	result="$(_myzs__search_errfile "$input")"
+	_myzs__clear_result_file "$result"
+}
+
+_myzs_clear_all_log() {
+	local storage="$(_myzs_get_log_storage)"
+	rm -r "${storage}"/*."$MYZS_LOG_EXTENSION"
+}
+
+_myzs_clear_all_err() {
+	local storage="$(_myzs_get_log_storage)"
+	rm -r "${storage}"/*."$MYZS_ERROR_EXTENSION"
+}
+
+_myzs_print_silly_tofile() {
+	_myzs__print "SILLY" "FILE" "$@"
+}
+
+_myzs_print_silly_tostd() {
+	_myzs__print "SILLY" "STD" "$@"
+}
+
+_myzs_print_debug_tofile() {
+	_myzs__print "DEBUG" "FILE" "$@"
+}
+
+_myzs_print_debug_tostd() {
+	_myzs__print "DEBUG" "STD" "$@"
+}
+
+_myzs_print_log_tohead() {
+	_myzs__print "LOG" "HEAD" "status" "file" "$(_myzs_get_logfile)"
+}
+
+_myzs_print_log_tofile() {
+	_myzs__print "LOG" "FILE" "$@"
+}
+
+_myzs_print_log_tostd() {
+	_myzs__print "LOG" "STD" "$@"
+}
+
+_myzs_print_log_seperate_tohead() {
+	_myzs__print_seperate "LOG" "HEAD" "$1"
+}
+
+_myzs_print_log_seperate_tofile() {
+	_myzs__print_seperate "LOG" "FILE" "$1"
+}
+
+_myzs_print_log_seperate_tostd() {
+	_myzs__print_seperate "LOG" "STD" "$1"
+}
+
+_myzs_print_warning_tofile() {
+	_myzs__print "WARNING" "FILE" "$@"
+}
+
+_myzs_print_warning_tostd() {
+	_myzs__print "WARNING" "STD" "$@"
+}
+
+_myzs_print_error_tohead() {
+	_myzs__print "ERROR" "HEAD" "status" "file" "$(_myzs_get_errfile)"
+}
+
+_myzs_print_error_tofile() {
+	_myzs__print "ERROR" "FILE" "$@"
+}
+
+_myzs_print_error_tostd() {
+	_myzs__print "ERROR" "STD" "$@"
+}
+
+_myzs_print_error_seperate_tofile() {
+	_myzs__print_seperate "ERROR" "FILE" "$1"
+}
+
+_myzs_print_error_seperate_tostd() {
+	_myzs__print_seperate "ERROR" "STD" "$1"
+}
+
+########################
+# VARIABLE             #
+########################
+
+# Open debug mode will log almost every action in the script
+# 1. none  - never log or print everything
+# 2. debug - print loading result only
+# 3. file  - log output to log file only
+# 4. full  - print and log everything
+export MYZS_DEBUG_MODE="file" # none|debug|file|full
+
+# export MYZS_TEMP_FILE="$MYZS_TEMP_FOLDER/temp" # @deprecate
+export MYZS_LOG_STORAGE="$MYZS_TEMP_FOLDER/storage"
+mkdir "$MYZS_LOG_STORAGE" 2>/dev/null
+
+export MYZS_LOG_HEAD_FILE="$MYZS_TEMP_FOLDER/head.log"
+
+export MYZS_LOG_EXTENSION="log"
+export MYZS_ERROR_EXTENSION="error"
+
+export MYZS_DATE_FORMAT="%b %e, %Y %H:%M:%S [%s]"
+
+LOG_UUID="$(date +%s)-$(uuidgen)"
+export LOG_UUID
+
+# FUNCTION SESSION
+# BE AWARE
+_myzs_print_silly_tofile "variable" "storage" "$MYZS_LOG_STORAGE"
+_myzs_print_silly_tofile "variable" "head-log" "$MYZS_LOG_HEAD_FILE"
+_myzs_print_silly_tofile "variable" "uuid" "$LOG_UUID"
+_myzs_print_silly_tofile "variable" "date format" "$MYZS_DATE_FORMAT"
+_myzs_print_silly_tofile "variable" "logname" "$(_myzs_get_logfile)"
+_myzs_print_silly_tofile "variable" "errname" "$(_myzs_get_errfile)"
+
+########################
+# LOGIC                #
+########################
+
+_myzs_print_log_tohead
+_myzs_print_error_tohead
+_myzs_print_log_seperate_tohead "END"

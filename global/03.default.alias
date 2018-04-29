@@ -12,15 +12,14 @@ alias s='source'
 alias srm='sudo rm -rf'
 alias rmf='rm -rf'
 alias la='ls --almost-all --no-group --human-readable --sort=time --format=verbose --time-style="+%d/%m/%Y-%H:%M:%S"'
-
 alias history='fc -El 1'
 
 # git alias
 if $MYZS_USE_GIT; then
 	_myzs_if_command_exist "hub" &&
 		alias git='hub' &&
-		_myzs_if_fully_debug_print "alias" "git => hub" ||
-		_myzs_if_fully_debug_print_error "alias" "hub not exist!"
+		_myzs_print_debug_tofile "default" "alias" "git => hub" ||
+		_myzs_print_warning_tofile "default" "alias" "hub not exist!"
 
 	alias g='git'
 	alias gi='git init'
@@ -58,7 +57,7 @@ fi
 
 # gitmoji
 if $MYZS_USE_GITMOJI && _myzs_if_command_exist "gitmoji"; then
-	_myzs_if_fully_debug_print "alias" "gj => gitmoji"
+	_myzs_print_debug_tofile "default" "alias" "gj => gitmoji"
 	alias gj='gitmoji'
 	alias gji='git init; gj -i'
 	alias gj_remove='gj --remove'
@@ -66,43 +65,64 @@ if $MYZS_USE_GITMOJI && _myzs_if_command_exist "gitmoji"; then
 	alias gj_list='gj --list'
 	alias gj_update='gj --update'
 elif $MYZS_USE_GITMOJI && ! _myzs_if_command_exist "gitmoji"; then
-	_myzs_if_fully_debug_print_error "alias" "gitmoji not exist!"
+	_myzs_print_warning_tofile "default" "alias" "gitmoji not exist!"
 fi
 
 if $MYZS_USE_GITGO && _myzs_if_command_exist "gitgo"; then
-	_myzs_if_fully_debug_print "alias" "gg => gitgo"
+	_myzs_print_debug_tofile "default" "alias" "gg => gitgo"
 	alias gg=gitgo
 elif $MYZS_USE_GITGO && ! _myzs_if_command_exist "gitgo"; then
-	_myzs_if_fully_debug_print_error "alias" "gitgo not exist!"
+	_myzs_print_warning_tofile "default" "alias" "gitgo not exist!"
 fi
 
 # vim
 if _myzs_if_command_exist "nvim"; then
-	_myzs_if_fully_debug_print "alias" "v,vi,vim => nvim"
+	_myzs_print_debug_tofile "default" "alias" "v,vi,vim => nvim"
+	_myzs_print_debug_tofile "default" "alias" "vis => sudo nvim"
+	_myzs_print_debug_tofile "default" "alias" "svim => sudo nvim"
 	alias v='nvim'
 	alias vi='nvim'
 	alias vim='nvim'
 	alias vis='sudo nvim'
 	alias svim='sudo nvim'
 else
+	_myzs_print_debug_tofile "default" "alias" "v,vi => vim"
+	_myzs_print_debug_tofile "default" "alias" "vis => sudo vim"
+	_myzs_print_debug_tofile "default" "alias" "svim => sudo vim"
 	alias v='vim'
 	alias vi='vim'
-	alias vim='vim'
 	alias vis='sudo vim'
 	alias svim='sudo vim'
 fi
 
+alias restart-zsh='exec zsh'
+alias restart-bash='exec bash'
+
+if grep -q "zsh" <<<"$SHELL"; then
+	_myzs_print_debug_tofile "default" "alias" "restart-shell => restart-zsh"
+	alias restart-shell='restart-zsh'
+elif grep -q "bash" <<<"$SHELL"; then
+	_myzs_print_debug_tofile "default" "alias" "restart-shell => restart-bash"
+	alias restart-shell='restart-bash'
+else
+	_myzs_print_warning_tofile "default" "shell" "none"
+fi
+
 # beta application
 if [[ "$MYZS_USE_EDITOR" == "code" ]]; then
-	_myzs_if_fully_debug_print "editor" "code"
-	! _myzs_if_command_exist "code" && alias code='code-insiders'
+	_myzs_print_debug_tofile "default" "editor" "code"
+	_myzs_print_debug_tofile "default" "alias" "newcode => code --new-window"
+	_myzs_print_debug_tofile "default" "alias" "ccode => code --reuse-window"
+
+	! _myzs_if_command_exist "code" && alias code='code-insiders' &&
+		_myzs_print_debug_tofile "default" "alias" "code => code-insiders"
 
 	alias newcode='code --new-window'
 	alias ccode='code --reuse-window'
-
 elif [[ "$MYZS_USE_EDITOR" == "atom" ]]; then
-	_myzs_if_fully_debug_print "editor" "atom"
-	! _myzs_if_command_exist "atom" && alias atom='atom-beta'
+	_myzs_print_debug_tofile "default" "editor" "atom"
+	! _myzs_if_command_exist "atom" && alias atom='atom-beta' &&
+		_myzs_print_debug_tofile "default" "alias" "atom => atom-beta"
 else
-	_myzs_if_fully_debug_print "editor" "none"
+	_myzs_print_warning_tofile "default" "editor" "none"
 fi

@@ -5,13 +5,13 @@
 # version:  1.0.0
 # since:    21/04/2018
 
-! test -d "$MYZS_WORK_ROOT" && _myzs_if_debug_print_error "load" "MYZS_WORK_ROOT not exist " && return 5
+! test -d "$MYZS_WORK_ROOT" && _myzs_print_error_tofile "status" "variable" "directory 'MYZS_WORK_ROOT' not exist" && return 5
 
 create_folder() {
 	local folder="$1"
 	test -d "$folder" && return
 	mkdir -p "$folder"
-	_myzs_if_fully_debug_print "create" "folder: $folder"
+	_myzs_print_debug_tofile "location" "create" "$folder (directory)"
 }
 
 back() {
@@ -19,8 +19,12 @@ back() {
 		test -d "$MYZS_PREVIOUS_DIRNAME" &&
 		cd "$MYZS_PREVIOUS_DIRNAME" || return 1
 
+	_myzs_print_silly_tofile "command" "back" "called by $(whoami)"
+
 	unset MYZS_PREVIOUS_DIRNAME
 }
+
+_myzs_print_debug_tofile "location" "alias" "back => cd back to previous directory"
 
 create_folder "$(_myzs_get_work_location "$MYZS_WORKSPACE_DIRNAME")"
 
@@ -29,5 +33,3 @@ create_folder "$(_myzs_get_work_location "$MYZS_PROJECT_DIRNAME")"
 create_folder "$(_myzs_get_work_location "$MYZS_LAB_DIRNAME")"
 
 create_folder "$(_myzs_get_work_location "$MYZS_LIBRARY_DIRNAME")"
-
-_myzs_if_fully_debug_print "alias" "back => cd back to previous directory"

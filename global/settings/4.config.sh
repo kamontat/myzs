@@ -23,7 +23,7 @@ export ZPLUG_HOME=/usr/local/opt/zplug
 # FUNCTION SESSION
 # BE AWARE
 
-_myzs_if_fully_debug_print "variable" "waka: $MYZS_USE_WAKA"
-_myzs_if_fully_debug_print "variable" "utils: $MYZS_USE_UTIL"
-_myzs_if_fully_debug_print "variable" "correction: $MYZS_USE_CORRECTION"
-_myzs_if_fully_debug_print "variable" "zplug: $ZPLUG_HOME"
+_myzs_print_silly_tofile "variable" "waka" "$MYZS_USE_WAKA"
+_myzs_print_silly_tofile "variable" "utils" "$MYZS_USE_UTIL"
+_myzs_print_silly_tofile "variable" "correct" "$MYZS_USE_CORRECTION"
+_myzs_print_silly_tofile "location" "zplug" "$ZPLUG_HOME"

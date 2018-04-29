@@ -5,45 +5,37 @@
 # version:  1.1.0
 # since:    26/03/2018
 
+_myzs_if_command_exist "system_profiler" &&
+	alias batt='system_profiler SPPowerDataType' &&
+	_myzs_print_debug_tofile "default" "cli" "batt => system_profiler SPPowerDataType (show battary information)" ||
+	_myzs_print_warning_tofile "default" "cli" "system_profiler not exist!"
+
 _myzs_if_command_exist "neofetch" &&
-_myzs_if_file_exist "$HOME/.config/neofetch/config" &&
+	_myzs_if_file_exist "$HOME/.config/neofetch/config" &&
 	alias sysinfo='neofetch --config ~/.config/neofetch/config' &&
-	_myzs_if_fully_debug_print "alias" "sysinfo => neofetch (show system info)" ||
-_myzs_if_fully_debug_print_error "alias" "neofetch not exist!"
+	_myzs_print_debug_tofile "default" "cli" "sysinfo => neofetch (show system info)" ||
+	_myzs_print_warning_tofile "default" "cli" "neofetch not exist!"
 
 _myzs_if_command_exist "ranger" &&
 	alias ui='ranger' &&
-	_myzs_if_fully_debug_print "alias" "ui => ranger (show file tree as ui)" ||
-_myzs_if_fully_debug_print_error "alias" "ranger not exist!"
+	_myzs_print_debug_tofile "default" "cli" "ui => ranger (show file tree as ui)" ||
+	_myzs_print_warning_tofile "default" "cli" "ranger not exist!"
 
 _myzs_if_command_exist "gnomon" &&
 	alias atime='gnomon' &&
-	_myzs_if_fully_debug_print "alias" "atime => gnomon (estimate time)" ||
-_myzs_if_fully_debug_print_error "alias" "gnomon not exist!"
+	_myzs_print_debug_tofile "default" "cli" "atime => gnomon (estimate time)" ||
+	_myzs_print_warning_tofile "default" "cli" "gnomon not exist!"
 
 _myzs_if_command_exist "gnomon" &&
 	alias stime='gnomon' &&
-	_myzs_if_fully_debug_print "alias" "stime => gnomon (estimate time)"
-
-# my dot template (https://github.com/kamontat/dot-github-mini)
-_myzs_if_file_exist "$HOME/.github/dotgithub" &&
-	alias dotgithub='$HOME/.github/dotgithub' &&
-	_myzs_if_fully_debug_print "alias" "dotgithub => $HOME/.github/dotgithub (https://github.com/kamontat/dot-github-mini)" ||
-_myzs_if_fully_debug_print_error "alias" "dotgithub not exist!"
+	_myzs_print_debug_tofile "default" "cli" "stime => gnomon (estimate time)"
 
 # bash template (https://github.com/Template-Generating/script-genrating)
 _myzs_if_command_exist "generator" &&
 	alias template='generator' &&
 	alias template_update='template --reinstall' &&
-	_myzs_if_fully_debug_print "alias" "template => generator (hhttps://github.com/Template-Generating/script-genrating)" &&
-	_myzs_if_fully_debug_print "alias" "template_update => generator --reinstall (hhttps://github.com/Template-Generating/script-genrating)" ||
-_myzs_if_fully_debug_print_error "alias" "generator not exist!"
-
-alias color-test='bash <(curl -sL https://raw.githubusercontent.com/kamontat/bash-color/master/color_test.sh)'
-
-alias split='bash <(curl -sL https://gist.github.com/kamontat/97ea3378c5d323b9b430aeda8b5f80df/raw/f1f0e3c2a2712c74a30c33d3247deb3f5dd96724/sep.sh)'
-
-# angular custom
-# alias ngg='git clone https://github.com/Template-Generating/angular-4-browser-sync.git'
+	_myzs_print_debug_tofile "default" "cli" "template => generator (hhttps://github.com/Template-Generating/script-genrating)" &&
+	_myzs_print_debug_tofile "default" "cli" "template_update => generator --reinstall (hhttps://github.com/Template-Generating/script-genrating)" ||
+	_myzs_print_warning_tofile "default" "cli" "generator not exist!"
 
 return 0

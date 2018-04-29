@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 # shellcheck disable=SC1090
 
 # maintain: Kamontat Chantrachirathumrong

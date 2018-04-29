@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 # shellcheck disable=SC1090
 
 # maintain: Kamontat Chantrachirathumrong
@@ -14,9 +14,9 @@ _myzs_clear_env() {
 		name="${line%%=*}"
 		if ! _myzs_is_necessary_env "$name"; then
 			unset "$name" &&
-				_myzs_if_fully_debug_print "clear" "unset:  $name"
+				_myzs_print_silly_tofile "clear" "unset" "$name"
 		else
-			_myzs_if_fully_debug_print "clear" "ignore: $name"
+			_myzs_print_warning_tofile "clear" "ignore" "$name"
 		fi
 	done <<<"$env_values"
 }
@@ -27,6 +27,9 @@ _myzs_is_necessary_env() {
 		"MYZS_WORK_ROOT"
 		"MYZS_WORKSPACE_DIRNAME" "MYZS_PROJECT_DIRNAME"
 		"MYZS_LAB_DIRNAME" "MYZS_LIBRARY_DIRNAME"
+		"MYZS_LOG_STORAGE" "MYZS_LOG_HEAD_FILE"
+		"MYZS_LOG_EXTENSION" "MYZS_ERROR_EXTENSION"
+		"MYZS_DATE_FORMAT"
 	)
 	exclude+=("MYZS_ERROR_FILE" "MYZS_LOG_FILE")
 	exclude+=("MYZS_DEBUG_MODE")
@@ -40,5 +43,6 @@ _myzs_is_necessary_env() {
 
 _myzs_clear_env
 
-_myzs_if_fully_debug_print "SEP" "------------------------"
-_myzs_if_fully_debug_print_error "SEP" "------------------------"
+_myzs_print_log_seperate_tofile "END"
+
+_myzs_print_error_seperate_tofile "END"

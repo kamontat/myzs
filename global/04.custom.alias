@@ -8,20 +8,11 @@
 # cat as syntax hightlight
 _myzs_if_command_exist "cat-syntax" &&
 	alias cat='cat-syntax' &&
-	_myzs_if_fully_debug_print "alias" "cat => cat-syntax" ||
-_myzs_if_fully_debug_print_error "alias" "cat-syntax not exist!"
+	_myzs_print_debug_tofile "custom" "alias" "cat => cat-syntax" ||
+	_myzs_print_warning_tofile "custom" "alias" "cat-syntax not exist!"
 
 # brew coreutils
 _myzs_if_command_exist "gls" &&
 	alias ls='gls --hyperlink=always --indicator-style=classify --color=auto' &&
-	_myzs_if_fully_debug_print "alias" "ls => gls" ||
-_myzs_if_fully_debug_print_error "alias" "gls not exist!"
-
-alias restart-zsh='exec zsh'
-alias restart-bash='exec bash'
-
-if grep -q "zsh" <<<"$SHELL"; then
-	alias restart-shell='restart-zsh'
-elif grep -q "bash" <<<"$SHELL"; then
-	alias restart-shell='restart-bash'
-fi
+	_myzs_print_debug_tofile "custom" "alias" "ls => gls" ||
+	_myzs_print_warning_tofile "custom" "alias" "gls not exist!"

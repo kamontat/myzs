@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC1090,SC2015
+
+# maintain: Kamontat Chantrachirathumrong
+# version:  1.1.0
+# since:    21/04/2018
+
+utils_for_workspace() {
+	wname() {
+		rname "$MYZS_WORKSPACE_DIRNAME"
+	}
+
+	wlo() {
+		rlo "$MYZS_WORKSPACE_DIRNAME"
+	}
+
+	wcd() {
+		rcd "$MYZS_WORKSPACE_DIRNAME" "$1"
+	}
+
+	wmk() {
+		rmk "$MYZS_WORKSPACE_DIRNAME" "$1"
+	}
+
+	wcf() {
+		rcf "$MYZS_WORKSPACE_DIRNAME" "$1"
+	}
+
+	wrm() {
+		rrm "$MYZS_WORKSPACE_DIRNAME" "$1"
+	}
+
+	wls() {
+		rls "$MYZS_WORKSPACE_DIRNAME"
+	}
+
+	wla() {
+		rla "$MYZS_WORKSPACE_DIRNAME"
+	}
+
+	wh() {
+		echo "
+Variable name: MYZS_WORKSPACE_DIRNAME
+Folder: $(_myzs_get_work_location "$MYZS_WORKSPACE_DIRNAME")
+Concept: Workspace for working and university place"
+	}
+
+	_myzs_print_debug_tofile "workspace" "alias" "wname => get '$MYZS_WORKSPACE_DIRNAME'"
+	_myzs_print_debug_tofile "workspace" "alias" "wlo => get '$(_myzs_get_work_location "$MYZS_WORKSPACE_DIRNAME")'"
+	_myzs_print_debug_tofile "workspace" "alias" "wcd => cd to $(_myzs_get_work_location "$MYZS_WORKSPACE_DIRNAME")"
+	_myzs_print_debug_tofile "workspace" "alias" "wmk => create dir to $(_myzs_get_work_location "$MYZS_WORKSPACE_DIRNAME")"
+	_myzs_print_debug_tofile "workspace" "alias" "wcf => create file to $(_myzs_get_work_location "$MYZS_WORKSPACE_DIRNAME")"
+	_myzs_print_debug_tofile "workspace" "alias" "wrm => remove file/folder in $(_myzs_get_work_location "$MYZS_WORKSPACE_DIRNAME")"
+	_myzs_print_debug_tofile "workspace" "alias" "wls => list file/folder in $(_myzs_get_work_location "$MYZS_WORKSPACE_DIRNAME")"
+	_myzs_print_debug_tofile "workspace" "alias" "wla => list all file/folder in $(_myzs_get_work_location "$MYZS_WORKSPACE_DIRNAME")"
+	_myzs_print_debug_tofile "workspace" "alias" "wh => show help command"
+	return 0
+}
+
+test -n "$MYZS_WORKSPACE_DIRNAME" &&
+	utils_for_workspace ||
+	_myzs_print_warning_tofile "workspace" "-" "disable workspace location"

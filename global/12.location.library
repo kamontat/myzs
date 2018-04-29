@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC1090,SC2015
+
+# maintain: Kamontat Chantrachirathumrong
+# version:  1.1.0
+# since:    21/04/2018
+
+utils_for_library() {
+	liname() {
+		rname "$MYZS_LIBRARY_DIRNAME"
+	}
+
+	lilo() {
+		rlo "$MYZS_LIBRARY_DIRNAME"
+	}
+
+	licd() {
+		rcd "$MYZS_LIBRARY_DIRNAME" "$1"
+	}
+
+	limk() {
+		rmk "$MYZS_LIBRARY_DIRNAME" "$1"
+	}
+
+	licf() {
+		rcf "$MYZS_LIBRARY_DIRNAME" "$1"
+	}
+
+	lirm() {
+		rrm "$MYZS_LIBRARY_DIRNAME" "$1"
+	}
+
+	lils() {
+		rls "$MYZS_LIBRARY_DIRNAME"
+	}
+
+	lila() {
+		rla "$MYZS_LIBRARY_DIRNAME"
+	}
+
+	lih() {
+		echo "
+Variable name: MYZS_LIBRARY_DIRNAME
+Folder: $(_myzs_get_work_location "$MYZS_LIBRARY_DIRNAME")
+Concept: Library for keeping project, library or personal container files"
+	}
+
+	_myzs_print_debug_tofile "library" "alias" "liname => get '$MYZS_LIBRARY_DIRNAME'"
+	_myzs_print_debug_tofile "library" "alias" "lilo => get '$(_myzs_get_work_location "$MYZS_LIBRARY_DIRNAME")'"
+	_myzs_print_debug_tofile "library" "alias" "licd => cd to $(_myzs_get_work_location "$MYZS_LIBRARY_DIRNAME")"
+	_myzs_print_debug_tofile "library" "alias" "limk => create dir to $(_myzs_get_work_location "$MYZS_LIBRARY_DIRNAME")"
+	_myzs_print_debug_tofile "library" "alias" "licf => create file to $(_myzs_get_work_location "$MYZS_LIBRARY_DIRNAME")"
+	_myzs_print_debug_tofile "library" "alias" "lirm => remove file/folder in $(_myzs_get_work_location "$MYZS_LIBRARY_DIRNAME")"
+	_myzs_print_debug_tofile "library" "alias" "lils => list file/folder in $(_myzs_get_work_location "$MYZS_LIBRARY_DIRNAME")"
+	_myzs_print_debug_tofile "library" "alias" "lila => list all file/folder in $(_myzs_get_work_location "$MYZS_LIBRARY_DIRNAME")"
+	_myzs_print_debug_tofile "library" "alias" "lih => show help command"
+}
+
+test -n "$MYZS_LIBRARY_DIRNAME" &&
+	utils_for_library ||
+	_myzs_print_warning_tofile "library" "-" "disable library location"

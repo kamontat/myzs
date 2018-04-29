@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC1090,SC2015
+
+# maintain: Kamontat Chantrachirathumrong
+# version:  1.0.0
+# since:    29/04/2018
+
+rname() {
+	echo "$1" &&
+		_myzs_print_silly_tofile "command" "rname" "called by $(whoami) with params: $*"
+}
+
+rlo() {
+	_myzs_get_work_location "$1" &&
+		_myzs_print_silly_tofile "command" "rlo" "called by $(whoami) with params: $*"
+}
+
+rcd() {
+	local dir="$2"
+	export MYZS_PREVIOUS_DIRNAME="$PWD" &&
+		_myzs_to_work_location "$1" &&
+		_myzs_print_silly_tofile "command" "rcd" "called by $(whoami) with params: $*"
+
+	if test -d "$dir"; then
+		cd "$dir" || return 1
+	fi
+}
+
+rmk() {
+	local dir="$2"
+	test -z "$dir" && throw "parameter is required" 2
+
+	rcd "$1" &&
+		mkdir -p "$dir" &&
+		cd "$dir" &&
+		_myzs_print_silly_tofile "command" "rmk" "called by $(whoami) with params: $*" ||
+		return 1
+}
+
+rcf() {
+	local file="$2"
+	test -z "$file" && throw "parameter is required" 2
+	[ $? -eq 2 ] && return 2
+
+	wrd "$1" &&
+		touch "$file" &&
+		"$VISUAL" "$file" &&
+		_myzs_print_silly_tofile "command" "rcf" "called by $(whoami) with params: $*" ||
+		return 1
+}
+
+rrm() {
+	local in="$2"
+	test -z "$in" && throw "parameter is required" 2
+	[ $? -eq 2 ] && return 2
+
+	rcd "$1" &&
+		rm -r "$in" &&
+		_myzs_print_silly_tofile "command" "rrm" "called by $(whoami) with params: $*"
+}
+
+rls() {
+	rcd "$1" && ls && back &&
+		_myzs_print_silly_tofile "command" "rls" "called by $(whoami) with params: $*"
+}
+
+rla() {
+	rcd "$1" && ls && back &&
+		_myzs_print_silly_tofile "command" "rla" "called by $(whoami) with params: $*"
+}
+
+return 0

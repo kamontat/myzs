@@ -17,9 +17,9 @@ _myzs_if_folder_exist "/usr/local/opt/openssl" &&
 
 # java
 if $MYZS_USE_JAVA; then
-_myzs_if_file_exist "/usr/libexec/java_home" &&
+	_myzs_if_file_exist "/usr/libexec/java_home" &&
 		export JAVA_HOME="$(/usr/libexec/java_home)" # java env
-_myzs_if_folder_exist "$JAVA_HOME" &&
+	_myzs_if_folder_exist "$JAVA_HOME" &&
 		export PATH="$JAVA_HOME/bin:$PATH"
 	### java version management
 	export PATH="$HOME/.jenv/bin:$PATH"
@@ -38,7 +38,7 @@ export GOPATH="$HOME/Documents/go"
 export PATH=$PATH:$GOPATH/bin # go lang
 
 # ruby
-if $MYZS_USE_RUBY &&_myzs_if_folder_exist "$HOME/.rvm"; then
+if $MYZS_USE_RUBY && _myzs_if_folder_exist "$HOME/.rvm"; then
 	### ruby package management
 	# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 	export PATH="$PATH:$HOME/.rvm/bin" # ruby version management
@@ -46,7 +46,7 @@ fi
 
 # javascript & node
 ### node package management
-if $MYZS_USE_NODE &&_myzs_if_folder_exist "$HOME/.nvm"; then
+if $MYZS_USE_NODE && _myzs_if_folder_exist "$HOME/.nvm"; then
 	export NVM_DIR="$HOME/.nvm"
 	# shellcheck disable=SC1090
 	[ -f "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh" # node version management
@@ -54,23 +54,20 @@ if $MYZS_USE_NODE &&_myzs_if_folder_exist "$HOME/.nvm"; then
 fi
 
 yarn="$HOME/.config/yarn/global/node_modules/.bin"
-if $MYZS_USE_YARN &&_myzs_if_folder_exist "$yarn"; then
+if $MYZS_USE_YARN && _myzs_if_folder_exist "$yarn"; then
 	export PATH="$PATH:$yarn"
 fi
 
 # python
 ### python package management
 # added by Anaconda3 4.4.0 installer
-if $MYZS_USE_PYTHON &&_myzs_if_folder_exist "$HOME/miniconda3"; then
+if $MYZS_USE_PYTHON && _myzs_if_folder_exist "$HOME/miniconda3"; then
 	export PATH="$HOME/miniconda3/bin:$PATH" # miniconda
 fi
 
-# The next line updates PATH for the Google Cloud SDK.
-test -f '/usr/local/etc/google-cloud-sdk/path.zsh.inc' &&_myzs__load '/usr/local/etc/google-cloud-sdk/path.zsh.inc'
+# go lang
+export GO_ZSH_COMPLETE="$GOPATH/src/github.com/urfave/cli/autocomplete/zsh_autocomplete"
 
-# The next line enables shell command completion for gcloud.
-test -f '/usr/local/etc/google-cloud-sdk/completion.zsh.inc' &&_myzs__load '/usr/local/etc/google-cloud-sdk/completion.zsh.inc'
-
-_myzs_if_file_exist "$HOME/.travis/travis.sh" &&_myzs__load "$HOME/.travis/travis.sh"
+_myzs_if_file_exist "$HOME/.travis/travis.sh" && _myzs__load "$HOME/.travis/travis.sh"
 
 return 0
