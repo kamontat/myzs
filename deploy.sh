@@ -12,11 +12,10 @@ version="$1"
 shift
 
 test -z "$version" && exit 1
-(($# < 1)) && exit 2
 
 git status
-read -rn 1 ans
 
 git add .
-git commit -am "$*"
+gitgo commit
+
 git tag "$version"
