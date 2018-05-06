@@ -38,6 +38,8 @@ zplug "plugins/brew", from:oh-my-zsh, if:"[[ $(command -v brew) ]]"
 zplug "plugins/docker", from:oh-my-zsh, if:"[[ $MYZS_USE_DOCKER == true ]]"
 
 zplug "plugins/sudo", from:oh-my-zsh, if:"[[ $MYZS_IS_DEVELOPER == true ]]"
+zplug 'plugins/command-not-found', from:oh-my-zsh, if:"[[ $MYZS_IS_DEVELOPER == true ]]"
+zplug 'plugins/colored-man-pages', from:oh-my-zsh, if:"[[ $MYZS_IS_DEVELOPER == true ]]"
 
 zplug "plugins/git", from:oh-my-zsh, if:"[[ $MYZS_USE_GIT == true ]]"
 zplug "plugins/git-extras", from:oh-my-zsh, if:"[[ $MYZS_USE_GIT == true ]]"
@@ -60,12 +62,16 @@ zplug "wbingli/zsh-wakatime", if:"[[ $MYZS_USE_WAKA == true ]]"
 
 # zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "zdharma/fast-syntax-highlighting", defer:2
+zplug "hlissner/zsh-autopair", defer:2
 
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-completions"
 zplug "zsh-users/zsh-history-substring-search"
 
+# use with `emojify`
+zplug "b4b4r07/emoji-cli"
 zplug "djui/alias-tips"
+zplug "b4b4r07/enhancd", use:init.sh
 
 zplug "denysdovhan/spaceship-zsh-theme", use:spaceship.zsh, from:github, as:theme
 

@@ -33,6 +33,8 @@ if $MYZS_USE_GIT; then
 	alias gta='git tag -a'
 	alias gt-sign='git tag -s'
 	alias gco='git checkout'
+    alias gcob='git checkout -b'
+    alias gcoeb='git checkout --orphan'
 	alias gcod='git checkout dev'
 	alias gcom='git checkout master'
 
@@ -93,6 +95,19 @@ else
 	alias vi='vim'
 	alias vis='sudo vim'
 	alias svim='sudo vim'
+fi
+
+if $MYZS_USE_YARN; then
+	_myzs_print_debug_tofile "default" "alias" "y => yarn"
+	_myzs_print_debug_tofile "default" "alias" "yi => yarn install"
+	_myzs_print_debug_tofile "default" "alias" "ys => yarn start"
+	_myzs_print_debug_tofile "default" "alias" "yb => yarn build"
+	_myzs_print_debug_tofile "default" "alias" "yd => yarn build && yarn serve"
+    alias y='yarn'
+    alias yi='yarn install'
+    alias ys='yarn start'
+    alias yb='yarn build'
+    alias yd='yarn build && yarn serve'
 fi
 
 alias restart-zsh='exec zsh'

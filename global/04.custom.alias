@@ -16,3 +16,5 @@ _myzs_if_command_exist "gls" &&
 	alias ls='gls --hyperlink=always --indicator-style=classify --color=auto' &&
 	_myzs_print_debug_tofile "custom" "alias" "ls => gls" ||
 	_myzs_print_warning_tofile "custom" "alias" "gls not exist!"
+
+alias copy-path='pwd | pbcopy'

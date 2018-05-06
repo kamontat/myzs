@@ -10,11 +10,23 @@ _myzs_if_command_exist "system_profiler" &&
 	_myzs_print_debug_tofile "default" "cli" "batt => system_profiler SPPowerDataType (show battary information)" ||
 	_myzs_print_warning_tofile "default" "cli" "system_profiler not exist!"
 
+#
+_myzs_if_command_exist "neofetch" &&
+	alias dsysinfo='neofetch' &&
+	_myzs_print_debug_tofile "default" "cli" "dsysinfo => neofetch (show system info)" ||
+	_myzs_print_warning_tofile "default" "cli" "neofetch not exist!"
+
 _myzs_if_command_exist "neofetch" &&
 	_myzs_if_file_exist "$HOME/.config/neofetch/config" &&
-	alias sysinfo='neofetch --config ~/.config/neofetch/config' &&
-	_myzs_print_debug_tofile "default" "cli" "sysinfo => neofetch (show system info)" ||
-	_myzs_print_warning_tofile "default" "cli" "neofetch not exist!"
+	alias lsysinfo='neofetch --config $HOME/.config/neofetch/config' &&
+	_myzs_print_debug_tofile "default" "cli" "lsysinfo => neofetch --config $HOME/.config/neofetch/config" ||
+	_myzs_print_warning_tofile "default" "cli" "neofetch/config not exist!"
+
+_myzs_if_command_exist "neofetch" &&
+	_myzs_if_file_exist "$HOME/.config/neofetch/short-config" &&
+	alias sysinfo='neofetch --config $HOME/.config/neofetch/short-config' &&
+	_myzs_print_debug_tofile "default" "cli" "sysinfo => neofetch --config $HOME/.config/neofetch/short-config" ||
+	_myzs_print_warning_tofile "default" "cli" "neofetch/short-config not exist!"
 
 _myzs_if_command_exist "ranger" &&
 	alias ui='ranger' &&
