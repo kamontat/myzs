@@ -59,18 +59,29 @@ if [ "$1" == "help" ] ||
 	help "$0" && exit
 fi
 
-printf "cloning.."
-! test -d "$HOME/.myzs" &&
-	mkdir "$HOME/.myzs" &&
-	cp -r . "$HOME/.myzs" &&
-	echo " -> complete" ||
-	echo " -> exit by $?"
+dir="$HOME/.myzs"
+zshrc="$HOME/.zshrc"
 
-printf "creating link.. (REMOVE .ZSHRC FIRST)"
-! test -f "$HOME/.zshrc" && ! test -L "$HOME/.zshrc" &&
-	create_link "$HOME" &&
-	echo " -> complete" ||
-	echo " -> exit by $?"
+printf "cloning.."
+if test -d "$dir"; then
+	echo " -> directory ($dir) exist"
+	exit 5
+else 
+	mkdir "$dir" || exit 6
+	cp -r . "$dir" || exit 7
+	echo " -> complete"
+fi
+
+printf "creating link.."
+if test -f "$zshrc" || test -L "$zshrc"; then
+	echo " -> zshrc ($zshrc) exist"
+	exit 10
+else 
+	create_link "$HOME" || exit 11
+	echo " -> complete"
+fi
 
 printf "validating.. (BY CHECKSUM)"
 validate && echo " -> complete" || echo " -> exit by $?"
+
+echo "LOG FILE: /tmp/myzs/install.log"
