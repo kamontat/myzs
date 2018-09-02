@@ -23,6 +23,14 @@
 #/ Known bug:    not exist
 #/ -------------------------------------------------
 
+NAME=".myzs"
+ZSHRC=".zshrc"
+
+GIT_REPO="https://github.com/kamontat/myzs.git"
+
+DEFAULT_VERSION="2.0.0"
+VERSION="$([[ "$1" == "" ]] && echo "$DEFAULT_VERSION" || echo "$1")"
+
 help() {
 	local t="$PWD"
 	cd "$(dirname "$0")" || return 1
@@ -30,19 +38,28 @@ help() {
 	cd "$t" || return 1
 }
 
-validate() {
-	local t="$PWD" exit_code=0
-	cd "$(dirname "$0")" || return 1
-	"$PWD/validate.sh" >/tmp/myzs/install.log 2>/dev/null || exit_code=$?
-	cd "$t" || return 1
-	return $exit_code
+clone() {
+	local folder="${HOME}/${NAME}"
+	if test -d "$folder" || test -f "$folder"; then
+		rm -rf "$folder"
+	fi
+
+	git clone --branch "$VERSION" "$GIT_REPO" "$folder" &>/dev/null
 }
 
 create_link() {
-	local t="$PWD" exit_code=0
+	local tmp="$PWD" exit_code=0
 	cd "$1" || return 1
-	ln -s "${HOME}/.myzs/.zshrc" "$HOME/.zshrc" || exit_code=$?
-	cd "$t" || return 1
+
+  local loc="${HOME}/${NAME}/${ZSHRC}"
+  local rot="${HOME}/${ZSHRC}"
+
+	if test -d "$rot" || test -f "$rot"; then
+    mv "$rot" "$rot.before"
+	fi
+
+	ln -s "$loc" "$rot" || exit_code=$?
+	cd "$tmp" || return 1
 	return $exit_code
 }
 
@@ -56,32 +73,12 @@ if [ "$1" == "help" ] ||
 	[ "$1" == "-h" ] ||
 	[ "$1" == "?" ] ||
 	[ "$1" == "-?" ]; then
-	help "$0" && exit
+	help && exit
 fi
 
-dir="$HOME/.myzs"
-zshrc="$HOME/.zshrc"
+cd "$(dirname "$0")" || exit 1 &>/dev/null
 
-printf "cloning.."
-if test -d "$dir"; then
-	echo " -> directory ($dir) exist"
-	exit 5
-else 
-	mkdir "$dir" || exit 6
-	cp -r . "$dir" || exit 7
-	echo " -> complete"
-fi
+source "./progress.sh" || exit 2
 
-printf "creating link.."
-if test -f "$zshrc" || test -L "$zshrc"; then
-	echo " -> zshrc ($zshrc) exist"
-	exit 10
-else 
-	create_link "$HOME" || exit 11
-	echo " -> complete"
-fi
-
-printf "validating.. (BY CHECKSUM)"
-validate && echo " -> complete" || echo " -> exit by $?"
-
-echo "LOG FILE: /tmp/myzs/install.log"
+progressbar clone "Clone project" "none"
+progressbar create_link "Link project" "$HOME"

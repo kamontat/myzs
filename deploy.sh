@@ -8,14 +8,24 @@
 # set -v #VERBOSE - Display shell input lines as they are read.
 # set -n #EVALUATE - Check syntax of the script but don't execute.
 
-version="$1"
-shift
+echo 'This command will pass 1 parameter as git tag (version). Then
+1. Add all files in git
+2. Commit with default message "[release] version: <version>"
+3. Create tag
+4. Push code and tags
+'
 
-test -z "$version" && exit 1
+# shellcheck disable=SC2034
+printf "Press <enter> to next: "
+read -r ans
 
-git status
+VERSION="$1"
+
+test -z "$VERSION" && exit 1
 
 git add .
-gitgo commit
+git commit -m "[release] version: $VERSION"
 
-git tag "$version"
+git tag "$VERSION"
+
+git push && git push --tag

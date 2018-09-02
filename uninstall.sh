@@ -14,16 +14,20 @@
 #/ Error code    1      -- error
 #/ -------------------------------------------------
 
-cd "$(dirname "$0")" || exit 1
-# cd "$(dirname "$(realpath "$0")")"
-
 help() {
 	grep "^#/" <"uninstall.sh" | tr -d "#/ "
+}
+
+delete() {
+	local f="$1"
+	rm -rf "$f" 2>/dev/null
 }
 
 # -------------------------------------------------
 # App logic
 # -------------------------------------------------
+
+cd "$(dirname "$0")" || exit 1
 
 if [ "$1" == "help" ] ||
 	[ "$1" == "--help" ] ||
@@ -34,23 +38,6 @@ if [ "$1" == "help" ] ||
 	help "$0" && exit
 fi
 
-printf ".myzs have been   "
+source "./progress.sh" || exit 2
 
-if test -d "${HOME}/.myzs"; then
-	rm -rf "${HOME}/.myzs" &&
-		echo "DELETED!" ||
-		echo "ERROR!"
-else
-	echo "NOT EXIST"
-fi
-
-printf ".zshrc have been  "
-
-if test -f "${HOME}/.zshrc" ||
-	test -h "${HOME}/.zshrc"; then
-	rm -rf "${HOME}/.zshrc" &&
-		echo "DELETED!" ||
-		echo "ERROR!"
-else
-	echo "NOT EXIST"
-fi
+progressbar delete "Delete" "${HOME}/.zshrc" "${HOME}/.myzs"
