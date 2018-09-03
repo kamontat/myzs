@@ -28,7 +28,7 @@ ZSHRC=".zshrc"
 
 GIT_REPO="https://github.com/kamontat/myzs.git"
 
-DEFAULT_VERSION="2.0.0"
+DEFAULT_VERSION="3.0.0"
 VERSION="$([[ "$1" == "" ]] && echo "$DEFAULT_VERSION" || echo "$1")"
 
 help() {
@@ -51,11 +51,11 @@ create_link() {
 	local tmp="$PWD" exit_code=0
 	cd "$1" || return 1
 
-  local loc="${HOME}/${NAME}/${ZSHRC}"
-  local rot="${HOME}/${ZSHRC}"
+	local loc="${HOME}/${NAME}/${ZSHRC}"
+	local rot="${HOME}/${ZSHRC}"
 
 	if test -d "$rot" || test -f "$rot"; then
-    mv "$rot" "$rot.before"
+		mv "$rot" "$rot.before"
 	fi
 
 	ln -s "$loc" "$rot" || exit_code=$?
