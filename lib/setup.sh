@@ -4,11 +4,3 @@
 if is_command_exist "git" && ! is_folder_exist "${HOME}/.zgen"; then
 	git clone "https://github.com/tarjoilija/zgen.git" "${HOME}/.zgen" &>/dev/null
 fi
-
-wd_name="${HOME}/.zgen/mfaerevaag/wd-master"
-if is_command_exist "git" && ! is_folder_exist "$wd_name"; then
-	mkdir "$wd_name" &>/dev/null
-	git clone "https://github.com/mfaerevaag/wd.git" "$wd_name" &>/dev/null
-
-	cp "${wd_name}/wd.1" "/usr/share/man/man1/wd.1"
-fi

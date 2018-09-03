@@ -26,11 +26,61 @@ source "${MYZS_LIB}/progress.sh"
 pg_start
 source "${MYZS_LIB}/lazyload.sh"
 
-pg_mark "Load require libraries"
+pg_mark "Fetches required library"
 source "${MYZS_LIB}/setup.sh" || pg_mark_false "Loading setup file"
 
 pg_mark "Setup variables"
 source "${MYZS_SRC}/custom.variable.sh" || pg_mark_false "Setting custom variable"
+
+pg_mark "Setup zgen"
+if is_string_exist "$ZGEN_HOME" && is_file_exist "${ZGEN_HOME}/zgen.zsh"; then
+	source "${MYZS_SRC}/default.zgen.plugin.zsh"
+	source "${ZGEN_HOME}/zgen.zsh"
+
+	if ! zgen saved || $ZGEN_FORCE_SAVE; then
+		# prezto options
+		zgen prezto editor key-bindings 'vi'
+		zgen prezto editor 'dot-expansion' 'yes'
+
+		# zgen prezto prompt theme 'spaceship'
+
+		zgen prezto autosuggestions color 'yes'
+		zgen prezto 'autosuggestions:color' found 'fg=8'
+
+		# zgen prezto 'tmux:iterm' integrate 'yes'
+
+		zgen prezto terminal 'auto-title' 'yes'
+		zgen prezto 'terminal:window-title' format '%n@%m: %s'
+		zgen prezto 'terminal:tab-title' format '%m: %s'
+		zgen prezto 'terminal:multiplexer-title' format '%s'
+
+		zgen prezto 'syntax-highlighting' color 'yes'
+		zgen prezto 'syntax-highlighting' highlighters 'main' 'brackets' 'pattern' 'line' 'cursor' 'root'
+
+		zgen prezto
+
+		for plugin in "${ZGEN_PREZTO_PLUGIN_LIST[@]}"; do
+			zgen prezto "$plugin"
+		done
+
+		for plugin in "${ZGEN_PLUGIN_LIST[@]}"; do
+			zgen load "$plugin"
+		done
+
+		# zgen load denysdovhan/spaceship-prompt
+
+		# generate the init script from plugins above
+		zgen save
+	fi
+
+	# https://github.com/hlissner/zsh-autopair#zgen--prezto-compatibility
+	autopair-init
+else
+	pg_mark_false "Zgen not found"
+fi
+
+pg_mark "Customize zgen plugin"
+source "${MYZS_SRC}/custom.zgen.plugin.zsh"
 
 pg_mark "Setup alias"
 source "${MYZS_SRC}/default.alias.sh" || pg_mark_false "Loading default alias"
@@ -45,115 +95,10 @@ source "${MYZS_SRC}/default.completion.sh" || pg_mark_false "Loading default com
 pg_mark "Setup work location"
 source "${MYZS_SRC}/location.sh" || pg_mark_false "Loading location cli"
 
-pg_mark "Setup zgen"
-if is_string_exist "$ZGEN_HOME" && is_file_exist "${ZGEN_HOME}/zgen.zsh"; then
-	source "${MYZS_SRC}/zgen.zsh"
-	source "${ZGEN_HOME}/zgen.zsh"
+pg_mark "Setup prompt theme"
+source "${MYZS_SRC}/theme.sh" || pg_mark_false "Loading theme configuration"
 
-	if ! zgen saved || $ZGEN_FORCE_SAVE; then
-		# prezto options
-		zgen prezto editor key-bindings 'emacs'
-		zgen prezto prompt theme 'steeef'
-
-		zgen prezto
-
-		for plugin in "${ZGEN_PREZTO_PLUGIN_LIST[@]}"; do
-			zgen prezto "$plugin"
-		done
-
-		for plugin in "${ZGEN_PLUGIN_LIST[@]}"; do
-			zgen load "$plugin"
-		done
-
-		# generate the init script from plugins above
-		zgen save
-	fi
-
-	# https://github.com/hlissner/zsh-autopair#zgen--prezto-compatibility
-	autopair-init
-else
-	pg_mark_false "Zgen not found"
-fi
+pg_mark "Customize Zsh setting"
+source "${MYZS_SRC}/custom.setting.zsh" || pg_mark_false "Setting zsh setting"
 
 pg_stop
-
-# SECONDS=0
-
-# export MYZS_ROOT="${HOME}/.myzs"
-# export MYZS_SRC="${HOME}/.myzs/src"
-
-# export MYZS_GLOBAL="${MYZS_ROOT}/global"
-
-# export MYZS_SETTING="${MYZS_GLOBAL}/settings"
-# export MYZS_LIB="${MYZS_GLOBAL}/lib"
-
-# export MYZS_CUSTOM="${MYZS_ROOT}/custom.lib"
-
-# export MYZS_TEMP_FOLDER="/tmp/myzs"
-# mkdir $MYZS_TEMP_FOLDER &>/dev/null
-
-# _myzs_is_integer() {
-# 	[[ $1 =~ ^[0-9]+$ ]] 2>/dev/null && return 0 || return 1
-# }
-
-# throw() {
-# 	printf '%s\n' "$1" >&2 && _myzs_is_integer "$2" && return "$2"
-# 	return 0
-# }
-
-# _myzs__load() {
-# 	local file="$1" # temp
-
-# 	! [ -f "$file" ] && _myzs_print_error_tofile "status" "file" "${file} NOT EXIST!"
-
-# 	if source "$file"; then
-# 		_myzs_print_log_tostd "load" "file" "${file}"
-# 		return 0
-# 	else
-# 		_myzs_print_error_tostd "load" "file" "${file} (code=$?)"
-# 		return 1
-# 	fi
-# }
-
-# _myzs_loop_load() {
-# 	local exit_code=0
-# 	for f in $1/[0-9]*; do
-# 		_myzs__load "$f" || ((exit_code++))
-# 	done
-
-# 	return $exit_code
-# }
-
-# _myzs_load() {
-# 	local folder="$1"
-# 	! test -d "$folder" && throw "$folder Not EXIST!" && return 5
-# 	_myzs_loop_load "$folder"
-# }
-
-# _myzs_raw_load() {
-# 	local folder="$1"
-# 	! test -d "$folder" && echo "CANNOT load $folder" && return 199
-# 	_myzs_loop_load "$folder"
-# }
-
-# _myzs_raw_load "$MYZS_LIB"
-
-# _myzs_print_log_seperate_tostd "setting"
-# _myzs_raw_load "$MYZS_SETTING"
-
-# _myzs_print_log_seperate_tostd "global"
-# _myzs_load "$MYZS_GLOBAL"
-
-# _myzs_print_log_seperate_tostd "custom"
-# _myzs_load "$MYZS_CUSTOM"
-
-# _myzs_print_log_seperate_tostd "main"
-# _myzs_load "$MYZS_SRC"
-
-# duration=$SECONDS
-# min="$((duration / 60))"
-# sec="$((duration % 60))"
-
-# _myzs_print_log_seperate_tostd
-# _myzs_print_log_tostd "status" "time" "$min minutes $sec seconds elapsed"
-# _myzs_print_log_tofile "status" "time" "$min minutes $sec seconds elapsed"

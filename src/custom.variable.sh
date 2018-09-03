@@ -11,4 +11,6 @@ export EDITOR='code-insiders'
 
 export KEYTIMEOUT=1
 
+export GOPATH="$HOME/Desktop/Projects/go"
+
 set -o vi

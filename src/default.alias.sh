@@ -77,6 +77,7 @@ fi
 
 if is_command_exist "code" || is_command_exist "code-insiders"; then
 	alias newcode='code --new-window'
+	alias ncode='code --new-window'
 	alias ccode='code --reuse-window'
 fi
 

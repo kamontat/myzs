@@ -59,10 +59,8 @@ if is_folder_exist "$HOME/Library/Android/sdk"; then
 	export PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools" # android path
 fi
 
-if is_command_exist "go" && is_folder_exist "$HOME/Documents/go"; then
-	export GOPATH="$HOME/Documents/go"
+if is_command_exist "go"; then
 	export PATH="$PATH:$GOPATH/bin" # go lang
-
 	export GO_ZSH_COMPLETE="$GOPATH/src/github.com/urfave/cli/autocomplete/zsh_autocomplete"
 fi
 
