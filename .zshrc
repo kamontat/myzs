@@ -83,6 +83,7 @@ pg_mark "Customize zgen plugin"
 source "${MYZS_SRC}/custom.zgen.plugin.zsh"
 
 pg_mark "Setup alias"
+eval "$(thefuck --alias)" # setup thefuck
 source "${MYZS_SRC}/default.alias.sh" || pg_mark_false "Loading default alias"
 source "${MYZS_SRC}/custom.alias.sh" || pg_mark_false "Loading custom alias"
 

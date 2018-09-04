@@ -90,13 +90,11 @@ if is_command_exist "cat-syntax"; then
 fi
 
 if is_command_exist "fuck"; then
-  eval "thefuck --alias"
-
 	alias f='fuck'
 	alias fy='fuck --yes'
 
 	# init_thefuck() {
-  #   eval "thefuck --alias" &>/dev/null
+	#   eval "thefuck --alias" &>/dev/null
 	#   source "$HOME/.zshrc"
 	# }
 	# lazy_load "The Fuck" init_thefuck fuck
