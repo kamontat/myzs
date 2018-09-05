@@ -8,8 +8,8 @@
 
 ## Usage
 
-1. Change your config in [constants.sh](./lib/constrants.sh)
-2. Change your setting in [variable.sh](./src/custom.variable.sh)
+1. Change your config in [constants.sh](./const/default.sh)
+2. Change your setting in [variable.sh](./src/personal/variable.sh)
 
 ## Installation
 
