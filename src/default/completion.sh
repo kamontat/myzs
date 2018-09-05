@@ -22,6 +22,12 @@ if is_file_exist "$GO_ZSH_COMPLETE" || is_folder_exist "$GO_ZSH_COMPLETE"; then
 	fpath=("${fpath[@]}" "$GO_ZSH_COMPLETE")
 fi
 
-if is_string_exist "$ZGEN_DIR"; then
-	fpath=("${fpath[@]}" "$ZGEN_DIR")
+# Configure ZGEN Shell Completion Path
+if is_string_exist "$ZGEN_HOME"; then
+	fpath=("${fpath[@]}" "$ZGEN_HOME")
+
+	wd_path="$ZGEN_HOME/mfaerevaag/wd-master"
+	if is_file_exist "$wd_path"; then
+		fpath=("${fpath[@]}" "$wd_path")
+	fi
 fi

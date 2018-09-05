@@ -27,6 +27,12 @@ lcd() {
 
 ncd() {
 	if is_string_exist "$NOTE_NAME"; then
-		rcd "${NOTE_NAME}/$1"
+		rcd "${NOTE_NAME}"
+	fi
+}
+
+tcd() {
+	if is_string_exist "$TODO_NAME"; then
+		rcd "${TODO_NAME}"
 	fi
 }

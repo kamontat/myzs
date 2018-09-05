@@ -22,6 +22,7 @@ export MYZS_DEFAULT="${MYZS_SRC}/default"
 export MYZS_PERSONAL="${MYZS_SRC}/personal"
 
 # progress libraries
+source "${MYZS_DEFAULT}/variable.main.sh"
 source "${MYZS_LIB}/progress.sh"
 
 pg_start
