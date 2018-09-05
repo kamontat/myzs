@@ -28,7 +28,7 @@ ZSHRC=".zshrc"
 
 GIT_REPO="https://github.com/kamontat/myzs.git"
 
-DEFAULT_VERSION="3.0.0"
+DEFAULT_VERSION="3.1.0"
 VERSION="$([[ "$1" == "" ]] && echo "$DEFAULT_VERSION" || echo "$1")"
 
 help() {

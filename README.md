@@ -13,4 +13,4 @@
 
 ## Installation
 
-1. `bash <(curl -sL https://github.com/kamontat/myzs/releases/download/3.0.0/ginstall.sh)`
+1. `bash <(curl -sL https://github.com/kamontat/myzs/releases/download/3.1.0/ginstall.sh)`
