@@ -131,13 +131,49 @@ fi
 if [ "$(uname -s)" = "Darwin" ] && is_command_exist "osascript"; then
 	newtab() {
 		if is_string_exist "$1" && is_folder_exist "$1"; then
-			echo "$1" || pbcopy
+			echo "$1" | pbcopy
 		else
 			pwd | pbcopy
 		fi
 
-		osascript \
-			-e 'tell application "iTerm" to activate' \
-			-e 'tell application "System Events" to tell process "iTerm" to keystroke "t" using command down'
+		the_app=$(
+			osascript 2>/dev/null <<EOF
+    tell application "System Events"
+      name of first item of (every process whose frontmost is true)
+    end tell
+EOF
+		)
+
+		[[ "$the_app" == 'Terminal' ]] && {
+			osascript 2>/dev/null <<EOF
+    tell application "System Events"
+      tell process "Terminal" to keystroke "t" using command down
+    end tell
+EOF
+		}
+
+		[[ "$the_app" == 'iTerm' ]] && {
+			osascript 2>/dev/null <<EOF
+    tell application "iTerm"
+      set current_terminal to current terminal
+      tell current_terminal
+        launch session "Default Session"
+        set current_session to current session
+      end tell
+    end tell
+EOF
+		}
+
+		[[ "$the_app" == 'iTerm2' ]] && {
+			osascript 2>/dev/null <<EOF
+    tell application "iTerm2"
+      tell current window
+        create tab with default profile
+      end tell
+    end tell
+EOF
+		}
 	}
+
+	alias tab='newtab'
 fi

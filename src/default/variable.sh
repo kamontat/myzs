@@ -44,11 +44,6 @@ if is_folder_exist "$HOME/Library/Android/sdk"; then
 	export PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools" # android path
 fi
 
-if is_command_exist "go"; then
-	export PATH="$PATH:$GOPATH/bin" # go lang
-	export GO_ZSH_COMPLETE="$GOPATH/src/github.com/urfave/cli/autocomplete/zsh_autocomplete"
-fi
-
 if is_command_exist "yarn" && is_folder_exist "$HOME/.config/yarn/global/node_modules/.bin"; then
 	export PATH="$PATH:$HOME/.config/yarn/global/node_modules/.bin"
 fi

@@ -25,9 +25,9 @@ fi
 # Configure ZGEN Shell Completion Path
 if is_string_exist "$ZGEN_HOME"; then
 	fpath=("${fpath[@]}" "$ZGEN_HOME")
+fi
 
-	wd_path="$ZGEN_HOME/mfaerevaag/wd-master"
-	if is_file_exist "$wd_path"; then
-		fpath=("${fpath[@]}" "$wd_path")
-	fi
+wd_path="$ZGEN_HOME/mfaerevaag/wd-master"
+if is_folder_exist "$wd_path"; then
+	fpath=("${fpath[@]}" "$wd_path")
 fi
