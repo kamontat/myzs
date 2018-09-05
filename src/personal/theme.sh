@@ -16,27 +16,18 @@ SPACESHIP_PROMPT_ORDER=(
 	time
 	user
 	host
-	hg
 	package
 	node
 	ruby
-	elixir
 	xcode
 	swift
 	golang
 	php
-	rust
-	julia
 	docker
 	aws
-	venv
 	conda
-	pyenv
-	dotnet
-	ember
 	line_sep
 	dir
-	git
 	exec_time
 	line_sep
 	battery
@@ -46,6 +37,7 @@ SPACESHIP_PROMPT_ORDER=(
 
 SPACESHIP_RPROMPT_ORDER=(
 	jobs
+	git
 )
 
 SPACESHIP_PROMPT_FIRST_PREFIX_SHOW=true
