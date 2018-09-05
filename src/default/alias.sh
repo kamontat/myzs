@@ -18,6 +18,10 @@ elif grep -q "bash" <<<"$SHELL"; then
 fi
 
 if is_command_exist "git"; then
+	if is_command_exist "hub"; then
+		alias git='hub'
+	fi
+
 	alias g='git'
 	alias gi='git init'
 	alias gs='git status'
@@ -52,11 +56,6 @@ if is_command_exist "git"; then
 	alias glo='gl --oneline'            # log with oneline format
 	alias glao='gla --oneline'          # log all in oneline format
 	alias glss='gl --stat --summary'    # log with stat and summary
-
-	init_hub() {
-		eval "hub alias -s" &>/dev/null
-	}
-	lazy_load "Hub for GitHub" init_hub hub
 fi
 
 if is_command_exist "thefuck"; then
