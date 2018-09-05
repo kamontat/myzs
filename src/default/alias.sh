@@ -17,18 +17,6 @@ elif grep -q "bash" <<<"$SHELL"; then
 	alias restart-shell='restart-bash'
 fi
 
-if is_command_exist "system_profiler"; then
-	alias batt='system_profiler SPPowerDataType'
-fi
-
-if is_command_exist "neofetch"; then
-	if is_file_exist "$HOME/.config/neofetch/short-config"; then
-		alias sysinfo='neofetch --config $HOME/.config/neofetch/short-config'
-	else
-		alias sysinfo='neofetch'
-	fi
-fi
-
 if is_command_exist "git"; then
 	alias g='git'
 	alias gi='git init'
@@ -71,33 +59,10 @@ if is_command_exist "git"; then
 	lazy_load "Hub for GitHub" init_hub hub
 fi
 
-if is_command_exist "code-insiders"; then
-	alias code='code-insiders'
-fi
-
-if is_command_exist "code" || is_command_exist "code-insiders"; then
-	alias newcode='code --new-window'
-	alias ncode='code --new-window'
-	alias ccode='code --reuse-window'
-fi
-
-if is_command_exist "atom-beta"; then
-	alias atom='atom-beta'
-fi
-
-if is_command_exist "cat-syntax"; then
-	alias cat='cat-syntax'
-fi
-
-if is_command_exist "fuck"; then
+if is_command_exist "thefuck"; then
+	eval "$(thefuck --alias)" # setup thefuck
 	alias f='fuck'
 	alias fy='fuck --yes'
-
-	# init_thefuck() {
-	#   eval "thefuck --alias" &>/dev/null
-	#   source "$HOME/.zshrc"
-	# }
-	# lazy_load "The Fuck" init_thefuck fuck
 fi
 
 if is_command_exist "gls"; then
@@ -110,7 +75,44 @@ fi
 
 if is_file_exist "${ZGEN_HOME}/mfaerevaag/wd-master/wd.sh"; then
 	export wd
+
 	wd() {
 		source "${ZGEN_HOME}/mfaerevaag/wd-master/wd.sh"
 	}
+fi
+
+if is_command_exist "todolist"; then
+	alias t='todolist'
+	alias ta='t add'
+	alias tl='t list'
+	alias tc='t complete'
+	alias tC='t archive'
+	alias td='t delete'
+
+	th() {
+		echo "Alias help for todolist
+1. t   => todolist
+2. ta  => todolist add
+3. tl  => todolist list
+3. tc  => todolist complete
+4. tC  => todolist archive
+5. td  => todolist delete
+    "
+	}
+fi
+
+if is_command_exist "nvim"; then
+	alias v='nvim'
+	alias vi='nvim'
+	alias vim='nvim'
+	alias vis='sudo nvim'
+	alias svim='sudo nvim'
+fi
+
+if is_command_exist "yarn"; then
+	alias y='yarn'
+	alias yi='yarn install'
+	alias ys='yarn start'
+	alias yb='yarn build'
+	alias yd='yarn dev'
 fi

@@ -1,12 +1,5 @@
 # shellcheck disable=SC1090,SC2148
 
-export ZGEN_FORCE_SAVE=false
-
-export ZGEN_RESET_ON_CHANGE=("${HOME}/.zshrc")
-
-# https://github.com/hlissner/zsh-autopair#zgen--prezto-compatibility
-export AUTOPAIR_INHIBIT_INIT=1
-
 export ZGEN_PREZTO_PLUGIN_LIST=(
 	# "contrib-prompt"
 	"syntax-highlighting"
@@ -34,4 +27,5 @@ export ZGEN_PLUGIN_LIST=(
 	"unixorn/autoupdate-zgen"
 	"wbingli/zsh-wakatime"
 	"hlissner/zsh-autopair"
+	"lukechilds/zsh-nvm"
 )

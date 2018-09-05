@@ -17,22 +17,6 @@ if is_command_exist "gitgo"; then
 	alias ggo='gitgo'
 fi
 
-if is_command_exist "nvim"; then
-	alias v='nvim'
-	alias vi='nvim'
-	alias vim='nvim'
-	alias vis='sudo nvim'
-	alias svim='sudo nvim'
-fi
-
-if is_command_exist "yarn"; then
-	alias y='yarn'
-	alias yi='yarn install'
-	alias ys='yarn start'
-	alias yb='yarn build'
-	alias yd='yarn dev'
-fi
-
 if is_file_exist "$HOME/.github/dotgithub"; then
 	alias dotgithub='~/.github/dotgithub'
 fi
@@ -45,4 +29,31 @@ fi
 if is_command_exist "generator"; then
 	alias template='generator'
 	alias template_update='generator --reinstall'
+fi
+
+if is_command_exist "cat-syntax"; then
+	alias cat='cat-syntax'
+fi
+
+# https://github.com/athityakumar/colorls
+if is_command_exist "colorls"; then
+	alias lc='colorls --sd'
+	alias lca='lc -lA'
+	alias lcs='lc --gs'
+	alias lcas='lc -lA --gs'
+	alias lcsa='lc --gs --gs'
+	alias lct='lc --tree'
+	alias lcr='lc --report'
+fi
+
+if is_command_exist "system_profiler"; then
+	alias batt='system_profiler SPPowerDataType'
+fi
+
+if is_command_exist "neofetch"; then
+	if is_file_exist "$HOME/.config/neofetch/short-config"; then
+		alias sysinfo='neofetch --config $HOME/.config/neofetch/short-config'
+	else
+		alias sysinfo='neofetch'
+	fi
 fi

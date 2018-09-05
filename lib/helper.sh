@@ -29,9 +29,12 @@ export to_work_root
 to_work_root() {
 	local path
 	path="$(get_work_root "$1")"
-	if is_folder_exist "$path"; then
+	if ! is_folder_exist "$path"; then
 		mkdir -p "$path"
 	fi
-
-	cd "$path" || exit 1
+  
+	cd "$path" || {
+    echo "$path" &&
+    return 1
+  }
 }

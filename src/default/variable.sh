@@ -1,5 +1,10 @@
 # shellcheck disable=SC1090,SC2148
 
+export SHELL="/usr/local/bin/zsh"
+# chsh -s "$SHELL"
+
+export KEYTIMEOUT=1
+
 # language
 export LANG="en_US.UTF-8"
 export LC_CTYPE="en_US.UTF-8"
@@ -21,6 +26,8 @@ is_folder_exist "/usr/local/opt/openssl" &&
 
 is_folder_exist "/usr/local/opt/coreutils/libexec/gnubin" &&
 	export PATH="$PATH:/usr/local/opt/coreutils/libexec/gnubin"
+is_folder_exist "/Users/kamontat/.rbenv/shims" &&
+	export PATH="/Users/kamontat/.rbenv/shims:$PATH"
 
 export MANPATH="/usr/local/man:$MANPATH"
 

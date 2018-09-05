@@ -14,6 +14,10 @@ if is_command_exist "kubectl"; then
 	source <(kubectl completion zsh)
 fi
 
+if is_command_exist "colorls"; then
+	source "$(dirname "$(gem which colorls)")/tab_complete.sh"
+fi
+
 if is_file_exist "$GO_ZSH_COMPLETE" || is_folder_exist "$GO_ZSH_COMPLETE"; then
 	fpath=("${fpath[@]}" "$GO_ZSH_COMPLETE")
 fi
