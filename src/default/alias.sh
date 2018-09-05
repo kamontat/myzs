@@ -128,7 +128,7 @@ if is_command_exist "yarn"; then
 	alias yd='yarn dev'
 fi
 
-if [ "$(uname -s)" == "Darwin" ] && is_command_exist "osascript"; then
+if [ "$(uname -s)" = "Darwin" ] && is_command_exist "osascript"; then
 	newtab() {
 		if is_string_exist "$1" && is_folder_exist "$1"; then
 			echo "$1" || pbcopy
