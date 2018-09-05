@@ -101,6 +101,17 @@ if is_command_exist "todolist"; then
 	}
 fi
 
+if is_command_exist "notes"; then
+  alias n='notes'
+  alias na='n new'
+  alias nl='n ls'
+  alias nf='n find'
+  alias ng='n grep'
+  alias nc='n cat'
+  alias nrm='n rm'
+  alias no='n open'
+fi
+
 if is_command_exist "nvim"; then
 	alias v='nvim'
 	alias vi='nvim'
