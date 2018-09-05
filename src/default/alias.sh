@@ -102,14 +102,14 @@ if is_command_exist "todolist"; then
 fi
 
 if is_command_exist "notes"; then
-  alias n='notes'
-  alias na='n new'
-  alias nl='n ls'
-  alias nf='n find'
-  alias ng='n grep'
-  alias nc='n cat'
-  alias nrm='n rm'
-  alias no='n open'
+	alias n='notes'
+	alias na='n new'
+	alias nl='n ls'
+	alias nf='n find'
+	alias ng='n grep'
+	alias nc='n cat'
+	alias nrm='n rm'
+	alias no='n open'
 fi
 
 if is_command_exist "nvim"; then
@@ -126,4 +126,18 @@ if is_command_exist "yarn"; then
 	alias ys='yarn start'
 	alias yb='yarn build'
 	alias yd='yarn dev'
+fi
+
+if [ "$(uname -s)" == "Darwin" ] && is_command_exist "osascript"; then
+	newtab() {
+		if is_string_exist "$1" && is_folder_exist "$1"; then
+			echo "$1" || pbcopy
+		else
+			pwd | pbcopy
+		fi
+
+		osascript \
+			-e 'tell application "iTerm" to activate' \
+			-e 'tell application "System Events" to tell process "iTerm" to keystroke "t" using command down'
+	}
 fi

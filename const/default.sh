@@ -3,6 +3,8 @@
 export PG_SHOW_PERF_INFO=false
 export PG_FORMAT_TIME=true
 
+export AUTO_OPEN_PATH=true
+
 export WORK_ROOT="$HOME/Desktop"
 
 export WORKSPACE_NAME="Workspaces"

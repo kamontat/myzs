@@ -32,9 +32,9 @@ to_work_root() {
 	if ! is_folder_exist "$path"; then
 		mkdir -p "$path"
 	fi
-  
+
 	cd "$path" || {
-    echo "$path" &&
-    return 1
-  }
+		echo "$path" &&
+			return 1
+	}
 }
