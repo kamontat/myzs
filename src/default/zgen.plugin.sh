@@ -1,7 +1,6 @@
 # shellcheck disable=SC1090,SC2148
 
 export ZGEN_PREZTO_PLUGIN_LIST=(
-	# "contrib-prompt"
 	"syntax-highlighting"
 	"environment"
 	"gnu-utility"
@@ -16,14 +15,14 @@ export ZGEN_PREZTO_PLUGIN_LIST=(
 	"osx"
 	"utility"
 	"completion"
+	"contrib-prompt"
 	"prompt"
+	"alias-tips"
 )
 
 export ZGEN_PLUGIN_LIST=(
 	"unixorn/tumult.plugin.zsh"
 	"peterhurford/up.zsh"
-	"djui/alias-tips"
-	"supercrabtree/k"
 	"unixorn/autoupdate-zgen"
 	"wbingli/zsh-wakatime"
 	"hlissner/zsh-autopair"

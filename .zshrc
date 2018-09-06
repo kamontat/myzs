@@ -45,6 +45,9 @@ source "${MYZS_PERSONAL}/variable.sh" || pg_mark_false "Loading personal variabl
 pg_mark "Default" "Setup ZGEN setting"
 source "${MYZS_DEFAULT}/zgen.setting.sh" || pg_mark_false "Setting custom zgen variable"
 
+pg_mark "PRE" "Setup ZGEN plugin"
+source "${MYZS_DEFAULT}/zgen.plugin-pre.sh" || pg_mark_false "(PRE) Setting zgen plugin"
+
 pg_mark "Default" "Setup ZGEN plugin"
 if is_string_exist "$ZGEN_HOME" && is_file_exist "${ZGEN_HOME}/zgen.zsh"; then
 	source "${MYZS_DEFAULT}/zgen.plugin.sh"
@@ -61,6 +64,10 @@ if is_string_exist "$ZGEN_HOME" && is_file_exist "${ZGEN_HOME}/zgen.zsh"; then
 				setup+=("$setting")
 			fi
 		done
+
+		if [[ $THEME_NAME != "" ]]; then
+			zgen prezto prompt theme "$THEME_NAME"
+		fi
 
 		zgen prezto
 
@@ -82,7 +89,7 @@ else
 fi
 
 pg_mark "POST" "Setup ZGEN plugin"
-source "${MYZS_DEFAULT}/zgen.plugin-post.sh" || pg_mark_false "Setting (POST) zgen plugin"
+source "${MYZS_DEFAULT}/zgen.plugin-post.sh" || pg_mark_false "(POST) Setting zgen plugin"
 
 pg_mark "Default" "Setup Zsh setting"
 source "${MYZS_DEFAULT}/setting.sh" || pg_mark_false "Setting Zsh"

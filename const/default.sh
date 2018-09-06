@@ -4,6 +4,17 @@ export PG_SHOW_PERF_INFO=false
 export PG_FORMAT_TIME=true
 
 export AUTO_OPEN_PATH=true
+export CUSTOM_THEME=false
+
+# available theme
+# https://mikebuss.com/2014/04/07/customizing-prezto/
+# adam1         cloud         fire          oliver        pws           spaceship
+# adam2         damoekri      giddie        paradox       redhat        steeef
+# agnoster      default       kylewest      peepcode      restore       suse
+# bart          elite         minimal       powerlevel9k  skwp          walters
+# bigfade       elite2        nicoulaj      powerline     smiley        zefram
+# clint         fade          off           pure          sorin
+export THEME_NAME="spaceship"
 
 export WORK_ROOT="$HOME/Desktop"
 
