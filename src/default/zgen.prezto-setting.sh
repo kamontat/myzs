@@ -1,7 +1,7 @@
 # shellcheck disable=SC1090,SC2148
 
 export ZGEN_PREZTO_SETTING_LIST=(
-  # prezto options
+	# prezto options
 	editor key-bindings 'vi' "_END_"
 	editor 'dot-expansion' 'yes' "_END_"
 	autosuggestions color 'yes' "_END_"

@@ -53,6 +53,12 @@ if is_string_exist "$ZGEN_HOME" && is_file_exist "${ZGEN_HOME}/zgen.zsh"; then
 	source "${MYZS_DEFAULT}/zgen.prezto-setting.sh"
 	source "${ZGEN_HOME}/zgen.zsh"
 
+	# reset zgen
+	if [[ "$RESET_ZGEN" == true ]] &&
+		is_command_exist "zgen"; then
+		zgen reset
+	fi
+
 	if ! zgen saved || $ZGEN_FORCE_SAVE; then
 		setup=()
 		for setting in "${ZGEN_PREZTO_SETTING_LIST[@]}"; do
