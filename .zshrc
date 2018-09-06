@@ -27,6 +27,8 @@ source "${MYZS_LIB}/progress.sh"
 
 pg_start
 source "${MYZS_CON}/default.sh"
+source "${MYZS_CON}/theme.sh"
+source "${MYZS_CON}/location.sh"
 
 pg_mark "Libraries" "Load helper method"
 source "${MYZS_LIB}/helper.sh" || pg_mark_false "Loading helper file"
@@ -61,6 +63,11 @@ if is_string_exist "$ZGEN_HOME" && is_file_exist "${ZGEN_HOME}/zgen.zsh"; then
 				setup+=("$setting")
 			fi
 		done
+
+		if [[ "$CUSTOM_THEME" == true ]] &&
+			is_string_exist "$THEME_NAME"; then
+			zgen prezto prompt theme "$THEME_NAME"
+		fi
 
 		zgen prezto
 

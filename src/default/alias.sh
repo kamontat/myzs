@@ -129,9 +129,14 @@ fi
 
 if [ "$(uname -s)" = "Darwin" ] && is_command_exist "osascript"; then
 	newtab() {
+
+    clipboard="$(pbpaste)"
+
+    # check is input is path
 		if is_string_exist "$1" && is_folder_exist "$1"; then
 			echo "$1" | pbcopy
-		else
+    # check is clipboard is path
+    elif ! is_folder_exist "$clipboard"; then
 			pwd | pbcopy
 		fi
 
