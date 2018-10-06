@@ -22,8 +22,17 @@ export PG_FORMAT_TIME=true
 ######################################
 
 ######################################
-# Available theme: default is spaceship
-# https://mikebuss.com/2014/04/07/customizing-prezto/
+# Theme: (default is none)
+# This is the setting about theme of zsh-prompt
+# There are multiple way to setting:
+# | CUSTOM | URL            | NAME     | Result                             |
+# |----- --|----------------|----------|------------------------------------|
+# | false  | "" or "<link>" | ""       | None theme will be used            |
+# | false  | "" or "<link>" | "<name>" | Available theme will be used       |
+# | true   | "<link>"       | "<name>" | Custom theme from git will be used |
+# |--------|----------------|----------|------------------------------------|
+# Otherwise, none of theme will be used
+# Available theme: https://mikebuss.com/2014/04/07/customizing-prezto
 # adam1         cloud         fire          oliver        pws           steeef
 # adam2         damoekri      giddie        paradox       redhat        suse
 # agnoster      default       kylewest      peepcode      restore       walters
@@ -31,7 +40,7 @@ export PG_FORMAT_TIME=true
 # bigfade       elite2        nicoulaj      powerline     smiley        sorin
 # clint         fade          off           pure
 ######################################
-export CUSTOM_THEME=true
-export CUSTOM_THEME_URL=""
-export CUSTOM_THEME_NAME="pure"
+export CUSTOM_THEME=false
+export CUSTOM_THEME_URL=""        # https://github.com/denysdovhan/spaceship-prompt.git
+export CUSTOM_THEME_NAME="steeef" # spaceship
 ######################################

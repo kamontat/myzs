@@ -16,7 +16,7 @@ echo 'This command will pass 1 parameter as git tag (version). Then
 '
 
 echo "List of tag that exist:"
-git tag --column --annotate
+git tag --column
 
 # shellcheck disable=SC2034
 printf "Press <enter> to next or enter valid version: "
