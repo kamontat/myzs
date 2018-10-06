@@ -35,7 +35,7 @@ source "${MYZS_LIB}/helper.sh" || pg_mark_false "Loading helper file"
 source "${MYZS_LIB}/lazyload.sh" || pg_mark_false "Loading lazyload library"
 source "${MYZS_LIB}/setup.sh" || pg_mark_false "Loading setup file"
 
-pg_mark "Public APIs" "Load public APIs for MYZS"
+pg_mark "Libraries" "Load myzs-* method"
 source "${MYZS_LIB}/public.sh" || pg_mark_false "Loading public APIs"
 
 pg_mark "Libraries" "Load work CLI"
@@ -73,7 +73,8 @@ if is_string_exist "$ZGEN_HOME" && is_file_exist "${ZGEN_HOME}/zgen.zsh"; then
 			fi
 		done
 
-		if [[ "$CUSTOM_THEME" == true ]] &&
+		# to use prezto theme you must mark custom theme to true and do not enter any theme url
+		if [[ "$CUSTOM_THEME" == true ]] && test -z "$CUSTOM_THEME_URL" &&
 			is_string_exist "$CUSTOM_THEME_NAME"; then
 			zgen prezto prompt theme "$CUSTOM_THEME_NAME"
 		fi
@@ -115,13 +116,13 @@ source "${MYZS_DEFAULT}/completion.sh" || pg_mark_false "Loading zsh completion"
 pg_mark "Default" "Editor setting"
 source "${MYZS_DEFAULT}/editor.sh" || pg_mark_false "Loading editor setting"
 
+pg_mark "Default" "Setup prompt theme"
+source "${MYZS_DEFAULT}/theme.sh" || pg_mark_false "Loading theme configuration"
+
 pg_mark "Language" "Setup ruby rbenv"
 if is_command_exist "rbenv"; then
 	eval "$(rbenv init -)"
 fi
-
-pg_mark "Personal" "Setup prompt theme"
-source "${MYZS_PERSONAL}/theme.sh" || pg_mark_false "Loading theme configuration"
 
 pg_mark "Personal" "Setup alias"
 source "${MYZS_PERSONAL}/alias.sh" || pg_mark_false "Loading custom alias"

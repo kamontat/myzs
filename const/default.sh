@@ -17,21 +17,21 @@ export RESET_ZGEN=false
 # PG_SHOW_PERF_INFO will print the process with runtime
 # PG_FORMAT_TIME    will format the time as mm:ss:ms
 ######################################
-export PG_SHOW_PERF_INFO=false
+export PG_SHOW_PERF_INFO=true
 export PG_FORMAT_TIME=true
 ######################################
 
 ######################################
 # Available theme: default is spaceship
 # https://mikebuss.com/2014/04/07/customizing-prezto/
-# adam1         cloud         fire          oliver        pws           spaceship
-# adam2         damoekri      giddie        paradox       redhat        steeef
-# agnoster      default       kylewest      peepcode      restore       suse
-# bart          elite         minimal       powerlevel9k  skwp          walters
-# bigfade       elite2        nicoulaj      powerline     smiley        zefram
-# clint         fade          off           pure          sorin
+# adam1         cloud         fire          oliver        pws           steeef
+# adam2         damoekri      giddie        paradox       redhat        suse
+# agnoster      default       kylewest      peepcode      restore       walters
+# bart          elite         minimal       powerlevel9k  skwp          zefram
+# bigfade       elite2        nicoulaj      powerline     smiley        sorin
+# clint         fade          off           pure
 ######################################
 export CUSTOM_THEME=true
 export CUSTOM_THEME_URL=""
-export CUSTOM_THEME_NAME="steeef"
+export CUSTOM_THEME_NAME="pure"
 ######################################
