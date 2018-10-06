@@ -4,29 +4,30 @@ SPACESHIP_PROMPT_ORDER=(
 	# time
 	user
 	host
-	package
+	# package
 	# node
 	# ruby
 	# xcode
 	# swift
 	golang
 	# php
-	docker
+	# docker
 	# aws
 	# conda
 	line_sep
 	dir
-	git
+	# git
 	exec_time
 	line_sep
-	battery
+	# battery
 	exit_code
 	char
 )
 
-# SPACESHIP_RPROMPT_ORDER=(
-# jobs
-# )
+SPACESHIP_RPROMPT_ORDER=(
+	jobs
+	vi_mode
+)
 
 SPACESHIP_PROMPT_FIRST_PREFIX_SHOW=true
 
@@ -37,3 +38,5 @@ SPACESHIP_BATTERY_SHOW=always
 SPACESHIP_EXIT_CODE_SHOW=true
 SPACESHIP_EXEC_TIME_SHOW=true
 SPACESHIP_EXEC_TIME_ELAPSED=1
+
+SPACESHIP_VI_MODE_SHOW=true

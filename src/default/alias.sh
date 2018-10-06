@@ -52,7 +52,10 @@ if is_command_exist "git"; then
 	alias gbD='git branch -D'
 	alias gbm='git branch --merged'
 	alias gbnm='git branch --no-merged'
+
 	alias gbr='git fetch --all --prune' # remove remote branch, If not exist
+
+	alias gf='git fetch'
 	alias gp='git push'
 	alias gP='git pull'
 

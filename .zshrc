@@ -74,8 +74,8 @@ if is_string_exist "$ZGEN_HOME" && is_file_exist "${ZGEN_HOME}/zgen.zsh"; then
 		done
 
 		if [[ "$CUSTOM_THEME" == true ]] &&
-			is_string_exist "$THEME_NAME"; then
-			zgen prezto prompt theme "$THEME_NAME"
+			is_string_exist "$CUSTOM_THEME_NAME"; then
+			zgen prezto prompt theme "$CUSTOM_THEME_NAME"
 		fi
 
 		zgen prezto

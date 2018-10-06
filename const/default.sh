@@ -22,7 +22,7 @@ export PG_FORMAT_TIME=true
 ######################################
 
 ######################################
-# Available theme
+# Available theme: default is spaceship
 # https://mikebuss.com/2014/04/07/customizing-prezto/
 # adam1         cloud         fire          oliver        pws           spaceship
 # adam2         damoekri      giddie        paradox       redhat        steeef
@@ -31,6 +31,7 @@ export PG_FORMAT_TIME=true
 # bigfade       elite2        nicoulaj      powerline     smiley        zefram
 # clint         fade          off           pure          sorin
 ######################################
-export CUSTOM_THEME=false
-export THEME_NAME=""
+export CUSTOM_THEME=true
+export CUSTOM_THEME_URL=""
+export CUSTOM_THEME_NAME="steeef"
 ######################################
