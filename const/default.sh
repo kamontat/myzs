@@ -31,6 +31,6 @@ export PG_FORMAT_TIME=true
 # bigfade       elite2        nicoulaj      powerline     smiley        zefram
 # clint         fade          off           pure          sorin
 ######################################
-export CUSTOM_THEME=true
-export THEME_NAME="steeef"
+export CUSTOM_THEME=false
+export THEME_NAME=""
 ######################################

@@ -15,6 +15,10 @@ fi
 if is_command_exist "gitgo"; then
 	alias gg='gitgo'
 	alias ggo='gitgo'
+  alias ggc='gitgo commit'
+  alias ggb='gitgo branch'
+  alias ggi='gitgo init --local'
+  alias ggI='gitgo init --global'
 fi
 
 if is_file_exist "$HOME/.github/dotgithub"; then

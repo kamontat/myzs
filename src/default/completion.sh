@@ -18,6 +18,11 @@ if is_command_exist "colorls"; then
 	source "$(dirname "$(gem which colorls)")/tab_complete.sh"
 fi
 
+git_extras="/usr/local/opt/git-extras/share/git-extras/git-extras-completion.zsh"
+if is_file_exist "$git_extras"; then
+  source "$git_extras"
+fi
+
 if is_file_exist "$GO_ZSH_COMPLETE" || is_folder_exist "$GO_ZSH_COMPLETE"; then
 	fpath=("${fpath[@]}" "$GO_ZSH_COMPLETE")
 fi
@@ -31,3 +36,5 @@ wd_path="$ZGEN_HOME/mfaerevaag/wd-master"
 if is_folder_exist "$wd_path"; then
 	fpath=("${fpath[@]}" "$wd_path")
 fi
+
+

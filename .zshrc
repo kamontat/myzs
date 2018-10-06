@@ -35,6 +35,9 @@ source "${MYZS_LIB}/helper.sh" || pg_mark_false "Loading helper file"
 source "${MYZS_LIB}/lazyload.sh" || pg_mark_false "Loading lazyload library"
 source "${MYZS_LIB}/setup.sh" || pg_mark_false "Loading setup file"
 
+pg_mark "Public APIs" "Load public APIs for MYZS"
+source "${MYZS_LIB}/public.sh" || pg_mark_false "Loading public APIs"
+
 pg_mark "Libraries" "Load work CLI"
 source "${MYZS_LIB}/location.sh" || pg_mark_false "Loading location cli"
 

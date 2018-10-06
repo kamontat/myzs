@@ -5,14 +5,14 @@ SPACESHIP_PROMPT_ORDER=(
 	user
 	host
 	package
-	node
+	# node
 	ruby
-	xcode
+	# xcode
 	swift
 	golang
-	php
+	# php
 	docker
-	aws
+	# aws
 	conda
 	line_sep
 	dir

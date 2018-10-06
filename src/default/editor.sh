@@ -1,7 +1,7 @@
 # shellcheck disable=SC1090,SC2148
 
 if is_command_exist "nvim"; then
-	nvim_path="$(which nvim)"
+	nvim_path="$(command -v nvim)"
 	export GIT_EDITOR="$nvim_path"
 	export VISUAL="$nvim_path"
 	export EDITOR="$nvim_path"

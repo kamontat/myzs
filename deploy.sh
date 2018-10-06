@@ -15,11 +15,15 @@ echo 'This command will pass 1 parameter as git tag (version). Then
 4. Push code and tags
 '
 
+echo "List of tag that exist:"
+git tag --column --annotate
+
 # shellcheck disable=SC2034
-printf "Press <enter> to next: "
+printf "Press <enter> to next or enter valid version: "
 read -r ans
 
 VERSION="$1"
+test -n "$ans" && VERSION="$ans"
 
 test -z "$VERSION" && exit 1
 

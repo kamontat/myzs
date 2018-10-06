@@ -11,6 +11,7 @@ alias copy-path='pwd | pbcopy'
 
 alias restart-zsh='exec zsh'
 alias restart-bash='exec bash'
+
 if grep -q "zsh" <<<"$SHELL"; then
 	alias restart-shell='restart-zsh'
 elif grep -q "bash" <<<"$SHELL"; then
@@ -19,23 +20,29 @@ fi
 
 if is_command_exist "git"; then
 	if is_command_exist "hub"; then
-		alias git='hub'
+		eval "$(hub alias -s)"
 	fi
 
 	alias g='git'
 	alias gi='git init'
 	alias gs='git status'
 	alias gd='git diff'
+	alias gr='git reset'
+	alias grh='git reset HEAD'
 	alias ga='git add'
+
 	alias gc='git commit'
-	alias gcm='gc -m'
-	alias gcm-sign='gc -S -m'
+	alias gcm='git commit -m'
+	alias gcm-sign='git commit -S -m'
+
 	alias gt='git tag'
 	alias gta='git tag -a'
 	alias gt-sign='git tag -s'
+
 	alias gco='git checkout'
-	alias gcob='git checkout -b'
-	alias gcoeb='git checkout --orphan'
+	alias gcob='git checkout -b'        # checkout new branch
+	alias gconb='git checkout -b'       # checkout new branch
+	alias gcoeb='git checkout --orphan' # checkout empty branch
 	alias gcod='git checkout dev'
 	alias gcom='git checkout master'
 
@@ -130,13 +137,13 @@ fi
 if [ "$(uname -s)" = "Darwin" ] && is_command_exist "osascript"; then
 	newtab() {
 
-    clipboard="$(pbpaste)"
+		clipboard="$(pbpaste)"
 
-    # check is input is path
+		# check is input is path
 		if is_string_exist "$1" && is_folder_exist "$1"; then
 			echo "$1" | pbcopy
-    # check is clipboard is path
-    elif ! is_folder_exist "$clipboard"; then
+			# check is clipboard is path
+		elif ! is_folder_exist "$clipboard"; then
 			pwd | pbcopy
 		fi
 

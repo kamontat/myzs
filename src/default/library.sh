@@ -9,3 +9,8 @@ travis_file="$HOME/.travis/travis.sh"
 if is_file_exist "$travis_file"; then
 	source "$travis_file"
 fi
+
+fzf_file="$HOME/.fzf.zsh"
+if is_file_exist "$fzf_file"; then
+	source "$fzf_file"
+fi
