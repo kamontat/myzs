@@ -9,3 +9,13 @@ myzs-upload() {
 
 	./deploy.sh
 }
+
+myzs-download() {
+	test -z "$MYZS_ROOT" && echo "\$MYZS_ROOT is required" && exit 2
+
+	cd "$MYZS_ROOT" || exit 1
+	echo "Start download the change from github"
+	git fetch
+
+	git pull
+}

@@ -1,15 +1,15 @@
 # shellcheck disable=SC1090,SC2148
 
 SPACESHIP_PROMPT_ORDER=(
-	time
+	# time
 	user
 	host
-	# package
+	package
 	# node
 	# ruby
 	# xcode
 	# swift
-	# golang
+	golang
 	# php
 	docker
 	# aws
@@ -24,9 +24,9 @@ SPACESHIP_PROMPT_ORDER=(
 	char
 )
 
-SPACESHIP_RPROMPT_ORDER=(
-	jobs
-)
+# SPACESHIP_RPROMPT_ORDER=(
+# jobs
+# )
 
 SPACESHIP_PROMPT_FIRST_PREFIX_SHOW=true
 
