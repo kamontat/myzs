@@ -4,16 +4,16 @@ SPACESHIP_PROMPT_ORDER=(
 	time
 	user
 	host
-	package
+	# package
 	# node
-	ruby
+	# ruby
 	# xcode
-	swift
-	golang
+	# swift
+	# golang
 	# php
 	docker
 	# aws
-	conda
+	# conda
 	line_sep
 	dir
 	git
