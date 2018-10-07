@@ -17,7 +17,7 @@ export RESET_ZGEN=false
 # PG_SHOW_PERF_INFO will print the process with runtime
 # PG_FORMAT_TIME    will format the time as mm:ss:ms
 ######################################
-export PG_SHOW_PERF_INFO=true
+export PG_SHOW_PERF_INFO=false
 export PG_FORMAT_TIME=true
 ######################################
 
@@ -41,6 +41,6 @@ export PG_FORMAT_TIME=true
 # clint         fade          off           pure
 ######################################
 export CUSTOM_THEME=false
-export CUSTOM_THEME_URL=""        # https://github.com/denysdovhan/spaceship-prompt.git
-export CUSTOM_THEME_NAME="steeef" # spaceship
+export CUSTOM_THEME_URL=""              # https://github.com/denysdovhan/spaceship-prompt.git
+export CUSTOM_THEME_NAME="powerlevel9k" # spaceship
 ######################################
