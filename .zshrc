@@ -1,13 +1,20 @@
 # shellcheck disable=SC1090,SC2148
 
-# maintain: Kamontat Chantrachirathumrong
-# version:  1.1.0
-# since:    21/04/2018
-
-# error: 2    - wrong call function or method
-#        5    - file/folder not exist
-#        10   - variable not exist
-#        199  - raw error
+#################################################
+## Information                                 ##
+## Maintain: Kamontat Chantrachirathumrong     ##
+## Version:  3.3.2                             ##
+## Since:    21/04/2018 (dd-mm-yyyy)           ##
+## Updated:  30/10/2018 (dd-mm-yyyy)           ##
+## License:  MIT                               ##
+#################################################
+## Changelogs                                  ##
+## 3.3.2   - Add new custom var and todo.txt   ##
+#################################################
+## Error: 2  wrong call function or method     ##
+##        5  file/folder not exist             ##
+##        10 variable not exist                ##
+#################################################
 
 ROOT="${HOME}/.zshrc"
 [ -h "$ROOT" ] && ROOT="$(readlink "$ROOT")"
@@ -129,9 +136,6 @@ source "${MYZS_PERSONAL}/alias.sh" || pg_mark_false "Loading custom alias"
 
 pg_stop
 
-if $AUTO_OPEN_PATH; then
-	clipboard="$(pbpaste)"
-	if is_folder_exist "$clipboard"; then
-		cd "$clipboard" || echo "$clipboard not exist!"
-	fi
-fi
+source "${MYZS_DEFAULT}/postload.sh" 2>/dev/null
+
+source "${MYZS_PERSONAL}/postload.sh" 2>/dev/null

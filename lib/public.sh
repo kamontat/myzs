@@ -40,7 +40,7 @@ myzs-download() {
 	git pull
 }
 
-myzs-need-speed() {
+myzs-speed() {
 	is_command_exist prompt &&
 		prompt restore
 }

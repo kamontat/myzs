@@ -90,23 +90,48 @@ if is_file_exist "${ZGEN_HOME}/mfaerevaag/wd-master/wd.sh"; then
 	}
 fi
 
-if is_command_exist "todolist"; then
-	alias t='todolist'
-	alias ta='t add'
-	alias tl='t list'
-	alias tc='t complete'
-	alias tC='t archive'
-	alias td='t delete'
+if is_command_exist "todo.sh"; then
+	alias t='todo.sh -c -A -n -f'
+	alias ta='t addm'
+	alias tls='t list'
+	alias tlsa='t listall'
+	alias tdo='t do'
+	alias tdel='t archive'
+	alias trm='t rm'
 
-	th() {
-		echo "Alias help for todolist
-1. t   => todolist
-2. ta  => todolist add
-3. tl  => todolist list
-3. tc  => todolist complete
-4. tC  => todolist archive
-5. td  => todolist delete
-    "
+	tai() {
+    contexts=()
+		echo "Interactive command for TODO.txt"
+		printf "Message:           "
+		read -r msg
+		printf "Priority:          "
+		read -r pri
+    i=1
+    printf "Context ($i):       "
+		read -r cont
+    while [ "$cont" != "" ]; do
+      contexts+=("@$cont")
+      ((i++))
+      printf "Context ($i):       "
+		  read -r cont
+    done
+		printf "Project:           "
+		read -r proj
+		printf "Date (YYYY-MM-DD): "
+		read -r due_date
+
+		test -n "$pri" &&
+			pri="($pri) "
+    test -n "$due_date" && 
+      due_date="$due_date "
+		[[ "${#contexts[@]}" -gt 0 ]] &&
+			conts="${contexts[*]}"
+		test -n "$proj" &&
+			proj="+$proj"
+
+		full_message="$pri$due_date$msg $conts $proj"
+    echo "result: $full_message"
+    todo.sh -c -A -n -f add "$full_message"
 	}
 fi
 

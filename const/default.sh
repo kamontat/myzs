@@ -41,6 +41,13 @@ export PG_FORMAT_TIME=true
 # clint         fade          off           pure
 ######################################
 export CUSTOM_THEME=false
-export CUSTOM_THEME_URL=""              # https://github.com/denysdovhan/spaceship-prompt.git
-export CUSTOM_THEME_NAME="powerlevel9k" # spaceship
+export CUSTOM_THEME_URL=""        # https://github.com/denysdovhan/spaceship-prompt.git
+export CUSTOM_THEME_NAME="steeef" # spaceship
+######################################
+
+######################################
+# Information
+# Update information of terminal environment
+######################################
+export MYZS_USER="kamontat"
 ######################################
