@@ -27,5 +27,4 @@ export ZGEN_PLUGIN_LIST=(
 	"unixorn/autoupdate-zgen"
 	"wbingli/zsh-wakatime"
 	"hlissner/zsh-autopair"
-	"lukechilds/zsh-nvm"
 )

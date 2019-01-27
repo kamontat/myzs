@@ -14,3 +14,9 @@ fzf_file="$HOME/.fzf.zsh"
 if is_file_exist "$fzf_file"; then
 	source "$fzf_file"
 fi
+
+# Install via Homebrew
+asdf_file="/usr/local/opt/asdf/asdf.sh"
+if is_file_exist "$asdf_file"; then
+	source "$asdf_file"
+fi

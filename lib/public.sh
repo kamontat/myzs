@@ -71,3 +71,17 @@ myzs-theme-spaceship() {
 myzs-theme-steeef() {
 	myzs-theme "steeef"
 }
+
+myzs-close-all() {
+	local opened_apps
+	opened_apps=$(osascript -e 'tell application "System Events" to get name of (processes where background only is false)')
+
+	apps=("$(echo "${opened_apps//, /\n}")")
+
+	for app in "${apps[@]}"; do
+		iapp="$(echo "$app" | tr '[:upper:]' '[:lower:]')"
+		if [[ "$iapp" != "iterm" ]] && [[ "$iapp" != "iterm2" ]] && [[ "$iapp" != "finder" ]]; then
+			osascript -e "quit app \"$app\""
+		fi
+	done
+}

@@ -12,14 +12,19 @@ if is_command_exist "gitmoji"; then
 	alias gj_update='gj --update'
 fi
 
-if is_command_exist "gitgo"; then
-	alias gg='gitgo'
-	alias ggo='gitgo'
-  alias ggc='gitgo commit'
-  alias ggb='gitgo branch'
-  alias ggi='gitgo init --local'
-  alias ggI='gitgo init --global'
-fi
+ggc() {
+	if ls | grep -q "package.json" && grep -q "\"commit\":" <"package.json"; then
+			yarn commit
+	elif is_command_exist "committ"; then
+		committ
+	elif is_command_exist "gitgo"; then
+		gitgo
+	else
+		git commit
+	fi
+}
+
+alias cm="ggc"
 
 if is_file_exist "$HOME/.github/dotgithub"; then
 	alias dotgithub='~/.github/dotgithub'
@@ -60,4 +65,8 @@ if is_command_exist "neofetch"; then
 	else
 		alias sysinfo='neofetch'
 	fi
+fi
+
+if is_file_exist "/usr/local/bin/kickthemout" || is_command_exist "python3"; then
+	alias kickthemout="sudo python3 /usr/local/bin/kickthemout/kickthemout.py"
 fi

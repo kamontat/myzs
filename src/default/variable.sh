@@ -25,7 +25,10 @@ is_folder_exist "/usr/local/bin/_NDD_FOLDER/man" &&
 # Enable ZGen Plugin Manager.
 export ZGEN_HOME="$HOME/.zgen"
 
-if is_file_exist "/usr/libexec/java_home"; then
+java_wrapper="$HOME/.asdf/plugins/java/asdf-java-wrapper.zsh"
+if is_file_exist "${java_wrapper}"; then
+	source "${java_wrapper}"
+elif is_file_exist "/usr/libexec/java_home"; then
 	JAVA_HOME="$(/usr/libexec/java_home)"
 	export JAVA_HOME
 
@@ -46,4 +49,22 @@ fi
 
 if is_command_exist "yarn" && is_folder_exist "$HOME/.config/yarn/global/node_modules/.bin"; then
 	export PATH="$PATH:$HOME/.config/yarn/global/node_modules/.bin"
+fi
+
+macGPG="/usr/local/MacGPG2/bin"
+if is_folder_exist "$macGPG"; then
+	export PATH="$PATH:$macGPG"
+fi
+
+icu4c="/usr/local/opt/icu4c"
+if is_folder_exist "$icu4c"; then
+	export PATH="$PATH:${icu4c}/bin"
+	export PATH="$PATH:${icu4c}/sbin"
+
+	export PKG_CONFIG_PATH="${icu4c}/lib/pkgconfig"
+fi
+
+myzs_env="$MYZS_ROOT/.env"
+if is_file_exist "$myzs_env"; then
+  source "$myzs_env"
 fi

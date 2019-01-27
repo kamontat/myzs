@@ -134,8 +134,15 @@ fi
 pg_mark "Personal" "Setup alias"
 source "${MYZS_PERSONAL}/alias.sh" || pg_mark_false "Loading custom alias"
 
+pg_mark "Personal" "Setup Completion"
+source "${MYZS_PERSONAL}/completion.sh" || pg_mark_false "Loading custom completion"
+
 pg_stop
 
 source "${MYZS_DEFAULT}/postload.sh" 2>/dev/null
 
 source "${MYZS_PERSONAL}/postload.sh" 2>/dev/null
+
+# tabtab source for yarn package
+# uninstall by removing these lines or running `tabtab uninstall yarn`
+[[ -f /Users/kamontat/.config/yarn/global/node_modules/yarn-completions/node_modules/tabtab/.completions/yarn.zsh ]] && . /Users/kamontat/.config/yarn/global/node_modules/yarn-completions/node_modules/tabtab/.completions/yarn.zsh

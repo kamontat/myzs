@@ -3,12 +3,16 @@
 ######################################
 # Zsh setting
 # This is customize zsh setting.
+# RESET_ZGEN     will force zgen to reset initial command.
 # AUTO_OPEN_PATH will open new tab with current path.
 #                This can use in macOS only
-# RESET_ZGEN     will force zgen to reset initial command.
+# SHOW_TODO      will show the summary of todo.sh
+#                (work only if todo.sh is installed)
 ######################################
-export AUTO_OPEN_PATH=true
 export RESET_ZGEN=false
+export AUTO_OPEN_PATH=true
+export SHOW_TODO=true
+export WELCOME_MESSAGE=""
 ######################################
 
 ######################################
