@@ -44,9 +44,9 @@ export PG_FORMAT_TIME=true
 # bigfade       elite2        nicoulaj      powerline     smiley        sorin
 # clint         fade          off           pure
 ######################################
-export CUSTOM_THEME=false
-export CUSTOM_THEME_URL=""        # https://github.com/denysdovhan/spaceship-prompt.git
-export CUSTOM_THEME_NAME="steeef" # spaceship
+export CUSTOM_THEME=true
+export CUSTOM_THEME_URL="https://github.com/denysdovhan/spaceship-prompt.git" # https://github.com/denysdovhan/spaceship-prompt.git
+export CUSTOM_THEME_NAME="spaceship"                                          # spaceship
 ######################################
 
 ######################################

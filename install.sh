@@ -26,41 +26,27 @@
 NAME=".myzs"
 ZSHRC=".zshrc"
 
-GIT_REPO="https://github.com/kamontat/myzs.git"
-
-DEFAULT_VERSION="3.0.0"
-VERSION="$([[ "$1" == "" ]] && echo "$DEFAULT_VERSION" || echo "$1")"
-
 help() {
-	local t="$PWD"
-	cd "$(dirname "$0")" || return 1
-	cat "install.sh" | grep "^#/" | tr -d "#/"
-	cd "$t" || return 1
-}
-
-clone() {
-	local folder="${HOME}/${NAME}"
-	if test -d "$folder" || test -f "$folder"; then
-		rm -rf "$folder"
-	fi
-
-	git clone --branch "$VERSION" "$GIT_REPO" "$folder" &>/dev/null
+  local t="$PWD"
+  cd "$(dirname "$0")" || return 1
+  cat "install.sh" | grep "^#/" | tr -d "#/"
+  cd "$t" || return 1
 }
 
 create_link() {
-	local tmp="$PWD" exit_code=0
-	cd "$1" || return 1
+  local tmp="$PWD" exit_code=0
+  cd "$1" || return 1
 
-	local loc="${HOME}/${NAME}/${ZSHRC}"
-	local rot="${HOME}/${ZSHRC}"
+  local loc="${HOME}/${NAME}/${ZSHRC}"
+  local rot="${HOME}/${ZSHRC}"
 
-	if test -d "$rot" || test -f "$rot"; then
-		mv "$rot" "$rot.before"
-	fi
+  if test -d "$rot" || test -f "$rot"; then
+    mv "$rot" "$rot.before"
+  fi
 
-	ln -s "$loc" "$rot" || exit_code=$?
-	cd "$tmp" || return 1
-	return $exit_code
+  ln -s "$loc" "$rot" || exit_code=$?
+  cd "$tmp" || return 1
+  return $exit_code
 }
 
 # -------------------------------------------------
@@ -68,17 +54,17 @@ create_link() {
 # -------------------------------------------------
 
 if [ "$1" == "help" ] ||
-	[ "$1" == "--help" ] ||
-	[ "$1" == "h" ] ||
-	[ "$1" == "-h" ] ||
-	[ "$1" == "?" ] ||
-	[ "$1" == "-?" ]; then
-	help && exit
+  [ "$1" == "--help" ] ||
+  [ "$1" == "h" ] ||
+  [ "$1" == "-h" ] ||
+  [ "$1" == "?" ] ||
+  [ "$1" == "-?" ]; then
+  help && exit
 fi
 
 cd "$(dirname "$0")" || exit 1 &>/dev/null
 
 source "./progress.sh" || exit 2
 
-progressbar clone "Clone project" "none"
+# progressbar clone "Clone project" "none"
 progressbar create_link "Link project" "$HOME"
