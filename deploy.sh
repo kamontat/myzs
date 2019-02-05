@@ -28,7 +28,7 @@ test -n "$ans" && VERSION="$ans"
 test -z "$VERSION" && exit 1
 
 git add .
-git commit -m "[release] version: $VERSION"
+git commit --allow-empty -m "[release] version: $VERSION"
 
 git tag "$VERSION"
 
