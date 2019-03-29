@@ -2,7 +2,7 @@
 
 SPACESHIP_PROMPT_ORDER=(
   time # Time stamps section
-  package # Package version
+  # package # Package version
   exec_time # Execution time
   line_sep
   user # Username section

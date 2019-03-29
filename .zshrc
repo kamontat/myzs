@@ -16,6 +16,8 @@
 ##        10 variable not exist                ##
 #################################################
 
+export MYZS_TYPE="FULLY"
+
 ROOT="${HOME}/.zshrc"
 [ -h "$ROOT" ] && ROOT="$(readlink "$ROOT")"
 ROOT="$(dirname "$ROOT")"
@@ -59,50 +61,50 @@ source "${MYZS_DEFAULT}/zgen.setting.sh" || pg_mark_false "Setting custom zgen v
 
 pg_mark "Default" "Setup ZGEN plugin"
 if is_string_exist "$ZGEN_HOME" && is_file_exist "${ZGEN_HOME}/zgen.zsh"; then
-	source "${MYZS_DEFAULT}/zgen.plugin.sh"
-	source "${MYZS_DEFAULT}/zgen.prezto-setting.sh"
-	source "${ZGEN_HOME}/zgen.zsh"
+  source "${MYZS_DEFAULT}/zgen.plugin.sh"
+  source "${MYZS_DEFAULT}/zgen.prezto-setting.sh"
+  source "${ZGEN_HOME}/zgen.zsh"
 
-	# reset zgen
-	if [[ "$RESET_ZGEN" == true ]] &&
-		is_command_exist "zgen"; then
-		zgen reset
-	fi
+  # reset zgen
+  if [[ "$RESET_ZGEN" == true ]] &&
+    is_command_exist "zgen"; then
+    zgen reset
+  fi
 
-	if ! zgen saved || $ZGEN_FORCE_SAVE; then
-		setup=()
-		for setting in "${ZGEN_PREZTO_SETTING_LIST[@]}"; do
-			if [[ "$setting" == "_END_" ]]; then
-				zgen prezto "${setup[@]}"
-				setup=()
-			else
-				setup+=("$setting")
-			fi
-		done
+  if ! zgen saved || $ZGEN_FORCE_SAVE; then
+    setup=()
+    for setting in "${ZGEN_PREZTO_SETTING_LIST[@]}"; do
+      if [[ "$setting" == "_END_" ]]; then
+        zgen prezto "${setup[@]}"
+        setup=()
+      else
+        setup+=("$setting")
+      fi
+    done
 
-		# to use prezto theme you must mark custom theme to true and do not enter any theme url
-		if [[ "$CUSTOM_THEME" == false ]] &&
-			is_string_exist "$CUSTOM_THEME_NAME"; then
-			zgen prezto prompt theme "$CUSTOM_THEME_NAME"
-		fi
+    # to use prezto theme you must mark custom theme to true and do not enter any theme url
+    if [[ "$CUSTOM_THEME" == false ]] &&
+      is_string_exist "$CUSTOM_THEME_NAME"; then
+      zgen prezto prompt theme "$CUSTOM_THEME_NAME"
+    fi
 
-		zgen prezto
+    zgen prezto
 
-		for plugin in "${ZGEN_PREZTO_PLUGIN_LIST[@]}"; do
-			zgen prezto "$plugin"
-		done
+    for plugin in "${ZGEN_PREZTO_PLUGIN_LIST[@]}"; do
+      zgen prezto "$plugin"
+    done
 
-		for plugin in "${ZGEN_PLUGIN_LIST[@]}"; do
-			zgen load "$plugin"
-		done
+    for plugin in "${ZGEN_PLUGIN_LIST[@]}"; do
+      zgen load "$plugin"
+    done
 
-		# generate the init script from plugins above
-		zgen save
-	fi
-	# https://github.com/hlissner/zsh-autopair#zgen--prezto-compatibility
-	autopair-init
+    # generate the init script from plugins above
+    zgen save
+  fi
+  # https://github.com/hlissner/zsh-autopair#zgen--prezto-compatibility
+  autopair-init
 else
-	pg_mark_false "Zgen not found"
+  pg_mark_false "Zgen not found"
 fi
 
 pg_mark "POST" "Setup ZGEN plugin"
@@ -128,7 +130,7 @@ source "${MYZS_DEFAULT}/theme.sh" || pg_mark_false "Loading theme configuration"
 
 pg_mark "Language" "Setup ruby rbenv"
 if is_command_exist "rbenv"; then
-	eval "$(rbenv init -)"
+  eval "$(rbenv init -)"
 fi
 
 pg_mark "Personal" "Setup alias"
@@ -136,6 +138,9 @@ source "${MYZS_PERSONAL}/alias.sh" || pg_mark_false "Loading custom alias"
 
 pg_mark "Personal" "Setup Completion"
 source "${MYZS_PERSONAL}/completion.sh" || pg_mark_false "Loading custom completion"
+
+pg_mark "Personal" "Setup conda"
+source "${MYZS_PERSONAL}/conda.sh" || pg_mark_false "Setting conda environment"
 
 pg_stop
 
