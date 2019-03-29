@@ -85,7 +85,10 @@ if is_string_exist "$ZGEN_HOME" && is_file_exist "${ZGEN_HOME}/zgen.zsh"; then
     # to use prezto theme you must mark custom theme to true and do not enter any theme url
     if [[ "$CUSTOM_THEME" == false ]] &&
       is_string_exist "$CUSTOM_THEME_NAME"; then
-      zgen prezto prompt theme "$CUSTOM_THEME_NAME"
+      # reload new prompt init
+      autoload -U promptinit
+      promptinit
+      prompt "$CUSTOM_THEME_NAME"
     fi
 
     zgen prezto
