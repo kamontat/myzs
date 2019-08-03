@@ -2,3 +2,5 @@
 
 unsetopt correct_all
 unsetopt correct
+
+zstyle :prezto:load pmodule

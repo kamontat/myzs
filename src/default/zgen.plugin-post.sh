@@ -2,10 +2,16 @@
 
 wd_name="${HOME}/.zgen/mfaerevaag/wd-master"
 if is_command_exist "git" && ! is_folder_exist "$wd_name"; then
-	mkdir "$wd_name" &>/dev/null
-	git clone "https://github.com/mfaerevaag/wd.git" "$wd_name" &>/dev/null
+  mkdir "$wd_name" &>/dev/null
+  git clone "https://github.com/mfaerevaag/wd.git" "$wd_name" &>/dev/null
 
-	cp "${wd_name}/wd.1" "/usr/share/man/man1/wd.1"
+  # manpage
+  cp "${wd_name}/wd.1" "/usr/share/man/man1/wd.1"
+  # completion
+  fpath=("$wd_name" "$fpath")
+  # force rebuild zcomp
+  rm -f ~/.zcompdump &&
+    compinit
 fi
 
 # contrib="${HOME}/.zgen/sorin-ionescu/prezto-master/contrib"
