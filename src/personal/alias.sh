@@ -14,13 +14,13 @@ fi
 
 ggc() {
   if ls | grep -q "package.json" && grep -q "\"commit\":" <"package.json"; then
-    yarn commit
-  elif is_command_exist "committ"; then
-    committ
+    yarn commit "$@"
   elif is_command_exist "gitgo"; then
     gitgo commit "$@"
+  elif is_command_exist "committ"; then
+    committ "$@"
   else
-    git commit
+    git commit "$@"
   fi
 }
 

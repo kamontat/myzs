@@ -13,4 +13,5 @@
 
 ## Installation
 
-1. `bash <(curl -sL https://github.com/kamontat/myzs/releases/download/3.1.0/ginstall.sh)`
+1. fully install - `bash <(curl -sL https://github.com/kamontat/myzs/releases/download/3.3.4/ginstall.sh)`
+2. small install - `bash <(curl -sL https://github.com/kamontat/myzs/releases/download/3.3.5/sginstall.sh)`

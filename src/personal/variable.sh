@@ -6,8 +6,8 @@ export DEFAULT_USER="$USER"
 export GOPATH="$HOME/Desktop/Projects/go"
 
 if is_command_exist "go"; then
-	export PATH="$PATH:$GOPATH/bin" # go lang
-	export GO_ZSH_COMPLETE="$GOPATH/src/github.com/urfave/cli/autocomplete/zsh_autocomplete"
+  export PATH="$PATH:$GOPATH/bin" # go lang
+  export GO_ZSH_COMPLETE="$GOPATH/src/github.com/urfave/cli/autocomplete/zsh_autocomplete"
 fi
 
 export PATH="$PATH:/Applications/Visual Studio Code - Insiders.app/Contents/Resources/app/bin"

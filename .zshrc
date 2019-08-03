@@ -16,6 +16,8 @@
 ##        10 variable not exist                ##
 #################################################
 
+export MYZS_TYPE="FULLY"
+
 ROOT="${HOME}/.zshrc"
 [ -h "$ROOT" ] && ROOT="$(readlink "$ROOT")"
 ROOT="$(dirname "$ROOT")"
@@ -131,6 +133,9 @@ source "${MYZS_PERSONAL}/alias.sh" || pg_mark_false "Loading custom alias"
 pg_mark "Personal" "Setup Completion"
 source "${MYZS_PERSONAL}/completion.sh" || pg_mark_false "Loading custom completion"
 
+pg_mark "Personal" "Setup conda"
+source "${MYZS_PERSONAL}/conda.sh" || pg_mark_false "Setting conda environment"
+
 pg_stop
 
 source "${MYZS_DEFAULT}/postload.sh" 2>/dev/null
@@ -140,6 +145,7 @@ source "${MYZS_PERSONAL}/postload.sh" 2>/dev/null
 # tabtab source for yarn package
 # uninstall by removing these lines or running `tabtab uninstall yarn`
 [[ -f /Users/kamontat/.config/yarn/global/node_modules/yarn-completions/node_modules/tabtab/.completions/yarn.zsh ]] && . /Users/kamontat/.config/yarn/global/node_modules/yarn-completions/node_modules/tabtab/.completions/yarn.zsh
+
 # tabtab source for packages
 # uninstall by removing these lines
 [[ -f ~/.config/tabtab/__tabtab.zsh ]] && . ~/.config/tabtab/__tabtab.zsh || true
