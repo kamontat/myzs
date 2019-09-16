@@ -5,13 +5,14 @@
 #################################################
 ## Information                                 ##
 ## Maintain: Kamontat Chantrachirathumrong     ##
-## Version:  3.4.0                             ##
+## Version:  3.5.0                             ##
 ## Since:    21/04/2018 (dd-mm-yyyy)           ##
-## Updated:  16/08/2018 (dd-mm-yyyy)           ##
+## Updated:  16/08/2019 (dd-mm-yyyy)           ##
 ## License:  MIT                               ##
 #################################################
 ## Changelogs                                  ##
-## 3.4.0   - Merge person and default together ##
+## 3.5.0   - Merge person and default together ##
+## 3.4.0   - Remove support Spaceship theme    ##
 ## 3.3.2   - Add new custom var and todo.txt   ##
 #################################################
 ## Error: 2  wrong call function or method     ##
