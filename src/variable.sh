@@ -13,3 +13,8 @@ export PATH="/usr/local/bin:$PATH"  # local user bin
 export PATH="/usr/local/sbin:$PATH" # local user sbin
 
 export ARCHFLAGS="-arch x86_64"
+
+# language
+export LANG="en_US.UTF-8"
+export LC_CTYPE="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"

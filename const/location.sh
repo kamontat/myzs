@@ -2,9 +2,9 @@
 
 export WORK_ROOT="$HOME/Desktop"
 
-export WORKSPACE_NAME="Workspaces"
-export PROJECT_NAME="Projects"
-export LAB_NAME="Labs"
+export WORKSPACE_NAME="Work"
+export PROJECT_NAME="Personal"
+# export LAB_NAME="Labs"
 
 export REFERENCE_NAME="Documents"
 

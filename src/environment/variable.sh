@@ -1,11 +1,9 @@
 # shellcheck disable=SC1090,SC2148
 
-export KEYTIMEOUT=1
+export USER="$MYZS_USER"
+export DEFAULT_USER="$USER"
 
-# language
-export LANG="en_US.UTF-8"
-export LC_CTYPE="en_US.UTF-8"
-export LC_ALL="en_US.UTF-8"
+export KEYTIMEOUT=1
 
 is_folder_exist "/usr/local/opt/openssl" &&
   export PATH="$PATH:/usr/local/opt/openssl/bin" # openssl
@@ -22,18 +20,13 @@ is_folder_exist "/usr/local/opt/coreutils/libexec/gnuman" &&
 is_folder_exist "/usr/local/bin/_NDD_FOLDER/man" &&
   export MANPATH="/usr/local/bin/_NDD_FOLDER/man:$MANPATH"
 
-# Enable ZGen Plugin Manager.
-export ZGEN_HOME="$HOME/.zgen"
-
 java_wrapper="$HOME/.asdf/plugins/java/asdf-java-wrapper.zsh"
 if is_file_exist "${java_wrapper}"; then
-  asdf global java openjdk-11.0.1 ## java version
   source "${java_wrapper}"
-
-  export PATH="$PATH:$JAVA_HOME/bin"
 elif is_file_exist "/usr/libexec/java_home"; then
   JAVA_HOME="$(/usr/libexec/java_home)"
   export JAVA_HOME
+
   export PATH="$PATH:$JAVA_HOME/bin"
 fi
 

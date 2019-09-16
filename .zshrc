@@ -1,14 +1,17 @@
 # shellcheck disable=SC1090,SC2148
 
+# set -x # enable DEBUG MODE
+
 #################################################
 ## Information                                 ##
 ## Maintain: Kamontat Chantrachirathumrong     ##
-## Version:  3.3.2                             ##
+## Version:  3.4.0                             ##
 ## Since:    21/04/2018 (dd-mm-yyyy)           ##
-## Updated:  30/10/2018 (dd-mm-yyyy)           ##
+## Updated:  16/08/2018 (dd-mm-yyyy)           ##
 ## License:  MIT                               ##
 #################################################
 ## Changelogs                                  ##
+## 3.4.0   - Merge person and default together ##
 ## 3.3.2   - Add new custom var and todo.txt   ##
 #################################################
 ## Error: 2  wrong call function or method     ##
@@ -25,44 +28,46 @@ ROOT="$(dirname "$ROOT")"
 export MYZS_ROOT="$ROOT"
 export MYZS_CON="${MYZS_ROOT}/const"
 export MYZS_LIB="${MYZS_ROOT}/lib"
+
 export MYZS_SRC="${MYZS_ROOT}/src"
 
-export MYZS_DEFAULT="${MYZS_SRC}/default"
-export MYZS_PERSONAL="${MYZS_SRC}/personal"
+export MYZS_ALIAS="${MYZS_SRC}/alias"     # for alias
+export MYZS_ENV="${MYZS_SRC}/environment" # for environment variable
+export MYZS_APP="${MYZS_SRC}/application" # for external application loader
+
+export MYZS_PM="${MYZS_SRC}/pm" # for plugin management and package management
 
 # progress libraries
-source "${MYZS_DEFAULT}/variable.main.sh"
+source "${MYZS_SRC}/pre_script.sh"
+source "${MYZS_SRC}/variable.sh"
 source "${MYZS_LIB}/progress.sh"
 
 pg_start
+# Progress Mark namespace
+#   1. Settings    - For setting and configuration
+#   2. Libraries   - For libraries and helper method
+#   3. Plugins     - For Package manager and Plugin manager
+#   4. Environment - For environment variable
+#   5. Alias       - For command alias settings
+#   6. Application - For external application and CLI
+
+pg_mark "Settings" "Loading default"
 source "${MYZS_CON}/default.sh"
-# source "${MYZS_CON}/theme.sh"
+source "${MYZS_CON}/theme.sh" # load theme variable
 source "${MYZS_CON}/location.sh"
 
 pg_mark "Libraries" "Load helper method"
-source "${MYZS_LIB}/helper.sh" || pg_mark_false "Loading helper file"
+source "${MYZS_LIB}/helper.sh" || pg_mark_false "Loading helper library"
 source "${MYZS_LIB}/lazyload.sh" || pg_mark_false "Loading lazyload library"
 source "${MYZS_LIB}/setup.sh" || pg_mark_false "Loading setup file"
 
-pg_mark "Libraries" "Load myzs-* method"
-source "${MYZS_LIB}/public.sh" || pg_mark_false "Loading public APIs"
+pg_mark "Plugins" "Setup zgen settings"
+source "${MYZS_PM}/zgen-settings.sh" || pg_mark_false "Setting custom zgen settings"
 
-pg_mark "Libraries" "Load work CLI"
-source "${MYZS_LIB}/location.sh" || pg_mark_false "Loading location cli"
-
-pg_mark "Default" "Setup Zsh var"
-source "${MYZS_DEFAULT}/variable.sh" || pg_mark_false "Loading default variable"
-
-pg_mark "Personal" "Setup Zsh var"
-source "${MYZS_PERSONAL}/variable.sh" || pg_mark_false "Loading personal variable"
-
-pg_mark "Default" "Setup ZGEN setting"
-source "${MYZS_DEFAULT}/zgen.setting.sh" || pg_mark_false "Setting custom zgen variable"
-
-pg_mark "Default" "Setup ZGEN plugin"
+pg_mark "Plugins" "Setup zgen plugins"
 if is_string_exist "$ZGEN_HOME" && is_file_exist "${ZGEN_HOME}/zgen.zsh"; then
-  source "${MYZS_DEFAULT}/zgen.plugin.sh"
-  source "${MYZS_DEFAULT}/zgen.prezto-setting.sh"
+  source "${MYZS_PM}/plugins.sh"
+  source "${MYZS_PM}/prezto-settings.sh"
   source "${ZGEN_HOME}/zgen.zsh"
 
   # reset zgen
@@ -101,51 +106,38 @@ else
   pg_mark_false "Zgen not found"
 fi
 
-pg_mark "POST" "Setup ZGEN plugin"
-source "${MYZS_DEFAULT}/zgen.plugin-post.sh" || pg_mark_false "Setting (POST) zgen plugin"
+# Start recusive load environment defined
+for i in ${MYZS_PM}/custom_plugins/*; do
+  base="$(basename "$i")"
+  pg_mark "Plugins" "$base"
+  source_file "$base" "$i"
+done
 
-pg_mark "Default" "Setup Zsh setting"
-source "${MYZS_DEFAULT}/setting.sh" || pg_mark_false "Setting Zsh"
+# Start recusive load environment defined
+for i in ${MYZS_ENV}/*; do
+  base="$(basename "$i")"
+  pg_mark "Environment" "$base"
+  source_file "$base" "$i"
+done
 
-pg_mark "Default" "Setup alias"
-source "${MYZS_DEFAULT}/alias.sh" || pg_mark_false "Loading alias"
+# Start recusive load application defined settings
+for i in ${MYZS_APP}/*; do
+  base="$(basename "$i")"
+  pg_mark "Application" "$base"
+  source_file "$base" "$i"
+done
 
-pg_mark "Default" "Setup libraries"
-source "${MYZS_DEFAULT}/library.sh" || pg_mark_false "Sourcing library"
+# Start recusive load alias defined
+for i in ${MYZS_ALIAS}/*; do
+  base="$(basename "$i")"
+  pg_mark "Alias" "$base"
+  source_file "$base" "$i"
+done
 
-pg_mark "Default" "Setup completions"
-source "${MYZS_DEFAULT}/completion.sh" || pg_mark_false "Loading zsh completion"
-
-pg_mark "Default" "Editor setting"
-source "${MYZS_DEFAULT}/editor.sh" || pg_mark_false "Loading editor setting"
-
-pg_mark "Default" "Setup prompt theme"
-source "${MYZS_DEFAULT}/theme.sh" || pg_mark_false "Loading theme configuration"
-
-pg_mark "Language" "Setup ruby rbenv"
-if is_command_exist "rbenv"; then
-  eval "$(rbenv init -)"
+MYZS_ENV="$MYZS_ROOT/.env"
+if is_file_exist "$MYZS_ENV"; then
+  pg_mark "Settings" "Loading config from .env"
+  source "$MYZS_ENV"
 fi
 
-pg_mark "Personal" "Setup alias"
-source "${MYZS_PERSONAL}/alias.sh" || pg_mark_false "Loading custom alias"
-
-pg_mark "Personal" "Setup Completion"
-source "${MYZS_PERSONAL}/completion.sh" || pg_mark_false "Loading custom completion"
-
-pg_mark "Personal" "Setup conda"
-source "${MYZS_PERSONAL}/conda.sh" || pg_mark_false "Setting conda environment"
-
 pg_stop
-
-source "${MYZS_DEFAULT}/postload.sh" 2>/dev/null
-
-source "${MYZS_PERSONAL}/postload.sh" 2>/dev/null
-
-# tabtab source for yarn package
-# uninstall by removing these lines or running `tabtab uninstall yarn`
-[[ -f /Users/kamontat/.config/yarn/global/node_modules/yarn-completions/node_modules/tabtab/.completions/yarn.zsh ]] && . /Users/kamontat/.config/yarn/global/node_modules/yarn-completions/node_modules/tabtab/.completions/yarn.zsh
-
-# tabtab source for packages
-# uninstall by removing these lines
-[[ -f ~/.config/tabtab/__tabtab.zsh ]] && . ~/.config/tabtab/__tabtab.zsh || true
