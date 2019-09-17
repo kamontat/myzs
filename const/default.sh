@@ -23,7 +23,7 @@ export WELCOME_MESSAGE=""
 # PG_SHOW_PERF_INFO will print the process with runtime
 # PG_FORMAT_TIME    will format the time as mm:ss:ms
 ######################################
-export PG_SHOW_PERF_INFO=true
+export PG_SHOW_PERF_INFO=false
 export PG_FORMAT_TIME=true
 ######################################
 

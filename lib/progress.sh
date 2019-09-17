@@ -94,7 +94,7 @@ pg_mark() {
 
   "${MYZS_LIB}/revolver" -s "$PG_STYLE" update "${PG_GREEN}$2.."
 
-  if "$PG_SHOW_PERF_INFO"; then
+  if [[ "$PG_SHOW_PERF_INFO" == "true" ]]; then
     show_message_by "$PG_PREV_STATE" "$TIME" "$PG_PREV_MSG"
   fi
 
