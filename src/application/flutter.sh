@@ -7,4 +7,9 @@ if is_folder_exist "$FLUTTER_HOME"; then
   export DART_SDK="${FLUTTER_HOME}/bin/cache/dart-sdk"
 
   flutter config --no-analytics >/dev/null
+
+  export DART_PUB_BIN="$HOME/.pub-cache/bin"
+  if is_folder_exist "$DART_PUB_BIN"; then
+    export PATH="$PATH:$DART_PUB_BIN"
+  fi
 fi
