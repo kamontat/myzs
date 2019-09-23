@@ -1,22 +1,18 @@
 # shellcheck disable=SC1090,SC2148
 
-if is_command_exist "nvim"; then
-  nvim_path="$(command -v nvim)"
-  export GIT_EDITOR="$nvim_path"
-  export VISUAL="$nvim_path"
-  export EDITOR="$nvim_path"
+if [[ "$MYZS_DEBUG" == "true" ]]; then
+  set -x # enable DEBUG MODE
 fi
 
-if is_command_exist "code-insiders"; then
-  alias code='code-insiders'
+if __myzs_is_command_exist "code-insiders"; then
+  __myzs_alias "code" "code-insiders"
+  __myzs_alias "ncode" "code-insiders --new-window"
+  __myzs_alias "ccode" "code-insiders --reuse-window"
+elif __myzs_is_command_exist "code"; then
+  __myzs_alias "ncode" "code --new-window"
+  __myzs_alias "ccode" "code --reuse-window"
 fi
 
-if is_command_exist "code" || is_command_exist "code-insiders"; then
-  alias newcode='code --new-window'
-  alias ncode='code --new-window'
-  alias ccode='code --reuse-window'
-fi
-
-if is_command_exist "atom-beta"; then
-  alias atom='atom-beta'
+if __myzs_is_command_exist "atom-beta"; then
+  __myzs_alias "atom" "atom-beta"
 fi

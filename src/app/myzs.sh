@@ -1,0 +1,23 @@
+# shellcheck disable=SC1090,SC2148
+
+if [[ "$MYZS_DEBUG" == "true" ]]; then
+  set -x # enable DEBUG MODE
+fi
+
+myzs-upload() {
+  test -z "$MYZS_ROOT" && echo "\$MYZS_ROOT is required" && exit 2
+
+  cd "$MYZS_ROOT" || exit 1
+  echo "Start upload current change to github"
+  git status --short
+  ./deploy.sh
+}
+
+myzs-download() {
+  test -z "$MYZS_ROOT" && echo "\$MYZS_ROOT is required" && exit 2
+
+  cd "$MYZS_ROOT" || exit 1
+  echo "Start download the change from github"
+  git fetch
+  git pull
+}
