@@ -65,9 +65,9 @@ if __myzs_is_command_exist "git"; then
   ggc() {
     if ls | grep -q "package.json" && grep -q "\"commit\":" <"package.json"; then
       yarn commit "$@"
-    elif is_command_exist "committ"; then
+    elif __myzs_is_command_exist "committ"; then
       committ "$@"
-    elif is_command_exist "gitgo"; then
+    elif __myzs_is_command_exist "gitgo"; then
       gitgo commit "$@"
     else
       git commit "$@"
