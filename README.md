@@ -2,16 +2,15 @@
 
 ## Stack
 
-1. [prezto](https://github.com/sorin-ionescu/prezto) => Instantly Awesome Zsh
-2. [powerlevel9k](https://github.com/bhilburn/powerlevel9k) => A theme for ZSH
-3. [zgen](https://github.com/tarjoilija/zgen) => A lightweight plugin manager for Zsh
+1. [zplug](https://github.com/zplug/zplug) => A fastest plugin manager for Zsh
 
 ## Usage
 
-1. Change your config in [constants.sh](./const/default.sh)
-2. Change your setting in [variable.sh](./src/personal/variable.sh)
+Clone this project to `$HOME/.myzs` and run `ln -s "$HOME/.myzs/.zshrc" "$HOME/.zshrc"`
 
-## Installation
+## Command
 
-1. fully install - `bash <(curl -sL https://github.com/kamontat/myzs/releases/download/3.3.4/ginstall.sh)`
-2. small install - `bash <(curl -sL https://github.com/kamontat/myzs/releases/download/3.3.5/sginstall.sh)`
+I create command utils script for manage this project.
+
+1. `./scripts/command.sh install` - This will install command to current .zshrc files
+2. `./scripts/command.sh uninstall` - This will uninstall this project add delete all file
