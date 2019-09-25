@@ -10,10 +10,10 @@ if [ "$(uname -s)" = "Darwin" ] && __myzs_is_command_exist "osascript"; then
     clipboard="$(pbpaste)"
 
     # check is input is path
-    if is_string_exist "$1" && is_folder_exist "$1"; then
+    if __myzs_is_string_exist "$1" && __myzs_is_folder_exist "$1"; then
       echo "$1" | pbcopy
       # check is clipboard is path
-    elif ! is_folder_exist "$clipboard"; then
+    elif ! __myzs_is_folder_exist "$clipboard"; then
       pwd | pbcopy
     fi
 
