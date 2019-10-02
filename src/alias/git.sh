@@ -28,9 +28,11 @@ if __myzs_is_command_exist "git"; then
   __myzs_alias "gcod" "git checkout dev"
   __myzs_alias "gcom" "git checkout master"
 
-  __myzs_alias "gr" "git restore"
-  __myzs_alias "grs" "git restore --staged"
-
+  # for git version 2.23.0
+  __myzs_alias "grs" "git restore"
+  __myzs_alias "grss" "git restore --staged"
+  
+  # for git version 2.23.0
   __myzs_alias "gsw" "git switch"
 
   __myzs_alias "gb" "git branch"
