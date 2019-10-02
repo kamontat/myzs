@@ -98,9 +98,10 @@ done
 
 pg_stop
 
-if __myzs_is_fully; then
-  __myzs_load "$MYZS_ROOT/.env"
+# load .env file
+__myzs_load "environment file" "$MYZS_ROOT/.env"
 
+if __myzs_is_fully; then
   if [[ "$MYZS_SETTINGS_AUTO_OPEN_PATH" == "true" ]]; then
     __clipboard="$(pbpaste)"
     if __myzs_is_folder_exist "$__clipboard"; then
