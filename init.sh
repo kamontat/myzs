@@ -6,16 +6,18 @@ fi
 
 export __MYZS_ROOT="${MYZS_ROOT:-"$HOME/.myzs"}"
 export __MYZS_SOURCE_CODE="${__MYZS_ROOT}/src"
+export __MYZS_RESOURCES="${__MYZS_ROOT}/resources"
 export __MYZS_ZPLUG="${ZPLUG_HOME:-${__MYZS_ROOT}/zplug}"
 
 export __MYZS_USER="${MYZS_USER:-$USER}"
 export __MYZS_OWNER="Kamontat Chantrachirathumrong"
-export __MYZS_VERSION="4.0.0"
+export __MYZS_VERSION="4.1.0"
 export __MYZS_SINCE="21 Apr 2018"
-export __MYZS_LAST_UPDATED="23 Sep 2019"
+export __MYZS_LAST_UPDATED="31 Dec 2019"
 export __MYZS_LICENSE="MIT"
 
 export __MYZS_CHANGELOGS=(
+  "[4.1.0](31 Dec 2019){add more alias, fix some log detail missing, update path to avoid duplication}"
   "[4.0.0](23 Sep 2019){first version released}"
 )
 
@@ -99,7 +101,7 @@ done
 pg_stop
 
 if __myzs_is_fully; then
-  __myzs_load "$MYZS_ROOT/.env"
+  __myzs_load "environment file" "$MYZS_ROOT/.env"
 
   if [[ "$MYZS_SETTINGS_AUTO_OPEN_PATH" == "true" ]]; then
     __clipboard="$(pbpaste)"

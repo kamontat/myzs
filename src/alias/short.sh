@@ -26,3 +26,7 @@ __myzs_alias "stouch" "sudo touch"
 __myzs_alias "history" "fc -El 1"
 
 __myzs_alias "copy-path" "pwd | pbcopy"
+
+if __myzs_is_command_exist "tmux"; then
+  __myzs_alias "t" "tmux"
+fi

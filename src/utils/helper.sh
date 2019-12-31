@@ -1,7 +1,9 @@
 # shellcheck disable=SC1090,SC2148
 
 export __MYZS_LOGFILE="${MYZS_LOGFILE:-/tmp/myzs.log}"
+export MYZS_LOGFILE="$__MYZS_LOGFILE"
 export __MYZS_ZPLUG_LOGFILE="${__MYZS_ZPLUG_LOGFILE:-/tmp/zplug.log}"
+export MYZS_ZPLUG_LOGFILE="$__MYZS_ZPLUG_LOGFILE"
 
 if [[ "$MYZS_DEBUG" == "true" ]]; then
   set -x # enable DEBUG MODE
@@ -140,8 +142,12 @@ __myzs_push_path() {
 export __myzs_append_path
 __myzs_append_path() {
   if __myzs_is_folder_exist "$1"; then
-    __myzs_info "Append $1 to PATH environment"
-    export PATH="$1:$PATH"
+    if [[ "$PATH" == *"$1"* ]]; then
+      __myzs_error "$1 path is already exist to \$PATH"
+    else
+      __myzs_info "Append $1 to PATH environment"
+      export PATH="$1:$PATH"
+    fi
   else
     __myzs_warn "Cannot add $1 to PATH environment because folder is missing"
   fi

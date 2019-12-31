@@ -15,7 +15,7 @@ __myzs__create_plugins() {
 
   zplug "mfaerevaag/wd", as:command, use:"wd.sh", hook-load:"wd() { . $ZPLUG_REPOS/mfaerevaag/wd/wd.sh }"
 
-  zplug "b4b4r07/enhancd", use:init.sh
+  # zplug "b4b4r07/enhancd", use:init.sh
   # zplug "changyuheng/zsh-interactive-cd" # enhance cd command with fzf search
   zplug "unixorn/tumult.plugin.zsh" # enhance functionality for macos; https://github.com/unixorn/tumult.plugin.zsh#included-scripts
   zplug "peterhurford/up.zsh"       # no more cd ../../../;  just up <number>

@@ -28,8 +28,8 @@ if __myzs_is_command_exist "git"; then
   __myzs_alias "gcod" "git checkout dev"
   __myzs_alias "gcom" "git checkout master"
 
-  __myzs_alias "gr" "git restore"
-  __myzs_alias "grs" "git restore --staged"
+  __myzs_alias "grs" "git restore"
+  __myzs_alias "grss" "git restore --staged"
 
   __myzs_alias "gsw" "git switch"
 
@@ -41,6 +41,7 @@ if __myzs_is_command_exist "git"; then
   __myzs_alias "gbr" "git fetch --all --prune" # remove remote branch, If not exist
 
   __myzs_alias "gd" "git diff"
+  __myzs_alias "gdi" "git diff -w --ignore-all-space"
 
   __myzs_alias "gt" "git tag"
   __myzs_alias "gtd" "git tag -d"
