@@ -5,22 +5,24 @@
 # set -n #EVALUATE - Check syntax of the script but don't execute.
 
 #/ -------------------------------------------------
-#/ Description:  Install script
-#/               To install script,
-#/                 1. This will verify by validate checksum
-#/                 2. This will copy this project to
-#/                    $HOME/.myzs/ folder, this will fail if directory is exist
-#/                 3. create symlink between '$HOME/.myzs/.zshrc' and '$HOME/.zshrc'
-#/                    this will fail if file exist
+#/ Description:  MYZS Setting command, This can be use for global install myzs, local install, and uninstall
+#/               To Global install
+#/                 1. run command.sh global [version]
+#/                 2. after you run it will clone git repo and add to correct location
+#/                 3. and link zshrc file to correct location required by zsh
+#/               To Uninstall
+#/                 1. run command.sh uninstall
+#/                 1. This will remove all linked file and repository in $HOME/.myzs
 #/ Create by:    Kamontat Chantrachirathumrong
 #/ Since:        27/03/2018
 #/ -------------------------------------------------
 #/ Version:      0.0.1  -- add help command
 #/               1.0.0  -- production
+#/               1.1.0  -- change from install command to setup command
 #/ -------------------------------------------------
 #/ Error code    1      -- common error
 #/ -------------------------------------------------
-#/ Known bug:    not exist
+#/ Known bug:    to run install command, you must place repository on $HOME/.myzs, otherwise it will failed
 #/ -------------------------------------------------
 
 NAME=".myzs"
@@ -28,13 +30,13 @@ ZSHRC=".zshrc"
 
 GIT_REPO="https://github.com/kamontat/myzs.git"
 
-DEFAULT_VERSION="3.3.4"
-VERSION="$([[ "$1" == "" ]] && echo "$DEFAULT_VERSION" || echo "$1")"
+DEFAULT_VERSION="4.1.1"
+VERSION="$([[ "$2" == "" ]] && echo "$DEFAULT_VERSION" || echo "$2")"
 
 help() {
   local t="$PWD"
   cd "$(dirname "$0")" || return 1
-  cat "install.sh" | grep "^#/" | tr -d "#/"
+  cat "command.sh" | grep "^#/" | tr -d "#/"
   cd "$t" || return 1
 }
 
@@ -44,7 +46,7 @@ clone() {
     rm -rf "$folder"
   fi
 
-  git clone --branch "$VERSION" "$GIT_REPO" "$folder" &>/dev/null
+  git clone --recurse-submodules --branch "$VERSION" "$GIT_REPO" "$folder" &>/dev/null
 }
 
 create_link() {
