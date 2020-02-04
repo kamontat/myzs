@@ -10,7 +10,7 @@
 # export MYZS_DEBUG=true
 
 # custom user variable
-# export MYZS_USER="kamontat"
+export MYZS_USER="kamontat"
 
 export MYZS_SETTINGS_AUTO_OPEN_PATH=true
 # export MYZS_SETTINGS_WELCOME_MESSAGE="hello, world"
