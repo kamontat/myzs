@@ -8,28 +8,24 @@
 # set -v #VERBOSE - Display shell input lines as they are read.
 # set -n #EVALUATE - Check syntax of the script but don't execute.
 
-echo 'This command will pass 1 parameter as git tag (version). Then
-1. Add all files in git
-2. Commit with default message "[release] version: <version>"
-3. Create tag
-4. Push code and tags
-'
-
-echo "List of tag that exist:"
+echo "[1/6] List all tags that already exist:"
 git tag --column
 
 # shellcheck disable=SC2034
-printf "Press <enter> to next or enter valid version: "
+printf "[2/6] Enter release version: "
 read -r ans
-
-VERSION="$1"
-test -n "$ans" && VERSION="$ans"
-
+VERSION="$ans"
+# checking
 test -z "$VERSION" && exit 1
 
+echo "[3/6] Add all changes to git"
 git add .
+
+echo "[4/6] Commit all changes with release version message"
 git commit --allow-empty -m "[release] version: $VERSION"
 
+echo "[5/6] create new git tag called $VERSION"
 git tag "$VERSION"
 
+echo "[6/6] push all changes and tag to Github repository"
 git push && git push --tag
