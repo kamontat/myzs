@@ -10,6 +10,21 @@ export PG_GREEN="\033[1;32m"
 export PG_YELLOW="\033[1;33m"
 export PG_RESET="\033[0m"
 
+# loading message color
+export PG_LOADING_CL="${PG_LOADING_CL:-$PG_GREEN}"
+
+# complete status indicator
+export PG_COMPLETE_CL="${PG_COMPLETE_CL:-$PG_GREEN}"
+# skip status indicator
+export PG_SKIP_CL="${PG_SKIP_CL:-$PG_YELLOW}"
+# fail status indicator
+export PG_FAIL_CL="${PG_FAIL_CL:-$PG_RED}"
+
+# time danger
+export PG_DANGER_CL="${PG_DANGER_CL:-$PG_RED}"
+# normal time color
+export PG_TIME_CL="${PG_TIME_CL:-$PG_YELLOW}"
+
 # Progress setting
 export __PG_STYLE="${PG_STYLE:-shark}"
 
@@ -43,7 +58,7 @@ format_message() {
 }
 
 _message() {
-  local color symbol raw_time dur message
+  local color symbol raw_time dur message time_color
 
   color="$1"
   symbol="$2"
@@ -53,14 +68,23 @@ _message() {
   dur="$(conv_time "${raw_time}")"
   message="$*"
 
-  printf "${color}[%s]${PG_RESET} %-${MESSAGE_LENGTH}s done in ${PG_YELLOW}%s${PG_RESET}." "$symbol" "$message" "$dur"
+  if ((raw_time > PG_TIME_THRESHOLD_MS)); then
+    time_color=${PG_DANGER_CL}
+  else
+    time_color=${PG_TIME_CL}
+  fi
+
+  printf "${color}[%s]${PG_RESET} %-${MESSAGE_LENGTH}s done in ${time_color}%s${PG_RESET}." "$symbol" "$message" "$dur"
+
 }
 
 show_message_by() {
-  if $1; then
+  if [[ "$1" == "C" ]]; then
     completed_message "$2" "$3"
-  else
-    failure_message "$2" "$3"
+  elif [[ "$1" == "F" ]]; then
+    failured_message "$2" "$3"
+  elif [[ "$1" == "S" ]]; then
+    skipped_message "$2" "$3"
   fi
   echo
 }
@@ -70,15 +94,23 @@ completed_message() {
   shift
   local message="$*"
 
-  _message "$PG_GREEN" "+" "$dur" "$message"
+  _message "$PG_COMPLETE_CL" "+" "$dur" "$message"
 }
 
-failure_message() {
+skipped_message() {
   local dur="$1"
   shift
   local message="$*"
 
-  _message "$PG_RED" "-" "$dur" "$message"
+  _message "$PG_SKIP_CL" "*" "$dur" "$message"
+}
+
+failured_message() {
+  local dur="$1"
+  shift
+  local message="$*"
+
+  _message "$PG_FAIL_CL" "-" "$dur" "$message"
 }
 
 export PG_START_TIME
@@ -91,18 +123,18 @@ export PG_PREV_MSG
 PG_PREV_MSG=$(format_message "Start" "Initialization")
 
 export PG_PREV_STATE
-PG_PREV_STATE=true
+PG_PREV_STATE="C" # C = completed, F = failured, S = skipped
 
 pg_start() {
   local message
   message="${1:-Initialization shell. Please Wait...}"
-  "${__REVOLVER_CMD}" -s "$__PG_STYLE" start "${PG_GREEN}${message}"
+  "${__REVOLVER_CMD}" -s "$__PG_STYLE" start "${PG_LOADING_CL}${message}"
 }
 
 pg_mark() {
   TIME=$(($(sec) - PG_PREV_TIME))
 
-  "${__REVOLVER_CMD}" -s "$__PG_STYLE" update "${PG_GREEN}$2.."
+  "${__REVOLVER_CMD}" -s "$__PG_STYLE" update "${PG_LOADING_CL}$2.."
 
   if [[ "$__PG_SHOW_PERF" == "true" ]]; then
     show_message_by "$PG_PREV_STATE" "$TIME" "$PG_PREV_MSG"
@@ -110,13 +142,18 @@ pg_mark() {
 
   PG_PREV_TIME=$(sec)
   PG_PREV_MSG=$(format_message "$@")
-  PG_PREV_STATE=true
+  PG_PREV_STATE="C"
   ((PG_PROCESS_COUNT++))
 }
 
 pg_mark_false() {
-  PG_PREV_STATE=false
+  PG_PREV_STATE="F"
   PG_PREV_MSG=$(format_message "Error" "$1")
+}
+
+pg_mark_skip() {
+  PG_PREV_STATE="S"
+  PG_PREV_MSG=$(format_message "Skip" "Skipping $1 component")
 }
 
 pg_stop() {
@@ -130,6 +167,6 @@ pg_stop() {
 
   TIME=$(($(sec) - PG_START_TIME))
 
-  printf "${PG_GREEN}[+]${PG_RESET} %-${MESSAGE_LENGTH}s      in ${PG_YELLOW}%s${PG_RESET}." "$(format_message "Completed" "Initialization $PG_PROCESS_COUNT tasks")" "$(conv_time "${TIME}")"
+  printf "${PG_COMPLETE_CL}[+]${PG_RESET} %-${MESSAGE_LENGTH}s      in ${PG_TIME_CL}%s${PG_RESET}." "$(format_message "Completed" "Initialization $PG_PROCESS_COUNT tasks")" "$(conv_time "${TIME}")"
   echo
 }

@@ -2,9 +2,9 @@
 
 # set -x # enable DEBUG MODE
 
-##############################
-# Application settings       #
-##############################
+################################
+# Application settings         #
+################################
 
 # Enable debug mode;
 # export MYZS_DEBUG=true
@@ -26,19 +26,38 @@ export MYZS_TYPE="FULLY"
 # This shouldn't be changes, except you install the application to difference
 export MYZS_ROOT=$HOME/.myzs
 
-##############################
-# Dependenies settings       #
-##############################
+export MYZS_EXCLUDE_COMPONENTS="travis.sh,fzf.sh"
+
+################################
+# Dependenies settings         #
+################################
 
 # If this is true, the application will trace each component in difference lines
-export PG_SHOW_PERF=false
+export PG_SHOW_PERF=true
+# minimum millisecond will be shown as danger color
+export PG_TIME_THRESHOLD_MS=300
+
+# loading message color
+export PG_LOADING_CL=""
+
+# complete status indicator
+export PG_COMPLETE_CL=""
+# skip status indicator
+export PG_SKIP_CL=""
+# fail status indicator
+export PG_FAIL_CL=""
+
+# time danger
+export PG_DANGER_CL=""
+# normal time color
+export PG_TIME_CL=""
 
 # This shouldn't be changes, except you would like to use custom zplug
 export ZPLUG_HOME="${MYZS_ROOT}/zplug"
 
-##############################
-# Shell environment variable #
-##############################
+################################
+# Shell environment variable   #
+################################
 
 # This is tell terminal to know what is default shell
 export SHELL="/usr/local/bin/zsh"
@@ -50,6 +69,9 @@ else
   echo "cannot load myzs init file" >&2
 fi
 
+################################
+# Appending by user or scripts #
+################################
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/usr/local/bin/google-cloud-sdk/path.zsh.inc' ]; then . '/usr/local/bin/google-cloud-sdk/path.zsh.inc'; fi

@@ -17,6 +17,7 @@ export __MYZS_LAST_UPDATED="04 Feb 2020"
 export __MYZS_LICENSE="MIT"
 
 export __MYZS_CHANGELOGS=(
+  "[4.2.0](15 Apr 2020){add skipping process and more customizable}"
   "[4.1.1](04 Feb 2020){add documentation and change some default value}"
   "[4.1.0](31 Dec 2019){add more alias, fix some log detail missing, update path to avoid duplication}"
   "[4.0.0](23 Sep 2019){first version released}"
@@ -77,24 +78,30 @@ if __myzs_is_fully; then
   zplug load --verbose >>"$__MYZS_ZPLUG_LOGFILE"
 fi
 
-pg_mark "Application" "Loading application setup script"
-
+pg_mark "Helper" "Loading application setup script"
 if __myzs_is_fully; then
-  for __path in ${__MYZS_SOURCE_CODE}/app/*.sh; do
-    __filename="$(basename $__path)"
+  for __path in "${__MYZS_SOURCE_CODE}"/app/*.sh; do
+    __filename="$(basename "$__path")"
     pg_mark "Application" "Loading ${__filename}"
 
-    __myzs_load "${__filename}" "$__path" || pg_mark_false "Cannot load $__filename"
+    if [[ "$MYZS_EXCLUDE_COMPONENTS" =~ ${__filename} ]]; then
+      pg_mark_skip "${__filename}"
+    else
+      __myzs_load "${__filename}" "$__path" || pg_mark_false "Cannot load $__filename"
+    fi
   done
 fi
 
 pg_mark "Helper" "Loading alias setup script"
+for __path in "${__MYZS_SOURCE_CODE}"/alias/*.sh; do
+  __filename="$(basename "$__path")"
+  pg_mark "Alias" "Loading ${__filename}"
 
-for __path in ${__MYZS_SOURCE_CODE}/alias/*.sh; do
-  __filename="$(basename $__path)"
-  pg_mark "Helper" "Loading ${__filename} alias"
-
-  __myzs_load "${__filename}" "$__path" || pg_mark_false "Cannot load $__filename"
+  if [[ "$MYZS_EXCLUDE_COMPONENTS" =~ ${__filename} ]]; then
+    pg_mark_skip "${__filename}"
+  else
+    __myzs_load "${__filename}" "$__path" || pg_mark_false "Cannot load $__filename"
+  fi
 
   unset __filename
 done

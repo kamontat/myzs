@@ -4,8 +4,12 @@ if [[ "$MYZS_DEBUG" == "true" ]]; then
   set -x # enable DEBUG MODE
 fi
 
-export ASDF_HOME="$(brew --prefix asdf)"
+if __myzs_is_command_exist "asdf"; then
+  export ASDF_HOME="$(brew --prefix asdf)"
 
-# Install via Homebrew
-__myzs_load "ASDF setup script" "$ASDF_HOME/asdf.sh"
-__myzs_load "ASDF completion script" "$ASDF_HOME/etc/bash_completion.d/asdf.bash"
+  # Install via Homebrew
+  __myzs_load "ASDF setup script" "$ASDF_HOME/asdf.sh"
+  __myzs_load "ASDF completion script" "$ASDF_HOME/etc/bash_completion.d/asdf.bash"
+else
+  __myzs_failure
+fi

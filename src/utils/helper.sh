@@ -9,7 +9,6 @@ if [[ "$MYZS_DEBUG" == "true" ]]; then
   set -x # enable DEBUG MODE
 fi
 
-export __myzs__log
 __myzs__log() {
   if [[ "$__MYZS_LOGFILE" != "" ]]; then
     if ! test -f "$__MYZS_LOGFILE"; then
@@ -27,6 +26,10 @@ __myzs__log() {
   fi
 
   return 0
+}
+
+__myzs__dump_return() {
+  return "$1"
 }
 
 export __myzs_debug
@@ -173,7 +176,12 @@ __myzs_manpath() {
   fi
 }
 
-export __myzs__dump_return
-__myzs__dump_return() {
-  return "$1"
+export __myzs_failure
+__myzs_failure() {
+  __myzs__dump_return 1
+}
+
+export __myzs_complete
+__myzs_complete() {
+  __myzs__dump_return 0
 }
