@@ -58,6 +58,9 @@ if __myzs_is_command_exist "git"; then
   __myzs_alias "gp" "git push"
   __myzs_alias "gP" "git pull"
 
+  __myzs_alias "gsp" "git stash push"
+  __myzs_alias "gsP" "git stash pop"
+
   __myzs_alias "gl" "git log --graph"                       # log with graph and format in git config
   __myzs_alias "gl-sign" "git log --graph --show-signature" # log with show sign information
   __myzs_alias "gla" "git log --graph --all"                # log all branch and commit
