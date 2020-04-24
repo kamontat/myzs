@@ -128,8 +128,22 @@ __myzs_load() {
 
 export __myzs_alias
 __myzs_alias() {
-  __myzs_info "Add $1 as alias of $2"
-  alias $1=$2
+  if __myzs_is_command_exist "$1"; then
+    __myzs_warn "Cannot Add $1 alias because [command exist]"
+  else
+    __myzs_info "Add $1 as alias of $2"
+    alias $1=$2
+  fi
+}
+
+export __myzs_alias_force
+__myzs_alias_force() {
+  if __myzs_is_command_exist "$1"; then
+    __myzs_info "Add $1 as alias of $2 (force)"
+    alias $1=$2
+  else
+    __myzs_alias "$1" "$2"
+  fi
 }
 
 export __myzs_push_path
@@ -178,7 +192,8 @@ __myzs_manpath() {
 
 export __myzs_failure
 __myzs_failure() {
-  __myzs__dump_return 1
+  local code="${1:-1}"
+  __myzs__dump_return "$code"
 }
 
 export __myzs_complete

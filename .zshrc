@@ -70,6 +70,13 @@ export PG_TIME_CL=""
 export ZPLUG_HOME="${MYZS_ROOT}/zplug"
 
 ################################
+# Zsh settings                 #
+################################
+
+export HISTSIZE=1000000000
+export SAVEHIST=$HISTSIZE
+
+################################
 # Shell environment variable   #
 ################################
 
