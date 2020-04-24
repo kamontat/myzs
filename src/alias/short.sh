@@ -24,6 +24,7 @@ __myzs_alias "smkdir" "sudo mkdir"
 __myzs_alias "stouch" "sudo touch"
 
 __myzs_alias "allhistory" "fc -El 1"
+__myzs_alias "history-stat" "history 0 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head"
 
 __myzs_alias "copy-path" "pwd | pbcopy"
 
