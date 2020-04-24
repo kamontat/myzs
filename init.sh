@@ -11,13 +11,14 @@ export __MYZS_ZPLUG="${ZPLUG_HOME:-${__MYZS_ROOT}/zplug}"
 
 export __MYZS_USER="${MYZS_USER:-$USER}"
 export __MYZS_OWNER="Kamontat Chantrachirathumrong"
-export __MYZS_VERSION="4.2.0"
+export __MYZS_VERSION="4.3.0"
 export __MYZS_SINCE="21 Apr 2018"
-export __MYZS_LAST_UPDATED="15 Apr 2020"
+export __MYZS_LAST_UPDATED="24 Apr 2020"
 export __MYZS_LICENSE="MIT"
 export __MYZS_MODULES=()
 
 export __MYZS_CHANGELOGS=(
+  "[4.3.0](24 Apr 2020){add modules and start command}"
   "[4.2.0](15 Apr 2020){add skipping process and more customizable}"
   "[4.1.1](04 Feb 2020){add documentation and change some default value}"
   "[4.1.0](31 Dec 2019){add more alias, fix some log detail missing, update path to avoid duplication}"
