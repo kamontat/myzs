@@ -24,9 +24,9 @@ export MYZS_SETTINGS_AUTO_OPEN_PATH=true
 export MYZS_TYPE="FULLY"
 
 # This shouldn't be changes, except you install the application to difference
-export MYZS_ROOT=$HOME/.myzs
+export MYZS_ROOT="$HOME/.myzs"
 
-export MYZS_EXCLUDE_COMPONENTS="travis.sh,fzf.sh"
+export MYZS_EXCLUDE_COMPONENTS="travis.sh,fzf.sh,asdf.sh"
 
 ################################
 # Dependenies settings         #
@@ -51,6 +51,20 @@ export PG_FAIL_CL=""
 export PG_DANGER_CL=""
 # normal time color
 export PG_TIME_CL=""
+
+################################
+# Zsh dependencies plugins     #
+################################
+
+# NOTES: don't forget to check plugins list in [src/settings/plugins.sh]
+# You might want to custom plugins list be yourself
+# It will left only 1 default plugin
+#   1. zplug/zplug
+# uncomment function below
+# export myzs__plugins_list
+# myzs__plugins_list() {
+#   zplug "zsh-users/zsh-autosuggestions"
+# }
 
 # This shouldn't be changes, except you would like to use custom zplug
 export ZPLUG_HOME="${MYZS_ROOT}/zplug"
