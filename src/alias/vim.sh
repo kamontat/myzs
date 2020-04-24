@@ -6,8 +6,9 @@ fi
 
 if __myzs_is_command_exist "nvim"; then
   __myzs_alias "v" "nvim"
-  __myzs_alias "vi" "nvim"
+  __myzs_alias_force "vi" "nvim"
 
+  __myzs_alias "vs" "sudo nvim"
   __myzs_alias "vis" "sudo nvim"
   __myzs_alias "vims" "sudo nvim"
 
@@ -17,6 +18,7 @@ if __myzs_is_command_exist "nvim"; then
 else
   __myzs_alias "v" "vim"
 
+  __myzs_alias "vs" "sudo vim"
   __myzs_alias "vis" "sudo vim"
   __myzs_alias "vims" "sudo vim"
 

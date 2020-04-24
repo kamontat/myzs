@@ -35,6 +35,8 @@ if __myzs_is_command_exist "git"; then
   # for git version 2.23.0
   __myzs_alias "gsw" "git switch"
 
+  __myzs_alias "gm" "git merge"
+
   __myzs_alias "gb" "git branch"
   __myzs_alias "gba" "git branch -a"
   __myzs_alias "gbd" "git branch -D"

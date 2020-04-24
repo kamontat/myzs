@@ -23,7 +23,7 @@ __myzs_alias "srm" "sudo rm -rf"
 __myzs_alias "smkdir" "sudo mkdir"
 __myzs_alias "stouch" "sudo touch"
 
-__myzs_alias "history" "fc -El 1"
+__myzs_alias "allhistory" "fc -El 1"
 
 __myzs_alias "copy-path" "pwd | pbcopy"
 
