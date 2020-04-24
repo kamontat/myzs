@@ -15,8 +15,7 @@ __myzs__log() {
       touch "$__MYZS_LOGFILE"
     fi
 
-    local type
-    local datetime
+    local type datetime
 
     datetime="$(date)"
     type="$1"
@@ -110,20 +109,41 @@ __myzs_is_small() {
 # $2 => file path
 export __myzs_load
 __myzs_load() {
-  local exitcode
-  if __myzs_is_file_exist "$2"; then
-    source "$2"
+  local _name="$1" _path="$2" exitcode=1
+  if __myzs_is_file_exist "$_path"; then
+    source "${_path}"
     exitcode=$?
     if [[ "$exitcode" != "0" ]]; then
-      __myzs_error "Cannot load $1 ($2) because source return $exitcode"
+      __myzs_error "Cannot load ${_name} (${_path}) because source return $exitcode"
       return 1
     fi
 
-    __myzs_info "Loaded $1 ($2) to the system"
+    __myzs_info "Loaded ${_name} (${_path}) to the system"
   else
-    __myzs_warn "Cannot load $1 ($2) because file is missing"
+    __myzs_warn "Cannot load ${_name} (${_path}) because file is missing"
     return 1
   fi
+}
+
+# $1 => readable file name
+# $2 => file path
+export __myzs_load_module
+__myzs_load_module() {
+  local _name="$1" _path="$2"
+
+  if __myzs_load "$_name" "$_path"; then
+    __MYZS_MODULES+=("{1{${_name}}}{2{${_path}}}{3{pass}}")
+    __myzs_complete
+  else
+    __MYZS_MODULES+=("{1{${_name}}}{2{${_path}}}{3{fail}}")
+    __myzs_failure 2
+  fi
+}
+
+export __myzs_skip_module
+__myzs_skip_module() {
+  local _name="$1" _path="$2"
+  __MYZS_MODULES+=("{1{${_name}}}{2{${_path}}}{3{skip}}")
 }
 
 export __myzs_alias

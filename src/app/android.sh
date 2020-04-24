@@ -6,5 +6,5 @@ fi
 
 if __myzs_is_folder_exist "$HOME/Library/Android/sdk"; then
   export ANDROID_HOME="$HOME/Library/Android/sdk"                      # android home
-  export PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools" # android path
+  export PATH="${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools" # android path
 fi
