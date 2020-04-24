@@ -17,5 +17,3 @@ __myzs_push_path "/usr/local/opt/icu4c/bin"
 __myzs_push_path "/usr/local/opt/icu4c/sbin"
 
 __myzs_manpath "/usr/local/opt/coreutils/libexec/gnuman"
-
-__myzs_manpath "/usr/local/bin/_NDD_FOLDER/man"
