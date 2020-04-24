@@ -15,6 +15,7 @@ export __MYZS_VERSION="4.2.0"
 export __MYZS_SINCE="21 Apr 2018"
 export __MYZS_LAST_UPDATED="15 Apr 2020"
 export __MYZS_LICENSE="MIT"
+export __MYZS_MODULES=()
 
 export __MYZS_CHANGELOGS=(
   "[4.2.0](15 Apr 2020){add skipping process and more customizable}"
@@ -44,23 +45,21 @@ fi
 
 pg_start
 
-if __myzs_is_fully; then
-  __myzs_load "ZPLUG initial script" "${__MYZS_ZPLUG}/init.zsh" || pg_mark_false "Cannot load zplug initial script"
-fi
-
+pg_mark "Commandline" "setup system settings"
 __myzs_load "System variable" "${__MYZS_SOURCE_CODE}/settings/system.sh" || pg_mark_false "Cannot load system variable"
 
-# sleep 2
-
-pg_mark "Commandline" "setup commandline settings"
-
 if __myzs_is_fully; then
+  pg_mark "Commandline" "setup commandline settings"
   __myzs_load "ZSH settings" "${__MYZS_SOURCE_CODE}/settings/zsh.sh" || pg_mark_false "Cannot load zsh settings"
 fi
 
 if __myzs_is_fully; then
-  pg_mark "Plugin" "Loading plugins from zplug"
+  pg_mark "Plugin" "setup plugin manager"
+  __myzs_load "ZPLUG initial script" "${__MYZS_ZPLUG}/init.zsh" || pg_mark_false "Cannot load zplug initial script"
+fi
 
+if __myzs_is_fully; then
+  pg_mark "Plugin" "Loading plugins from zplug"
   __myzs_load "Plugins list" "${__MYZS_SOURCE_CODE}/settings/plugins.sh" || pg_mark_false "Cannot load zplug plugins list"
 
   __myzs__create_plugins # create plugins
@@ -86,8 +85,9 @@ if __myzs_is_fully; then
 
     if [[ "$MYZS_EXCLUDE_COMPONENTS" =~ ${__filename} ]]; then
       pg_mark_skip "${__filename}"
+      __myzs_skip_module "${__filename}" "$__path"
     else
-      __myzs_load "${__filename}" "$__path" || pg_mark_false "Cannot load $__filename"
+      __myzs_load_module "${__filename}" "$__path" || pg_mark_false "Cannot load $__filename"
     fi
   done
 fi
@@ -99,8 +99,9 @@ for __path in "${__MYZS_SOURCE_CODE}"/alias/*.sh; do
 
   if [[ "$MYZS_EXCLUDE_COMPONENTS" =~ ${__filename} ]]; then
     pg_mark_skip "${__filename}"
+    __myzs_skip_module "${__filename}" "$__path"
   else
-    __myzs_load "${__filename}" "$__path" || pg_mark_false "Cannot load $__filename"
+    __myzs_load_module "${__filename}" "$__path" || pg_mark_false "Cannot load $__filename"
   fi
 
   unset __filename
@@ -113,6 +114,7 @@ if __myzs_is_fully; then
 fi
 
 if __myzs_is_fully; then
+  # auto open path from clipboard
   if [[ "$MYZS_SETTINGS_AUTO_OPEN_PATH" == "true" ]]; then
     __clipboard="$(pbpaste)"
     if __myzs_is_folder_exist "$__clipboard"; then
@@ -122,8 +124,14 @@ if __myzs_is_fully; then
     fi
   fi
 
+  # print open welcome message
   if __myzs_is_string_exist "$MYZS_SETTINGS_WELCOME_MESSAGE"; then
     echo
     echo "$MYZS_SETTINGS_WELCOME_MESSAGE"
+  fi
+
+  # exec start command
+  if __myzs_is_command_exist "$MYZS_START_COMMAND"; then
+    $MYZS_START_COMMAND "${MYZS_START_COMMAND_ARGUMENTS[@]}"
   fi
 fi

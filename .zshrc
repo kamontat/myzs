@@ -15,6 +15,11 @@ export MYZS_USER="$USER"
 # Copy path you would like to go, the start shell will try to cd to that path automatically
 export MYZS_SETTINGS_AUTO_OPEN_PATH=true
 
+# start command; this will run after exit init.sh
+# export MYZS_START_COMMAND="echo"
+# start command arguments
+# export MYZS_START_COMMAND_ARGUMENTS=("open" "new" "window")
+
 # Add welcome message everytime you open shell
 # export MYZS_SETTINGS_WELCOME_MESSAGE="hello, world"
 
@@ -33,7 +38,7 @@ export MYZS_EXCLUDE_COMPONENTS="travis.sh,fzf.sh,asdf.sh"
 ################################
 
 # If this is true, the application will trace each component in difference lines
-export PG_SHOW_PERF=true
+export PG_SHOW_PERF=false
 # minimum millisecond will be shown as danger color
 export PG_TIME_THRESHOLD_MS=300
 
