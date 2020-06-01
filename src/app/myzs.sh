@@ -10,6 +10,8 @@ myzs-upload() {
   cd "$MYZS_ROOT" || exit 1
   echo "Start upload current change to github"
   git status --short
+  echo
+
   ./deploy.sh
 }
 

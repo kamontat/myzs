@@ -220,3 +220,16 @@ export __myzs_complete
 __myzs_complete() {
   __myzs__dump_return 0
 }
+
+export __myzs_is_plugin_installed
+__myzs_is_plugin_installed() {
+  local name="$1" # full name from plugin
+  __myzs_debug "Checking is $name exist in zplug"
+  if zplug info "$name" >/dev/null; then
+    __myzs_info "$name is installed"
+    return 0
+  else
+    __myzs_warn "package not exist ($name)"
+    return 1
+  fi
+}

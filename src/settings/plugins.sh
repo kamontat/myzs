@@ -14,7 +14,9 @@ __myzs__create_plugins() {
     # zplug "stedolan/jq", from:gh-r, as:command, rename-to:"jq"         # json query
 
     zplug "zsh-users/zsh-autosuggestions"
+
     zplug "zsh-users/zsh-completions"
+    # zplug "lib/completion", from:oh-my-zsh
 
     zplug "mfaerevaag/wd", as:command, use:"wd.sh", hook-load: "wd() { . $ZPLUG_REPOS/mfaerevaag/wd/wd.sh }"
 
@@ -41,7 +43,9 @@ __myzs__create_plugins() {
 
     zplug "laggardkernel/zsh-thefuck"
 
+    # load after compinit
     zplug "zdharma/fast-syntax-highlighting", defer:2
+    zplug "zsh-users/zsh-history-substring-search", defer:2
 
     zplug "mafredri/zsh-async", from:github
     zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme

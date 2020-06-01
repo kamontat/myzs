@@ -10,6 +10,6 @@ if __myzs_is_folder_exist "$NODE_LTS_PATH"; then
 fi
 
 if __myzs_is_command_exist "yarn"; then
-  export YARN_BIN="$(yarn global bin)"
-  __myzs_append_path "$YARN_BIN"
+  export CYARN_BIN="$(yarn global bin)"
+  __myzs_append_path "$CYARN_BIN"
 fi

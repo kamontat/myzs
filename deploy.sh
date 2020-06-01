@@ -21,9 +21,15 @@ printf "[3/7] Enter release version: (current=%s)" "${__MYZS_VERSION}"
 if ! git tag | grep -q "${__MYZS_VERSION}"; then
   VERSION="$__MYZS_VERSION"
 else
-  read -r ans
-  VERSION="$ans"
+  echo
+  printf "[error] current version have been released, look to [1/7] step"
+  echo
+
+  exit 1
+  # read -r ans
+  # VERSION="$ans"
 fi
+
 # checking
 test -z "$VERSION" && exit 1
 
