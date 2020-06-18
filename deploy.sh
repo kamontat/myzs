@@ -20,6 +20,7 @@ git tag --column
 printf "[3/7] Enter release version: (current=%s)" "${__MYZS_VERSION}"
 if ! git tag | grep -q "${__MYZS_VERSION}"; then
   VERSION="$__MYZS_VERSION"
+  echo
 else
   echo
   printf "[error] current version have been released, look to [1/7] step"
