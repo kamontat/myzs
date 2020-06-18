@@ -16,12 +16,12 @@ export MYZS_USER="$USER"
 export MYZS_SETTINGS_AUTO_OPEN_PATH=true
 
 # start command; this will run after exit init.sh
-# export MYZS_START_COMMAND="echo"
+export MYZS_START_COMMAND=""
 # start command arguments
-# export MYZS_START_COMMAND_ARGUMENTS=("open" "new" "window")
+export MYZS_START_COMMAND_ARGUMENTS=()
 
 # Add welcome message everytime you open shell
-# export MYZS_SETTINGS_WELCOME_MESSAGE="hello, world"
+export MYZS_SETTINGS_WELCOME_MESSAGE=""
 
 # This is settings for myzs behavior.
 # Accept only two value, either FULLY | SMALL.
@@ -61,11 +61,9 @@ export PG_TIME_CL=""
 # Zsh dependencies plugins     #
 ################################
 
-# NOTES: don't forget to check plugins list in [src/settings/plugins.sh]
-# You might want to custom plugins list be yourself
-# It will left only 1 default plugin
-#   1. zplug/zplug
-# uncomment function below
+## Override zplug plugins list.
+## NOTES: This will remove all plugins from src/settings/plugins.sh except 'zplug/zplug'
+## Uncommand function below
 # export myzs__plugins_list
 # myzs__plugins_list() {
 #   zplug "zsh-users/zsh-autosuggestions"

@@ -7,13 +7,16 @@ export __MYZS_ZPLUG="${ZPLUG_HOME:-${__MYZS_ROOT}/zplug}"
 
 export __MYZS_USER="${MYZS_USER:-$USER}"
 export __MYZS_OWNER="Kamontat Chantrachirathumrong"
-export __MYZS_VERSION="4.5.0"
+export __MYZS_VERSION="4.5.1"
 export __MYZS_SINCE="21 Apr 2018"
 export __MYZS_LAST_UPDATED="18 Jun 2020"
 export __MYZS_LICENSE="MIT"
 export __MYZS_MODULES=()
 
 export __MYZS_CHANGELOGS=(
+  "4.5.1" "18 Jun 2020"
+  " - update some default variable
+ - improve documents on zshrc file"
   "4.5.0" "18 Jun 2020"
   " - Introduce new command 'myzs-info' for print myzs information
  - Introduce new command 'myzs-list-changelogs' for print myzs changelogs
