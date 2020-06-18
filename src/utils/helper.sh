@@ -1,27 +1,36 @@
 # shellcheck disable=SC1090,SC2148
 
-export __MYZS_LOGFILE="${MYZS_LOGFILE:-/tmp/myzs.log}"
-export MYZS_LOGFILE="$__MYZS_LOGFILE"
-export __MYZS_ZPLUG_LOGFILE="${__MYZS_ZPLUG_LOGFILE:-/tmp/zplug.log}"
-export MYZS_ZPLUG_LOGFILE="$__MYZS_ZPLUG_LOGFILE"
-
 if [[ "$MYZS_DEBUG" == "true" ]]; then
   set -x # enable DEBUG MODE
 fi
 
+export __MYZS_LOGDIR="${MYZS_LOGDIR:-/tmp/myzs/logs}"
+export __MYZS_LOGFILE="${MYZS_LOGFILE:-main.log}"
+export __MYZS_ZPLUG_LOGFILE="${MYZS_ZPLUG_LOGFILE:-zplug.log}"
+
+export MYZS_LOGPATH="${__MYZS_LOGDIR}/${__MYZS_LOGFILE}"
+export MYZS_ZPLUG_LOGPATH="${__MYZS_LOGDIR}/${__MYZS_ZPLUG_LOGFILE}"
+
 __myzs__log() {
-  if [[ "$__MYZS_LOGFILE" != "" ]]; then
-    if ! test -f "$__MYZS_LOGFILE"; then
-      touch "$__MYZS_LOGFILE"
+  if [[ "$__MYZS_LOGDIR" != "" ]] && [[ $__MYZS_LOGFILE != "" ]]; then
+    if ! test -d "$__MYZS_LOGDIR"; then
+      mkdir -p "$__MYZS_LOGDIR" >/dev/null
     fi
 
-    local type datetime
+    local filepath="${MYZS_LOGPATH}"
+    if ! test -f "$filepath"; then
+      touch "$filepath"
+    fi
+
+    local type datetime filename
 
     datetime="$(date)"
+    filename="${CURRENT_FILENAME:-unknown}"
+
     type="$1"
     shift
 
-    echo "$datetime [$type]: $@" >>"$__MYZS_LOGFILE"
+    echo "$datetime [$type] [$filename]: $*" >>"$filepath"
   fi
 
   return 0
@@ -29,6 +38,14 @@ __myzs__log() {
 
 __myzs__dump_return() {
   return "$1"
+}
+
+__myzs__shell_is() {
+  if [[ "$SHELL" =~ $1 ]]; then
+    return 0
+  else
+    return 1
+  fi
 }
 
 export __myzs_debug
@@ -51,6 +68,29 @@ __myzs_error() {
   __myzs__log "ERROR" "$@"
 }
 
+export __myzs_initial
+__myzs_initial() {
+  if [[ "$MYZS_DEBUG" == "true" ]]; then
+    set -x # enable DEBUG MODE
+  fi
+
+  local filename
+  filename="$(basename "$1")"
+  if [[ "$2" == "force" ]]; then
+    export CURRENT_FILENAME="$filename"
+  else
+    export CURRENT_FILENAME="${CURRENT_FILENAME:-$filename}"
+  fi
+
+  __myzs_info "start new modules"
+}
+
+export __myzs_cleanup
+__myzs_cleanup() {
+  __myzs_info "cleanup application"
+  unset CURRENT_FILENAME CURRENT_FILEPATH CURRENT_STATUS
+}
+
 export __myzs_is_command_exist
 __myzs_is_command_exist() {
   if command -v "$1" &>/dev/null; then
@@ -69,6 +109,18 @@ __myzs_is_file_exist() {
     return 0
   else
     __myzs_warn "Checking file $1: NOT_FOUND"
+    return 1
+  fi
+}
+
+export __myzs_is_file_contains
+__myzs_is_file_contains() {
+  local filename="$1" searching="$2"
+  if grep "$searching" "$filename" >/dev/null; then
+    __myzs_debug "Found $searching in $filename file content"
+    return 0
+  else
+    __myzs_debug "Cannot found $searching in $filename file content"
     return 1
   fi
 }
@@ -105,6 +157,16 @@ __myzs_is_small() {
   [[ "${__MYZS_TYPE}" == "SMALL" ]]
 }
 
+export __myzs_shell_is_bash
+__myzs_shell_is_bash() {
+  __myzs__shell_is "bash"
+}
+
+export __myzs_shell_is_zsh
+__myzs_shell_is_zsh() {
+  __myzs__shell_is "zsh"
+}
+
 # $1 => readable file name
 # $2 => file path
 export __myzs_load
@@ -129,21 +191,28 @@ __myzs_load() {
 # $2 => file path
 export __myzs_load_module
 __myzs_load_module() {
-  local _name="$1" _path="$2"
+  export CURRENT_FILENAME="$1"
+  export CURRENT_FILEPATH="$2"
+  export CURRENT_STATUS="unknown"
 
-  if __myzs_load "$_name" "$_path"; then
-    __MYZS_MODULES+=("{1{${_name}}}{2{${_path}}}{3{pass}}")
+  if __myzs_load "$CURRENT_FILENAME" "$CURRENT_FILEPATH"; then
+    CURRENT_STATUS="pass"
+    __MYZS_MODULES+=("{1{${CURRENT_FILENAME}}}{2{${CURRENT_FILEPATH}}}{3{$CURRENT_STATUS}}")
     __myzs_complete
   else
-    __MYZS_MODULES+=("{1{${_name}}}{2{${_path}}}{3{fail}}")
+    CURRENT_STATUS="fail"
+    __MYZS_MODULES+=("{1{${CURRENT_FILENAME}}}{2{${CURRENT_FILEPATH}}}{3{$CURRENT_STATUS}}")
     __myzs_failure 2
   fi
 }
 
 export __myzs_skip_module
 __myzs_skip_module() {
-  local _name="$1" _path="$2"
-  __MYZS_MODULES+=("{1{${_name}}}{2{${_path}}}{3{skip}}")
+  export CURRENT_FILENAME="$1"
+  export CURRENT_FILEPATH="$2"
+  export CURRENT_STATUS="skip"
+
+  __MYZS_MODULES+=("{1{${CURRENT_FILENAME}}}{2{${CURRENT_FILEPATH}}}{3{$CURRENT_STATUS}}")
 }
 
 export __myzs_alias
@@ -152,7 +221,8 @@ __myzs_alias() {
     __myzs_warn "Cannot Add $1 alias because [command exist]"
   else
     __myzs_info "Add $1 as alias of $2"
-    alias $1=$2
+    # shellcheck disable=SC2139
+    alias "$1"="$2"
   fi
 }
 
@@ -160,7 +230,8 @@ export __myzs_alias_force
 __myzs_alias_force() {
   if __myzs_is_command_exist "$1"; then
     __myzs_info "Add $1 as alias of $2 (force)"
-    alias $1=$2
+    # shellcheck disable=SC2139
+    alias "$1"="$2"
   else
     __myzs_alias "$1" "$2"
   fi
@@ -168,46 +239,58 @@ __myzs_alias_force() {
 
 export __myzs_push_path
 __myzs_push_path() {
-  if __myzs_is_folder_exist "$1"; then
-    __myzs_info "Push $1 to PATH environment"
-    export PATH="$PATH:$1"
-  else
-    __myzs_warn "Cannot add $1 to PATH environment because folder is missing"
-  fi
+  for i in "$@"; do
+    if __myzs_is_folder_exist "$i"; then
+      if [[ "$PATH" == *"$i"* ]]; then
+        __myzs_error "$i path is already exist to \$PATH"
+      else
+        __myzs_info "Push $i to PATH environment"
+        export PATH="$PATH:$i"
+      fi
+    else
+      __myzs_warn "Cannot add $i to PATH environment because folder is missing"
+    fi
+  done
 }
 
 export __myzs_append_path
 __myzs_append_path() {
-  if __myzs_is_folder_exist "$1"; then
-    if [[ "$PATH" == *"$1"* ]]; then
-      __myzs_error "$1 path is already exist to \$PATH"
+  for i in "$@"; do
+    if __myzs_is_folder_exist "$i"; then
+      if [[ "$PATH" == *"$i"* ]]; then
+        __myzs_error "$i path is already exist to \$PATH"
+      else
+        __myzs_info "Append $i to PATH environment"
+        export PATH="$i:$PATH"
+      fi
     else
-      __myzs_info "Append $1 to PATH environment"
-      export PATH="$1:$PATH"
+      __myzs_warn "Cannot add $i to PATH environment because folder is missing"
     fi
-  else
-    __myzs_warn "Cannot add $1 to PATH environment because folder is missing"
-  fi
+  done
 }
 
 export __myzs_fpath
 __myzs_fpath() {
-  if __myzs_is_folder_exist "$1" || __myzs_is_file_exist "$1"; then
-    __myzs_info "Add $1 to fpath environment"
-    export fpath+=($1)
-  else
-    __myzs_warn "Cannot add $1 to fpath environment because folder or file is missing"
-  fi
+  for i in "$@"; do
+    if __myzs_is_folder_exist "$i" || __myzs_is_file_exist "$i"; then
+      __myzs_info "Add $i to fpath environment"
+      export fpath+=("$i")
+    else
+      __myzs_warn "Cannot add $i to fpath environment because folder or file is missing"
+    fi
+  done
 }
 
 export __myzs_manpath
 __myzs_manpath() {
-  if __myzs_is_folder_exist "$1" || __myzs_is_file_exist "$1"; then
-    __myzs_info "Add $1 to MANPATH environment"
-    export MANPATH="$MANPATH:$1"
-  else
-    __myzs_warn "Cannot add $1 to MANPATH environment because folder or file is missing"
-  fi
+  for i in "$@"; do
+    if __myzs_is_folder_exist "$i" || __myzs_is_file_exist "$i"; then
+      __myzs_info "Add $i to MANPATH environment"
+      export MANPATH="$MANPATH:$i"
+    else
+      __myzs_warn "Cannot add $i to MANPATH environment because folder or file is missing"
+    fi
+  done
 }
 
 export __myzs_failure

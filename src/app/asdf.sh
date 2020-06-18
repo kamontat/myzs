@@ -1,11 +1,10 @@
 # shellcheck disable=SC1090,SC2148
 
-if [[ "$MYZS_DEBUG" == "true" ]]; then
-  set -x # enable DEBUG MODE
-fi
+__myzs_initial "$0"
 
 if __myzs_is_command_exist "asdf"; then
-  export ASDF_HOME="$(brew --prefix asdf)"
+  ASDF_HOME="$(brew --prefix asdf)"
+  export ASDF_HOME
 
   # Install via Homebrew
   __myzs_load "ASDF setup script" "$ASDF_HOME/asdf.sh"

@@ -1,8 +1,6 @@
 # shellcheck disable=SC1090,SC2148
 
-if [[ "$MYZS_DEBUG" == "true" ]]; then
-  set -x # enable DEBUG MODE
-fi
+__myzs_initial "$0"
 
 export NODE_LTS_PATH="/usr/local/opt/node@12/bin"
 if __myzs_is_folder_exist "$NODE_LTS_PATH"; then

@@ -1,9 +1,5 @@
 #!/usr/bin/env zsh
 
-if [[ "$MYZS_DEBUG" == "true" ]]; then
-  set -x # enable DEBUG MODE
-fi
-
 local -A _revolver_spinners
 _revolver_spinners=(
   'dots' '0.08 ⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏'

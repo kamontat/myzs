@@ -1,9 +1,5 @@
 # shellcheck disable=SC1090,SC2148
 
-if [[ "$MYZS_DEBUG" == "true" ]]; then
-  set -x # enable DEBUG MODE
-fi
-
 export __MYZS_ROOT="${MYZS_ROOT:-"$HOME/.myzs"}"
 export __MYZS_SOURCE_CODE="${__MYZS_ROOT}/src"
 export __MYZS_RESOURCES="${__MYZS_ROOT}/resources"
@@ -11,19 +7,39 @@ export __MYZS_ZPLUG="${ZPLUG_HOME:-${__MYZS_ROOT}/zplug}"
 
 export __MYZS_USER="${MYZS_USER:-$USER}"
 export __MYZS_OWNER="Kamontat Chantrachirathumrong"
-export __MYZS_VERSION="4.4.0"
+export __MYZS_VERSION="4.5.0"
 export __MYZS_SINCE="21 Apr 2018"
-export __MYZS_LAST_UPDATED="01 Jun 2020"
+export __MYZS_LAST_UPDATED="18 Jun 2020"
 export __MYZS_LICENSE="MIT"
 export __MYZS_MODULES=()
 
 export __MYZS_CHANGELOGS=(
-  "[4.4.0](01 Jun 2020){add substring history search and more alias and application}"
-  "[4.3.0](24 Apr 2020){add modules and start command}"
-  "[4.2.0](15 Apr 2020){add skipping process and more customizable}"
-  "[4.1.1](04 Feb 2020){add documentation and change some default value}"
-  "[4.1.0](31 Dec 2019){add more alias, fix some log detail missing, update path to avoid duplication}"
-  "[4.0.0](23 Sep 2019){first v4.x.x released}"
+  "4.5.0" "18 Jun 2020"
+  " - Introduce new command 'myzs-info' for print myzs information
+ - Introduce new command 'myzs-list-changelogs' for print myzs changelogs
+ - Add filename to log message
+ - Change log files location to /tmp/myzs/logs
+ - Rename logfile variable from \$MYZS_LOGFILE to \$MYZS_LOGPATH
+ - Update new changelog format"
+  "4.4.0" "01 Jun 2020"
+  " - Add substring history search plugins 
+ - Add more alias and application"
+  "4.3.0" "24 Apr 2020"
+  " - Add modules loaded 
+ - Add new myzs command myzs-list-modules 
+ - Add start command"
+  "4.2.0" "15 Apr 2020"
+  " - Add skipping process 
+ - Add new customizable settings"
+  "4.1.1" "04 Feb 2020"
+  " - Add documentation
+ - Change some default value"
+  "4.1.0" "31 Dec 2019"
+  " - Add more alias
+ - Fix log detail missing
+ - Fix duplicate \$PATH variable"
+  "4.0.0" "23 Sep 2019"
+  " - First v4.x.x released"
 )
 
 # Accept values: FULLY | SMALL
@@ -39,6 +55,8 @@ export REVOLVER_CMD="${__MYZS_SOURCE_CODE}/utils/revolver"
 
 source "${__MYZS_SOURCE_CODE}/utils/helper.sh"
 
+__myzs_initial
+
 if __myzs_is_fully; then
   source "${__MYZS_SOURCE_CODE}/utils/progress.sh"
 else
@@ -48,35 +66,35 @@ fi
 pg_start
 
 pg_mark "Commandline" "setup system settings"
-__myzs_load "System variable" "${__MYZS_SOURCE_CODE}/settings/system.sh" || pg_mark_false "Cannot load system variable"
+__myzs_load_module "system.sh" "${__MYZS_SOURCE_CODE}/settings/system.sh" || pg_mark_false "Cannot load system variable"
 
 if __myzs_is_fully; then
   pg_mark "Commandline" "setup commandline settings"
-  __myzs_load "ZSH settings" "${__MYZS_SOURCE_CODE}/settings/zsh.sh" || pg_mark_false "Cannot load zsh settings"
+  __myzs_load_module "zsh.sh" "${__MYZS_SOURCE_CODE}/settings/zsh.sh" || pg_mark_false "Cannot load zsh settings"
 fi
 
-if __myzs_is_fully; then
+if __myzs_is_fully && __myzs_shell_is_zsh; then
   pg_mark "Plugin" "setup plugin manager"
-  __myzs_load "ZPLUG initial script" "${__MYZS_ZPLUG}/init.zsh" || pg_mark_false "Cannot load zplug initial script"
+  __myzs_load_module "zplug/init.zsh" "${__MYZS_ZPLUG}/init.zsh" || pg_mark_false "Cannot load zplug initial script"
 fi
 
-if __myzs_is_fully; then
+if __myzs_is_fully && __myzs_shell_is_zsh; then
   pg_mark "Plugin" "Loading plugins from zplug"
-  __myzs_load "Plugins list" "${__MYZS_SOURCE_CODE}/settings/plugins.sh" || pg_mark_false "Cannot load zplug plugins list"
+  __myzs_load_module "plugins.sh" "${__MYZS_SOURCE_CODE}/settings/plugins.sh" || pg_mark_false "Cannot load zplug plugins list"
 
   __myzs__create_plugins # create plugins
 
   # Install plugins if there are plugins that have not been installed
   if ! zplug check --verbose; then
     printf "Install? [y/N]: "
-    if read -q; then
+    if read -rq; then
       echo
       zplug install
     fi
   fi
 
   # load new plugins to system
-  zplug load --verbose >>"$__MYZS_ZPLUG_LOGFILE"
+  zplug load --verbose >>"$MYZS_ZPLUG_LOGPATH"
 fi
 
 pg_mark "Helper" "Loading application setup script"
@@ -111,9 +129,7 @@ done
 
 pg_stop
 
-if __myzs_is_fully; then
-  __myzs_load "environment file" "$MYZS_ROOT/.env"
-fi
+__myzs_load "environment file" "$MYZS_ROOT/.env"
 
 if __myzs_is_fully; then
   # auto open path from clipboard
@@ -137,3 +153,5 @@ if __myzs_is_fully; then
     $MYZS_START_COMMAND "${MYZS_START_COMMAND_ARGUMENTS[@]}"
   fi
 fi
+
+__myzs_cleanup

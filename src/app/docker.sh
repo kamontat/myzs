@@ -1,8 +1,6 @@
 # shellcheck disable=SC1090,SC2148
 
-if [[ "$MYZS_DEBUG" == "true" ]]; then
-  set -x # enable DEBUG MODE
-fi
+__myzs_initial "$0"
 
 export DOCKER_COMPLETION="$HOME/.myzs/zplug/repos/zsh-users/zsh-completions/src/_docker"
 export DOCKER_COMPOSE_COMPLETION="$HOME/.myzs/zplug/repos/zsh-users/zsh-completions/src/_docker-compose"

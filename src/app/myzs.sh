@@ -1,8 +1,6 @@
 # shellcheck disable=SC1090,SC2148
 
-if [[ "$MYZS_DEBUG" == "true" ]]; then
-  set -x # enable DEBUG MODE
-fi
+__myzs_initial "$0"
 
 myzs-upload() {
   test -z "$MYZS_ROOT" && echo "\$MYZS_ROOT is required" && exit 2
@@ -24,7 +22,50 @@ myzs-download() {
   git pull
 }
 
+myzs-info() {
+  echo "# Introduction
+
+Hello, My name is myzs. I'm a configuable shell settings.
+I was created by $__MYZS_OWNER since $__MYZS_SINCE.
+My owner actively upgrade myself as much as possible, 
+and now my upgraded version is $__MYZS_VERSION which updated from ${__MYZS_LAST_UPDATED}
+I'm holding license '${__MYZS_LICENSE}' which mean you can do everything that license allow.
+Most of my application files stay on ${__MYZS_ROOT}
+and log message will produce to ${MYZS_LOGPATH}.
+"
+
+  myzs-list-changelogs
+  myzs-list-modules
+}
+
+myzs-list-changelogs() {
+  echo "# Release notes"
+  echo
+
+  if test -z "${__MYZS_CHANGELOGS[*]}"; then
+    echo "Cannot found any notes"
+  else
+    local size version date changelog
+
+    size="${#__MYZS_CHANGELOGS[@]}"
+
+    for ((i = 1; i < size; i += 3)); do
+      version="${__MYZS_CHANGELOGS[i]}"
+      date="${__MYZS_CHANGELOGS[i + 1]}"
+      changelog="${__MYZS_CHANGELOGS[i + 2]}"
+
+      echo "## Version $version ($date)"
+      echo
+      echo "$changelog"
+      echo
+    done
+  fi
+}
+
 myzs-list-modules() {
+  echo "# Modules"
+  echo
+
   test -z "${__MYZS_MODULES[*]}" && echo "Cannot find any modules exist" && exit 2
 
   local mod reg1 reg2 reg3 filename filepath filestatus raw raw1

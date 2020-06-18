@@ -1,8 +1,6 @@
 # shellcheck disable=SC1090,SC2148
 
-if [[ "$MYZS_DEBUG" == "true" ]]; then
-  set -x # enable DEBUG MODE
-fi
+__myzs_initial "$0"
 
 emulate -L zsh
 unsetopt CORRECT_ALL
@@ -60,6 +58,8 @@ setopt MULTIOS              # Write to multiple descriptors.
 setopt EXTENDED_GLOB        # Use extended globbing syntax.
 unsetopt CLOBBER            # Do not overwrite existing files with > and >>.
                             # Use >! and >>! to bypass.
+unsetopt RM_STAR_SILENT     # ask you before executing rm with a star
+# setopt RM_STAR_WAIT       # wait 10 seconds until executing rm with a star e.g. `rm folder/*`
 
 autoload -Uz bracketed-paste-url-magic
 zle -N bracketed-paste bracketed-paste-url-magic

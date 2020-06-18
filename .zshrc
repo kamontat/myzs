@@ -86,7 +86,8 @@ export SAVEHIST=$HISTSIZE
 ################################
 
 # This is tell terminal to know what is default shell
-export SHELL="/usr/local/bin/zsh"
+DEFAULT_SHELL="/usr/local/bin/zsh"
+export DEFAULT_SHELL
 
 # System call, leave it alone
 if test -f "${MYZS_ROOT}/init.sh"; then
