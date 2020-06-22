@@ -132,7 +132,18 @@ done
 
 pg_stop
 
-__myzs_load "environment file" "$MYZS_ROOT/.env"
+env_list=()
+while IFS= read -r line; do
+  key="${line%=*}"
+  value="${line##*=}"
+
+  if __myzs_is_string_exist "$key" && __myzs_is_string_exist "$value"; then
+    env_list+=("$key")
+    # shellcheck disable=SC2163
+    export "${key}"="${value}"
+  fi
+done <"$MYZS_ROOT/.env"
+[[ ${#env_list[@]} -gt 0 ]] && __myzs_info "exporting [ ${env_list[*]} ]"
 
 if __myzs_is_fully; then
   # auto open path from clipboard
