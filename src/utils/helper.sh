@@ -4,9 +4,15 @@ if [[ "$MYZS_DEBUG" == "true" ]]; then
   set -x # enable DEBUG MODE
 fi
 
+export __MYZS_LOGTYPE="${MYZS_LOGTYPE:-auto}"
 export __MYZS_LOGDIR="${MYZS_LOGDIR:-/tmp/myzs/logs}"
 export __MYZS_LOGFILE="${MYZS_LOGFILE:-main.log}"
 export __MYZS_ZPLUG_LOGFILE="${MYZS_ZPLUG_LOGFILE:-zplug.log}"
+
+if [[ "$__MYZS_LOGTYPE" == "auto" ]]; then
+  __MYZS_LOGFILE="main-$(date +"%y%m%d").log"
+  __MYZS_ZPLUG_LOGFILE="zplug-$(date +"%y%m%d").log"
+fi
 
 export MYZS_LOGPATH="${__MYZS_LOGDIR}/${__MYZS_LOGFILE}"
 export MYZS_ZPLUG_LOGPATH="${__MYZS_LOGDIR}/${__MYZS_ZPLUG_LOGFILE}"
@@ -25,7 +31,10 @@ __myzs__log() {
     local type datetime filename
 
     datetime="$(date)"
-    filename="${CURRENT_FILENAME:-unknown}"
+    if [[ "$__MYZS_LOGTYPE" == "auto" ]]; then
+      datetime="$(date +"%H:%M:%S")"
+    fi
+    filename="${__MYZS__CURRENT_FILENAME:-unknown}"
 
     type="$1"
     shift
@@ -77,9 +86,9 @@ __myzs_initial() {
   local filename
   filename="$(basename "$1")"
   if [[ "$2" == "force" ]]; then
-    export CURRENT_FILENAME="$filename"
+    export __MYZS__CURRENT_FILENAME="$filename"
   else
-    export CURRENT_FILENAME="${CURRENT_FILENAME:-$filename}"
+    export __MYZS__CURRENT_FILENAME="${__MYZS__CURRENT_FILENAME:-$filename}"
   fi
 
   __myzs_info "start new modules"
@@ -88,7 +97,11 @@ __myzs_initial() {
 export __myzs_cleanup
 __myzs_cleanup() {
   __myzs_info "cleanup application"
-  unset CURRENT_FILENAME CURRENT_FILEPATH CURRENT_STATUS
+  unset __MYZS__CURRENT_FILENAME __MYZS__CURRENT_FILEPATH __MYZS__CURRENT_STATUS
+
+  # for e in $(env | grep MYZS); do
+  #   echo "e: $e"
+  # done
 }
 
 export __myzs_is_command_exist
@@ -191,28 +204,28 @@ __myzs_load() {
 # $2 => file path
 export __myzs_load_module
 __myzs_load_module() {
-  export CURRENT_FILENAME="$1"
-  export CURRENT_FILEPATH="$2"
-  export CURRENT_STATUS="unknown"
+  export __MYZS__CURRENT_FILENAME="$1"
+  export __MYZS__CURRENT_FILEPATH="$2"
+  export __MYZS__CURRENT_STATUS="unknown"
 
-  if __myzs_load "$CURRENT_FILENAME" "$CURRENT_FILEPATH"; then
-    CURRENT_STATUS="pass"
-    __MYZS_MODULES+=("{1{${CURRENT_FILENAME}}}{2{${CURRENT_FILEPATH}}}{3{$CURRENT_STATUS}}")
+  if __myzs_load "$__MYZS__CURRENT_FILENAME" "$__MYZS__CURRENT_FILEPATH"; then
+    __MYZS__CURRENT_STATUS="pass"
+    __MYZS_MODULES+=("{1{${__MYZS__CURRENT_FILENAME}}}{2{${__MYZS__CURRENT_FILEPATH}}}{3{$__MYZS__CURRENT_STATUS}}")
     __myzs_complete
   else
-    CURRENT_STATUS="fail"
-    __MYZS_MODULES+=("{1{${CURRENT_FILENAME}}}{2{${CURRENT_FILEPATH}}}{3{$CURRENT_STATUS}}")
+    __MYZS__CURRENT_STATUS="fail"
+    __MYZS_MODULES+=("{1{${__MYZS__CURRENT_FILENAME}}}{2{${__MYZS__CURRENT_FILEPATH}}}{3{$__MYZS__CURRENT_STATUS}}")
     __myzs_failure 2
   fi
 }
 
 export __myzs_skip_module
 __myzs_skip_module() {
-  export CURRENT_FILENAME="$1"
-  export CURRENT_FILEPATH="$2"
-  export CURRENT_STATUS="skip"
+  export __MYZS__CURRENT_FILENAME="$1"
+  export __MYZS__CURRENT_FILEPATH="$2"
+  export __MYZS__CURRENT_STATUS="skip"
 
-  __MYZS_MODULES+=("{1{${CURRENT_FILENAME}}}{2{${CURRENT_FILEPATH}}}{3{$CURRENT_STATUS}}")
+  __MYZS_MODULES+=("{1{${__MYZS__CURRENT_FILENAME}}}{2{${__MYZS__CURRENT_FILEPATH}}}{3{$__MYZS__CURRENT_STATUS}}")
 }
 
 export __myzs_alias
