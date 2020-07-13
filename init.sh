@@ -7,13 +7,19 @@ export __MYZS_ZPLUG="${ZPLUG_HOME:-${__MYZS_ROOT}/zplug}"
 
 export __MYZS_USER="${MYZS_USER:-$USER}"
 export __MYZS_OWNER="Kamontat Chantrachirathumrong"
-export __MYZS_VERSION="4.5.1"
+export __MYZS_VERSION="4.5.2"
 export __MYZS_SINCE="21 Apr 2018"
-export __MYZS_LAST_UPDATED="18 Jun 2020"
+export __MYZS_LAST_UPDATED="13 Jul 2020"
 export __MYZS_LICENSE="MIT"
 export __MYZS_MODULES=()
 
 export __MYZS_CHANGELOGS=(
+  "4.5.2" "13 Jul 2020"
+  " - update alias of agoda and mac
+ - update app of asdf and add new tmux app
+ - add more helper in utils helper
+ - update some minor config in init.sh
+ "
   "4.5.1" "18 Jun 2020"
   " - update some default variable
  - improve documents on zshrc file"
@@ -133,6 +139,9 @@ done
 pg_stop
 
 env_list=()
+export __MYZS_ENVFILE="$MYZS_ROOT/.env"
+
+__myzs_initial "$__MYZS_ENVFILE"
 while IFS= read -r line; do
   key="${line%=*}"
   value="${line##*=}"
@@ -142,9 +151,10 @@ while IFS= read -r line; do
     # shellcheck disable=SC2163
     export "${key}"="${value}"
   fi
-done <"$MYZS_ROOT/.env"
+done <"$__MYZS_ENVFILE"
 [[ ${#env_list[@]} -gt 0 ]] && __myzs_info "exporting [ ${env_list[*]} ]"
 
+__myzs_initial "$0"
 if __myzs_is_fully; then
   # auto open path from clipboard
   if [[ "$MYZS_SETTINGS_AUTO_OPEN_PATH" == "true" ]]; then

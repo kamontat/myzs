@@ -2,7 +2,7 @@
 
 __myzs_initial "$0"
 
-if [ "$(uname -s)" = "Darwin" ] && __myzs_is_command_exist "osascript"; then
+if __myzs_is_mac && __myzs_is_command_exist "osascript"; then
   newtab() {
     clipboard="$(pbpaste)"
 

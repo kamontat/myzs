@@ -180,6 +180,17 @@ __myzs_shell_is_zsh() {
   __myzs__shell_is "zsh"
 }
 
+export __myzs_is_mac
+__myzs_is_mac() {
+  local name
+  name="$(uname -s)"
+  if [[ "$name" = "Darwin" ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
 # $1 => readable file name
 # $2 => file path
 export __myzs_load

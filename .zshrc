@@ -31,7 +31,7 @@ export MYZS_TYPE="FULLY"
 # This shouldn't be changes, except you install the application to difference
 export MYZS_ROOT="$HOME/.myzs"
 
-export MYZS_EXCLUDE_COMPONENTS="travis.sh,fzf.sh,asdf.sh"
+export MYZS_EXCLUDE_COMPONENTS="travis.sh,fzf.sh"
 
 ################################
 # Dependenies settings         #
