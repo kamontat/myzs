@@ -7,7 +7,7 @@ export __MYZS_ZPLUG="${ZPLUG_HOME:-${__MYZS_ROOT}/zplug}"
 
 export __MYZS_USER="${MYZS_USER:-$USER}"
 export __MYZS_OWNER="Kamontat Chantrachirathumrong"
-export __MYZS_VERSION="4.7.0"
+export __MYZS_VERSION="4.7.1"
 export __MYZS_SINCE="21 Apr 2018"
 export __MYZS_LAST_UPDATED="10 Aug 2020"
 export __MYZS_LICENSE="MIT"
@@ -48,6 +48,9 @@ export __MYZS_FULLY_MODULES=(
 )
 
 export __MYZS_CHANGELOGS=(
+  "4.7.1" "10 Aug 2020"
+  " - add short command as default enable modules
+ "
   "4.7.0" "10 Aug 2020"
   " - reduce start time by loading only important modules
  - add myzs-load / mload for load modules after initial finish

@@ -65,7 +65,7 @@ export MYZS_LOADING_MODULES=(
   # "alias/generator.sh"
   # "alias/github.sh"
   # "alias/neofetch.sh"
-  # "alias/short.sh"
+  "alias/short.sh"
   # "alias/yarn.sh"
 )
 
