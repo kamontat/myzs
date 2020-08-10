@@ -15,6 +15,9 @@ export MYZS_USER="$USER"
 # Copy path you would like to go, the start shell will try to cd to that path automatically
 export MYZS_SETTINGS_AUTO_OPEN_PATH=true
 
+# add trigger event to cd command to check .myzs-setup file
+export MYZS_SETTINGS_AUTOLOAD_SETUP_LOCAL=false
+
 # start command; this will run after exit init.sh
 export MYZS_START_COMMAND=""
 # start command arguments
@@ -32,36 +35,38 @@ export MYZS_TYPE="FULLY"
 export MYZS_ROOT="$HOME/.myzs"
 
 export MYZS_LOADING_MODULES=(
-  "app/android.sh"
-  "app/docker.sh"
-  # "app/fzf.sh"
-  "app/history.sh"
-  "app/kube.sh"
   "app/myzs.sh"
-  "app/tmux.sh"
-  "app/wireshark.sh"
-  "app/asdf.sh"
-  "app/flutter.sh"
-  "app/go.sh"
-  "app/iterm.sh"
-  "app/macgpg.sh"
-  "app/thefuck.sh"
+  # "app/android.sh"
+  # "app/docker.sh"
+  # "app/fzf.sh"
+  # "app/history.sh"
+  # "app/kube.sh"
+  # "app/tmux.sh"
+  # "app/wireshark.sh"
+  # "app/asdf.sh"
+  # "app/flutter.sh"
+  # "app/go.sh"
+  # "app/iterm.sh"
+  # "app/macgpg.sh"
+  # "app/thefuck.sh"
   # "app/travis.sh"
-  "app/yarn.sh"
-  "alias/agoda.sh"
-  "alias/docker.sh"
-  "alias/fuck.sh"
+  # "app/yarn.sh"
+  "alias/initial.sh"
+  "alias/myzs.sh"
+  # "alias/agoda.sh"
+  # "alias/docker.sh"
+  # "alias/fuck.sh"
   "alias/git.sh"
   "alias/mac.sh"
   "alias/shell.sh"
-  "alias/vim.sh"
-  "alias/coreutils.sh"
+  # "alias/vim.sh"
+  # "alias/coreutils.sh"
   "alias/editor.sh"
-  "alias/generator.sh"
-  "alias/github.sh"
-  "alias/neofetch.sh"
-  "alias/short.sh"
-  "alias/yarn.sh"
+  # "alias/generator.sh"
+  # "alias/github.sh"
+  # "alias/neofetch.sh"
+  # "alias/short.sh"
+  # "alias/yarn.sh"
 )
 
 ################################
@@ -128,9 +133,3 @@ fi
 ################################
 # Appending by user or scripts #
 ################################
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/usr/local/bin/google-cloud-sdk/path.zsh.inc' ]; then . '/usr/local/bin/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/usr/local/bin/google-cloud-sdk/completion.zsh.inc' ]; then . '/usr/local/bin/google-cloud-sdk/completion.zsh.inc'; fi

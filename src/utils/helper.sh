@@ -152,7 +152,7 @@ __myzs_is_folder_exist() {
 export __myzs_is_string_exist
 __myzs_is_string_exist() {
   if test -n "$1"; then
-    __myzs_debug "Checking string '$1': EXIST"
+    __myzs_debug "Checking string '${1:0:10}': EXIST"
     return 0
   else
     __myzs_warn "Checking string '$1': EMPTY"
@@ -191,6 +191,11 @@ __myzs_is_mac() {
   fi
 }
 
+export __myzs__remove_array_index
+__myzs__remove_array_index() {
+  eval "$1=( \"\${$1[@]:0:$2}\" \"\${$1[@]:$(($2 + 1))}\" )"
+}
+
 # $1 => readable file name
 # $2 => file path
 export __myzs_load
@@ -201,13 +206,13 @@ __myzs_load() {
     exitcode=$?
     if [[ "$exitcode" != "0" ]]; then
       __myzs_error "Cannot load ${_name} (${_path}) because source return $exitcode"
-      return 1
+      __myzs_failure
     fi
 
     __myzs_info "Loaded ${_name} (${_path}) to the system"
   else
     __myzs_warn "Cannot load ${_name} (${_path}) because file is missing"
-    return 1
+    __myzs_failure
   fi
 }
 
@@ -218,6 +223,14 @@ __myzs_load_module() {
   export __MYZS__CURRENT_FILENAME="$1"
   export __MYZS__CURRENT_FILEPATH="$2"
   export __MYZS__CURRENT_STATUS="unknown"
+
+  local index
+
+  index="$(__myzs__get_module_index "$__MYZS__CURRENT_FILENAME" "0")"
+  if [[ "${index}" != "-1" ]]; then
+    __myzs_info "load exist module $__MYZS__CURRENT_FILENAME at $index"
+    __myzs__remove_array_index "__MYZS_MODULES" "${index}"
+  fi
 
   if __myzs_load "$__MYZS__CURRENT_FILENAME" "$__MYZS__CURRENT_FILEPATH"; then
     __MYZS__CURRENT_STATUS="pass"
@@ -338,5 +351,70 @@ __myzs_is_plugin_installed() {
   else
     __myzs_warn "package not exist ($name)"
     return 1
+  fi
+}
+
+export __myzs__is_valid_module
+__myzs__is_valid_module() {
+  local input="$1"
+
+  ! __myzs_is_string_exist "${input}" && echo "Cannot found input string" && __myzs_failure "2"
+  ! __myzs_is_string_exist "${__MYZS_FULLY_MODULES[*]}" && echo "Cannot find any modules exist" && __myzs_failure "2"
+
+  if [[ "${__MYZS_FULLY_MODULES[*]}" =~ $input ]]; then
+    __myzs_complete
+  else
+    __myzs_failure
+  fi
+}
+
+export __myzs__get_module_index
+__myzs__get_module_index() {
+  local input="$1"
+  local starter_index="${2:-1}"
+
+  ! __myzs_is_string_exist "${input}" && __myzs_failure "2"
+  ! __myzs_is_string_exist "${__MYZS_MODULES[*]}" && __myzs_failure "2"
+
+  local mod reg index result raw raw1
+
+  reg="\{3\{(pass|fail|skip)\}\}"
+
+  index="$starter_index"
+  for mod in "${__MYZS_MODULES[@]}"; do
+    if [[ $mod =~ $input ]]; then
+      result="$index"
+      echo "$result"
+      break
+    fi
+    ((index++))
+  done
+
+  ! __myzs_is_string_exist "$result" &&
+    echo "-1" &&
+    __myzs_failure "3"
+}
+
+export __myzs__get_module_status
+__myzs__get_module_status() {
+  local input="$1"
+
+  ! __myzs_is_string_exist "${input}" && __myzs_failure "2"
+  ! __myzs_is_string_exist "${__MYZS_MODULES[*]}" && __myzs_failure "2"
+
+  local mod reg index result raw raw1
+
+  reg="\{3\{(pass|fail|skip)\}\}"
+
+  index="$(__myzs__get_module_index "$input")"
+  mod="${__MYZS_MODULES[$index]}"
+  if [[ $mod =~ $input ]]; then
+    raw="$(echo "$mod" | grep -Eoi "${reg}")"
+    raw1="${raw//\{3\{/}"
+    result="${raw1//\}\}/}"
+
+    echo "$result"
+  else
+    __myzs_failure "3"
   fi
 }

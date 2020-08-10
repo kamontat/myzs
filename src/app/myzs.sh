@@ -66,7 +66,7 @@ myzs-list-modules() {
   echo "# Modules"
   echo
 
-  test -z "${__MYZS_MODULES[*]}" && echo "Cannot find any modules exist" && exit 2
+  ! __myzs_is_string_exist "${__MYZS_MODULES[*]}" && echo "Cannot find any modules exist" && exit 2
 
   local mod reg1 reg2 reg3 filename filepath filestatus raw raw1
 
@@ -95,4 +95,31 @@ myzs-list-modules() {
 
   echo
   printf 'Total %s modules\n' "${#__MYZS_MODULES[@]}"
+}
+
+# load modules
+# param $1 - module name in src only
+#       $2 - string as 'debug' to print debug information
+myzs-load() {
+  __myzs_initial "app/myzs.sh#myzs-load"
+
+  local name="$1" # fully_modules format
+  local debug="$2"
+
+  fullpath="${__MYZS_SOURCE_CODE}/${name}"
+
+  __myzs_is_string_exist "$debug" && echo "input name: $name"
+  __myzs_is_string_exist "$debug" && echo "input path: $fullpath"
+
+  if __myzs_load_module "$name" "$fullpath"; then
+    __myzs_is_string_exist "$debug" && echo "loaded"
+  fi
+}
+
+# run myzs load set file: $PWD/.myzs-setup
+myzs-setup-local() {
+  __myzs_initial "app/myzs.sh#myzs-setup-local"
+
+  local fullpath="$PWD/.myzs-setup"
+  __myzs_load "local-setup" "$fullpath"
 }

@@ -7,9 +7,9 @@ export __MYZS_ZPLUG="${ZPLUG_HOME:-${__MYZS_ROOT}/zplug}"
 
 export __MYZS_USER="${MYZS_USER:-$USER}"
 export __MYZS_OWNER="Kamontat Chantrachirathumrong"
-export __MYZS_VERSION="4.6.0"
+export __MYZS_VERSION="4.7.0"
 export __MYZS_SINCE="21 Apr 2018"
-export __MYZS_LAST_UPDATED="11 Aug 2020"
+export __MYZS_LAST_UPDATED="10 Aug 2020"
 export __MYZS_LICENSE="MIT"
 export __MYZS_MODULES=()
 export __MYZS_FULLY_MODULES=(
@@ -29,6 +29,8 @@ export __MYZS_FULLY_MODULES=(
   "app/thefuck.sh"
   "app/travis.sh"
   "app/yarn.sh"
+  "alias/initial.sh"
+  "alias/myzs.sh"
   "alias/agoda.sh"
   "alias/docker.sh"
   "alias/fuck.sh"
@@ -46,7 +48,15 @@ export __MYZS_FULLY_MODULES=(
 )
 
 export __MYZS_CHANGELOGS=(
-  "4.6.0" "11 Aug 2020"
+  "4.7.0" "10 Aug 2020"
+  " - reduce start time by loading only important modules
+ - add myzs-load / mload for load modules after initial finish
+ - alias all myzs-XXXXX command
+ - reduce start time from ~7 seconds to ~2 seconds
+ - add .myzs-setup file to automatic load when it present (configuable)
+ - manually load .myzs-setup file by run myzs-setup-local command 
+ "
+  "4.6.0" "10 Aug 2020"
   " - change logic to load modules
  - remove exclude module variable
  - add prefix to modules name
@@ -151,8 +161,12 @@ for __path in "${MYZS_LOADING_MODULES[@]}"; do
   fullpath="${__MYZS_SOURCE_CODE}/${__path}"
 
   # supported components
-  if [[ "${__MYZS_FULLY_MODULES[*]}" =~ $__path ]]; then
-    __myzs_load_module "${__path}" "$fullpath" || pg_mark_false "Cannot load $__path"
+  if __myzs__is_valid_module "$__path"; then
+    if __myzs_is_fully || [[ $__path =~ "alias" ]]; then
+      __myzs_load_module "${__path}" "$fullpath" || pg_mark_false "Cannot load $__path"
+    else
+      pg_mark_false "non-alias modules cannot autoload in TYPE=$__MYZS_TYPE"
+    fi
   else
     pg_mark_false "'$__path' not found in FULLY_COMPONENTS"
   fi
@@ -207,5 +221,7 @@ if __myzs_is_fully; then
     $MYZS_START_COMMAND "${MYZS_START_COMMAND_ARGUMENTS[@]}"
   fi
 fi
+
+$MYZS_SETTINGS_AUTOLOAD_SETUP_LOCAL && myzs-setup-local
 
 __myzs_cleanup
