@@ -74,7 +74,7 @@ myzs-list-modules() {
   reg2="\{2\{([^\{\}]+)\}\}"
   reg3="\{3\{(pass|fail|skip)\}\}"
 
-  printf '| %-15s | %-35s | %-10s |\n' "[name]" "[path]" "[status]"
+  printf '| %-20s | %-35s | %-10s |\n' "[name]" "[path]" "[status]"
 
   for mod in "${__MYZS_MODULES[@]}"; do
     raw="$(echo "$mod" | grep -Eoi "${reg1}")"
@@ -90,7 +90,7 @@ myzs-list-modules() {
     raw1="${raw//\{3\{/}"
     filestatus="${raw1//\}\}/}"
 
-    printf '| %-15s | %-35s | %-10s |\n' "${filename}" "${filepath}" "${filestatus}"
+    printf '| %-20s | %-35s | %-10s |\n' "${filename}" "${filepath}" "${filestatus}"
   done
 
   echo
