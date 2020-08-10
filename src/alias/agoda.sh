@@ -5,13 +5,14 @@ __myzs_initial "$0"
 __agoda_kube() {
   confpath="${1:-$HOME/.kube/config}"
   namespace="${2:-pricepush-ci1}"
+  workspace="${3:-$HOME/Desktop/docker}"
 
   docker \
     run \
     --rm \
     -it \
     -e TILLER_NAMESPACE="$namespace" \
-    -v "$HOME/Desktop/docker:/root/workspace" \
+    -v "${workspace}:/root/workspace" \
     -v "${confpath}:/root/.kube/config" \
     -w /root/workspace \
     "reg-hk.agodadev.io/aiab/kubectl-helm:hkci-helm3" \
