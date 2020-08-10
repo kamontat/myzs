@@ -7,13 +7,51 @@ export __MYZS_ZPLUG="${ZPLUG_HOME:-${__MYZS_ROOT}/zplug}"
 
 export __MYZS_USER="${MYZS_USER:-$USER}"
 export __MYZS_OWNER="Kamontat Chantrachirathumrong"
-export __MYZS_VERSION="4.5.2"
+export __MYZS_VERSION="4.6.0"
 export __MYZS_SINCE="21 Apr 2018"
-export __MYZS_LAST_UPDATED="13 Jul 2020"
+export __MYZS_LAST_UPDATED="11 Aug 2020"
 export __MYZS_LICENSE="MIT"
 export __MYZS_MODULES=()
+export __MYZS_FULLY_MODULES=(
+  "app/android.sh"
+  "app/docker.sh"
+  "app/fzf.sh"
+  "app/history.sh"
+  "app/kube.sh"
+  "app/myzs.sh"
+  "app/tmux.sh"
+  "app/wireshark.sh"
+  "app/asdf.sh"
+  "app/flutter.sh"
+  "app/go.sh"
+  "app/iterm.sh"
+  "app/macgpg.sh"
+  "app/thefuck.sh"
+  "app/travis.sh"
+  "app/yarn.sh"
+  "alias/agoda.sh"
+  "alias/docker.sh"
+  "alias/fuck.sh"
+  "alias/git.sh"
+  "alias/mac.sh"
+  "alias/shell.sh"
+  "alias/vim.sh"
+  "alias/coreutils.sh"
+  "alias/editor.sh"
+  "alias/generator.sh"
+  "alias/github.sh"
+  "alias/neofetch.sh"
+  "alias/short.sh"
+  "alias/yarn.sh"
+)
 
 export __MYZS_CHANGELOGS=(
+  "4.6.0" "11 Aug 2020"
+  " - change logic to load modules
+ - remove exclude module variable
+ - add prefix to modules name
+ - improve around 1% load time
+ "
   "4.5.2" "13 Jul 2020"
   " - update alias of agoda and mac
  - update app of asdf and add new tmux app
@@ -106,34 +144,26 @@ if __myzs_is_fully && __myzs_shell_is_zsh; then
   zplug load --verbose >>"$MYZS_ZPLUG_LOGPATH"
 fi
 
-pg_mark "Helper" "Loading application setup script"
-if __myzs_is_fully; then
-  for __path in "${__MYZS_SOURCE_CODE}"/app/*.sh; do
-    __filename="$(basename "$__path")"
-    pg_mark "Application" "Loading ${__filename}"
+pg_mark "Helper" "Loading setup scripts"
+for __path in "${MYZS_LOADING_MODULES[@]}"; do
+  pg_mark "Scripts" "Loading $__path"
 
-    if [[ "$MYZS_EXCLUDE_COMPONENTS" =~ ${__filename} ]]; then
-      pg_mark_skip "${__filename}"
-      __myzs_skip_module "${__filename}" "$__path"
-    else
-      __myzs_load_module "${__filename}" "$__path" || pg_mark_false "Cannot load $__filename"
-    fi
-  done
-fi
+  fullpath="${__MYZS_SOURCE_CODE}/${__path}"
 
-pg_mark "Helper" "Loading alias setup script"
-for __path in "${__MYZS_SOURCE_CODE}"/alias/*.sh; do
-  __filename="$(basename "$__path")"
-  pg_mark "Alias" "Loading ${__filename}"
-
-  if [[ "$MYZS_EXCLUDE_COMPONENTS" =~ ${__filename} ]]; then
-    pg_mark_skip "${__filename}"
-    __myzs_skip_module "${__filename}" "$__path"
+  # supported components
+  if [[ "${__MYZS_FULLY_MODULES[*]}" =~ $__path ]]; then
+    __myzs_load_module "${__path}" "$fullpath" || pg_mark_false "Cannot load $__path"
   else
-    __myzs_load_module "${__filename}" "$__path" || pg_mark_false "Cannot load $__filename"
+    pg_mark_false "'$__path' not found in FULLY_COMPONENTS"
   fi
+done
 
-  unset __filename
+pg_mark "Helper" "Normalize all modules status"
+for __component in "${__MYZS_FULLY_MODULES[@]}"; do
+  if ! [[ "${MYZS_LOADING_MODULES[*]}" =~ $__component ]]; then
+    fullpath="${__MYZS_SOURCE_CODE}/${__component}"
+    __myzs_skip_module "${__component}" "$fullpath"
+  fi
 done
 
 pg_stop
