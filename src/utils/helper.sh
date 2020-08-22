@@ -210,6 +210,7 @@ __myzs_load() {
     fi
 
     __myzs_info "Loaded ${_name} (${_path}) to the system"
+    __myzs_complete
   else
     __myzs_warn "Cannot load ${_name} (${_path}) because file is missing"
     __myzs_failure

@@ -13,3 +13,5 @@ elif grep -q "bash" <<<"$SHELL"; then
 elif grep -q "fish" <<<"$SHELL"; then
   __myzs_alias "restart-shell" "restart-fish"
 fi
+
+__myzs_alias "reshell" "restart-shell"

@@ -25,17 +25,27 @@ myzs-download() {
 myzs-info() {
   echo "# Introduction
 
-Hello, My name is myzs. I'm a configuable shell settings.
-I was created by $__MYZS_OWNER since $__MYZS_SINCE.
-My owner actively upgrade myself as much as possible, 
-and now my upgraded version is $__MYZS_VERSION which updated from ${__MYZS_LAST_UPDATED}
-I'm holding license '${__MYZS_LICENSE}' which mean you can do everything that license allow.
-Most of my application files stay on ${__MYZS_ROOT}
-and log message will produce to ${MYZS_LOGPATH}.
-"
+MYZS is a configable zsh initial scripts (known as .zshrc).
+This supported modules as shell application or alias scripts and more.
 
-  myzs-list-changelogs
-  myzs-list-modules
+You can upgrade version by run 'myzs-download' to fetch latest version.
+
+## Information
+
+1. Current user:         ${USER}
+2. Application location: ${__MYZS_ROOT}
+3. Application version:  ${__MYZS_VERSION}
+4. Application type:     ${__MYZS_TYPE}
+5. Log location:         ${MYZS_LOGPATH}
+6. Loading time:         ${PROGRESS_LOADTIME}
+7. Loaded time:          ${__MYZS_FINISH_TIME}
+
+## Credit
+
+Created by '$__MYZS_OWNER'
+Since      '$__MYZS_SINCE' => '$__MYZS_LAST_UPDATED'
+License    '$__MYZS_LICENSE'
+"
 }
 
 myzs-list-changelogs() {
@@ -111,8 +121,17 @@ myzs-load() {
   __myzs_is_string_exist "$debug" && echo "input name: $name"
   __myzs_is_string_exist "$debug" && echo "input path: $fullpath"
 
-  if __myzs_load_module "$name" "$fullpath"; then
-    __myzs_is_string_exist "$debug" && echo "loaded"
+  if __myzs__is_valid_module "$name"; then
+    if __myzs_load_module "$name" "$fullpath"; then
+      __myzs_is_string_exist "$debug" && echo "loaded"
+      __myzs_complete
+    else
+      __myzs_is_string_exist "$debug" && echo "loading module return error" >&2
+      __myzs_failure 2
+    fi
+  else
+    __myzs_is_string_exist "$debug" && echo "invalid modules ($name)" >&2
+    __myzs_failure 3
   fi
 }
 

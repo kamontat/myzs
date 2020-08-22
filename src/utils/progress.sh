@@ -155,6 +155,8 @@ pg_mark_skip() {
 }
 
 pg_stop() {
+  local load_time
+
   TIME=$(($(sec) - PG_PREV_TIME))
 
   if "$__PG_SHOW_PERF"; then
@@ -164,7 +166,10 @@ pg_stop() {
   "${__REVOLVER_CMD}" stop
 
   TIME=$(($(sec) - PG_START_TIME))
+  load_time="$(conv_time "${TIME}")"
 
-  printf "${PG_COMPLETE_CL}[+]${PG_RESET} %-${MESSAGE_LENGTH}s      in ${PG_TIME_CL}%s${PG_RESET}." "$(format_message "Completed" "Initialization $PG_PROCESS_COUNT tasks")" "$(conv_time "${TIME}")"
+  printf "${PG_COMPLETE_CL}[+]${PG_RESET} %-${MESSAGE_LENGTH}s      in ${PG_TIME_CL}%s${PG_RESET}." "$(format_message "Completed" "Initialization $PG_PROCESS_COUNT tasks")" "${load_time}"
   echo
+
+  export PROGRESS_LOADTIME="$load_time"
 }

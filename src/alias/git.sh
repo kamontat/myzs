@@ -15,15 +15,14 @@ if __myzs_is_command_exist "git"; then
 
   __myzs_alias "ga" "git add"
 
-  __myzs_alias "gc" "git commit"
-  __myzs_alias "gcm" "git commit -m"
-  __myzs_alias "gcm-sign" "git commit -S -m"
+  __myzs_alias "gcm" "git commit"
+  __myzs_alias "gcm-sign" "git commit -S"
 
   __myzs_alias "gco" "git checkout"
   __myzs_alias "gcob" "git checkout -b"
   __myzs_alias "gconb" "git checkout -b"
   __myzs_alias "gcoeb" "git checkout --orphan"
-  __myzs_alias "gcod" "git checkout dev"
+  __myzs_alias "gcod" "git checkout develop"
   __myzs_alias "gcom" "git checkout master"
 
   # for git version 2.23.0
@@ -69,7 +68,7 @@ if __myzs_is_command_exist "git"; then
   __myzs_alias "glss" "git log --graph --stat --summary"    # log with stat and summary
 
   ggc() {
-    if ls | grep -q "package.json" && grep -q "\"commit\":" <"package.json"; then
+    if ls package.json && grep -q "\"commit\":" <"package.json"; then
       yarn commit "$@"
     elif __myzs_is_command_exist "committ"; then
       committ "$@"

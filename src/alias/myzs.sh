@@ -5,6 +5,7 @@ __myzs_initial "$0"
 __myzs_alias "mupload" "myzs-upload"
 __myzs_alias "mdownload" "myzs-download"
 
+__myzs_alias "minfo" "myzs-info"
 __myzs_alias "mlc" "myzs-list-changelogs"
 __myzs_alias "mlm" "myzs-list-modules"
 
