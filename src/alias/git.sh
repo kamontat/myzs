@@ -28,7 +28,7 @@ if __myzs_is_command_exist "git"; then
   # for git version 2.23.0
   __myzs_alias "grs" "git restore"
   __myzs_alias "grss" "git restore --staged"
-  
+
   # for git version 2.23.0
   __myzs_alias "gsw" "git switch"
 
@@ -68,7 +68,7 @@ if __myzs_is_command_exist "git"; then
   __myzs_alias "glss" "git log --graph --stat --summary"    # log with stat and summary
 
   ggc() {
-    if ls package.json && grep -q "\"commit\":" <"package.json"; then
+    if ls package.json >/dev/null 2>&1 && grep -q "\"commit\":" <"package.json" >/dev/null 2>&1; then
       yarn commit "$@"
     elif __myzs_is_command_exist "committ"; then
       committ "$@"

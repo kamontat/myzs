@@ -74,24 +74,24 @@ export MYZS_LOADING_MODULES=(
 ################################
 
 # If this is true, the application will trace each component in difference lines
-export PG_SHOW_PERF=false
+export MYZS_PG_SHOW_PERF=false
 # minimum millisecond will be shown as danger color
-export PG_TIME_THRESHOLD_MS=300
+export MYZS_PG_TIME_THRESHOLD_MS=300
 
 # loading message color
-export PG_LOADING_CL=""
+export MYZS_PG_LOADING_CL=""
 
 # complete status indicator
-export PG_COMPLETE_CL=""
+export MYZS_PG_COMPLETE_CL=""
 # skip status indicator
-export PG_SKIP_CL=""
+export MYZS_PG_SKIP_CL=""
 # fail status indicator
-export PG_FAIL_CL=""
+export MYZS_PG_FAIL_CL=""
 
 # time danger
-export PG_DANGER_CL=""
+export MYZS_PG_DANGER_CL=""
 # normal time color
-export PG_TIME_CL=""
+export MYZS_PG_TIME_CL=""
 
 ################################
 # Zsh dependencies plugins     #
@@ -120,8 +120,8 @@ export SAVEHIST=$HISTSIZE
 ################################
 
 # This is tell terminal to know what is default shell
-DEFAULT_SHELL="/usr/local/bin/zsh"
-export DEFAULT_SHELL
+# MYZS_DEFAULT_SHELL="/usr/local/bin/zsh"
+# export MYZS_DEFAULT_SHELL
 
 # System call, leave it alone
 if test -f "${MYZS_ROOT}/init.sh"; then
