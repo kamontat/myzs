@@ -5,7 +5,7 @@ __myzs_initial "$0"
 export DEFAULT_USER="$USER"
 
 export SHELL_FILE="${SHELL_FILE:-/etc/shells}"
-export DEFAULT_SHELL="${SHELL:-/bin/zsh}"
+export MYZS_DEFAULT_SHELL="${MYZS_DEFAULT_SHELL:-$SHELL}"
 
 export PATH="/bin"        # bin
 export PATH="/sbin:$PATH" # sbin
@@ -23,14 +23,14 @@ export LC_ALL="${LC_ALL:-en_US.UTF-8}"
 export MANPATH="/usr/local/man:$MANPATH"
 
 if __myzs_is_file_exist "$SHELL_FILE"; then
-  if ! __myzs_is_file_contains "$SHELL_FILE" "$DEFAULT_SHELL"; then
-    __myzs_info "adding $DEFAULT_SHELL to shell file ($SHELL_FILE)"
-    echo "$DEFAULT_SHELL" | sudo tee -a "$SHELL_FILE" >/dev/null
+  if ! __myzs_is_file_contains "$SHELL_FILE" "$MYZS_DEFAULT_SHELL"; then
+    __myzs_info "adding $MYZS_DEFAULT_SHELL to shell file ($SHELL_FILE)"
+    echo "$MYZS_DEFAULT_SHELL" | sudo tee -a "$SHELL_FILE" >/dev/null
   fi
 
-  if [[ "$DEFAULT_SHELL" != "$SHELL" ]]; then
-    __myzs_warn "current shell is $SHELL but it should be $DEFAULT_SHELL"
-    chsh -s "$DEFAULT_SHELL"
+  if [[ "$MYZS_DEFAULT_SHELL" != "$SHELL" ]]; then
+    __myzs_warn "current shell is $SHELL but it should be $MYZS_DEFAULT_SHELL"
+    chsh -s "$MYZS_DEFAULT_SHELL"
   fi
 fi
 
