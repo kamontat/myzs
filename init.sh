@@ -239,3 +239,5 @@ __myzs_cleanup
 
 export __MYZS_FINISH_TIME
 __MYZS_FINISH_TIME="$(date +"%d/%m/%Y %H:%M:%S")"
+
+__myzs_metric
