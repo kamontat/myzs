@@ -6,6 +6,7 @@ fi
 
 export __MYZS_LOGTYPE="${MYZS_LOGTYPE:-auto}"
 export __MYZS_LOGDIR="${MYZS_LOGDIR:-/tmp/myzs/logs}"
+export __MYZS_CACHEDIR="${MYZS_CACHEDIR:-/tmp/myzs/caches}"
 export __MYZS_LOGFILE="${MYZS_LOGFILE:-main.log}"
 export __MYZS_ZPLUG_LOGFILE="${MYZS_ZPLUG_LOGFILE:-zplug.log}"
 
@@ -102,6 +103,17 @@ __myzs_cleanup() {
   # for e in $(env | grep MYZS); do
   #   echo "e: $e"
   # done
+}
+
+export __myzs_metric
+__myzs_metric() {
+  local data_file="${__MYZS_CACHEDIR}/data.csv"
+  if ! __myzs_is_file_exist; then
+    echo "date time,passed modules,failed modules,skipped modules,total modules,load time" >"$data_file"
+  fi
+
+  # TODO: support size of loading modules
+  echo "${__MYZS_FINISH_TIME},0,0,0,0,${PROGRESS_LOADTIME}" >>"$data_file"
 }
 
 export __myzs_is_command_exist
