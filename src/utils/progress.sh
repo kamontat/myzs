@@ -172,4 +172,5 @@ pg_stop() {
   echo
 
   export PROGRESS_LOADTIME="$load_time"
+  export PROGRESS_LOADTIME_MS="$TIME"
 }
