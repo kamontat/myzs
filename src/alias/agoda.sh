@@ -20,6 +20,33 @@ __agoda_kube() {
 }
 __myzs_alias "agkube" "__agoda_kube"
 
+__agoda_docker_run_consul() {
+  docker run --rm -it -p 8500:8500 consul:latest
+}
+__myzs_alias "agrun-consul" "__agoda_docker_run_consul"
+
+__agoda_docker_run() {
+  local image="$1"
+  shift
+
+  local arguments=("$@")
+
+  docker pull "${image}"
+  docker run --rm -it "${image}" "${arguments[@]}"
+}
+
+__agoda_docker_run_cdb() {
+  local image="${1:-reg-hk.agodadev.io/dbdev/qa_sql_cdb_data_hotel-list-affiliate}"
+  __agoda_docker_run "$image" -p "1433:1433"
+}
+__myzs_alias "agrun-cdb" "__agoda_docker_run_cdb"
+
+__agoda_docker_run_mdb() {
+  local image="${1:-reg-hk.agodadev.io/dbdev/qa_sql_mdb_schema_nodata}"
+  __agoda_docker_run "$image" -p "1433:1433"
+}
+__myzs_alias "agrun-mdb" "__agoda_docker_run_mdb"
+
 if __myzs_shell_is_zsh; then
   __agoda_ssh() {
     local name="$1"
