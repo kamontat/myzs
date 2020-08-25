@@ -78,30 +78,18 @@ myzs-list-modules() {
 
   ! __myzs_is_string_exist "${__MYZS_MODULES[*]}" && echo "Cannot find any modules exist" && exit 2
 
-  local mod reg1 reg2 reg3 filename filepath filestatus raw raw1
+  printf '| %-7s | %-20s | %-35s | %-10s |\n' "[index]" "[name]" "[path]" "[status]"
 
-  reg1="\{1\{([^\{\}]+)\}\}"
-  reg2="\{2\{([^\{\}]+)\}\}"
-  reg3="\{3\{(pass|fail|skip)\}\}"
+  __myzs_list_modules_internal() {
+    local module_name="$1"
+    local module_path="$2"
+    local module_status="$3"
+    local module_index="$4"
 
-  printf '| %-20s | %-35s | %-10s |\n' "[name]" "[path]" "[status]"
+    printf '| %-7s | %-20s | %-35s | %-10s |\n' "${module_index}" "${module_name}" "${module_path}" "${module_status}"
+  }
 
-  for mod in "${__MYZS_MODULES[@]}"; do
-    raw="$(echo "$mod" | grep -Eoi "${reg1}")"
-    raw1="${raw//\{1\{/}"
-    filename="${raw1//\}\}/}"
-
-    raw="$(echo "$mod" | grep -Eo "${reg2}")"
-    raw1="${raw//\{2\{/}"
-    filepath="${raw1//\}\}/}"
-    filepath="${filepath//$MYZS_ROOT/\$MYZS_ROOT}"
-
-    raw="$(echo "$mod" | grep -Eoi "${reg3}")"
-    raw1="${raw//\{3\{/}"
-    filestatus="${raw1//\}\}/}"
-
-    printf '| %-20s | %-35s | %-10s |\n' "${filename}" "${filepath}" "${filestatus}"
-  done
+  __myzs_loop_modules __myzs_list_modules_internal
 
   echo
   printf 'Total %s modules\n' "${#__MYZS_MODULES[@]}"
