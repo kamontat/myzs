@@ -6,7 +6,7 @@ fi
 
 export __MYZS_LOGTYPE="${MYZS_LOGTYPE:-auto}"
 export __MYZS_LOGDIR="${MYZS_LOGDIR:-/tmp/myzs/logs}"
-export __MYZS_CACHEDIR="${MYZS_CACHEDIR:-/tmp/myzs/caches}"
+export __MYZS_DATADIR="${MYZS_DATADIR:-/tmp/myzs/data}"
 export __MYZS_LOGFILE="${MYZS_LOGFILE:-main.log}"
 export __MYZS_ZPLUG_LOGFILE="${MYZS_ZPLUG_LOGFILE:-zplug.log}"
 
@@ -107,13 +107,30 @@ __myzs_cleanup() {
 
 export __myzs_metric
 __myzs_metric() {
-  local data_file="${__MYZS_CACHEDIR}/data.csv"
-  if ! __myzs_is_file_exist; then
-    echo "date time,passed modules,failed modules,skipped modules,total modules,load time" >"$data_file"
+  local data_file="${MYZS_METRICPATH}"
+  if ! __myzs_is_file_exist "$data_file"; then
+    echo "date time,passed modules,failed modules,skipped modules,unknown modules,total modules,load time" >"$data_file"
   fi
 
-  # TODO: support size of loading modules
-  echo "${__MYZS_FINISH_TIME},0,0,0,0,${PROGRESS_LOADTIME}" >>"$data_file"
+  local passed=0 failed=0 skipped=0 unknown=0 total=0
+
+  __myzs_metric_module_counter_internal() {
+    local module_status="$3"
+    total="$5"
+    if [[ "$module_status" == "pass" ]]; then
+      passed=$((passed + 1))
+    elif [[ "$module_status" == "fail" ]]; then
+      failed=$((failed + 1))
+    elif [[ "$module_status" == "skip" ]]; then
+      skipped=$((skipped + 1))
+    else
+      unknown=$((unknown + 1))
+    fi
+  }
+
+  __myzs_loop_modules __myzs_metric_module_counter_internal
+
+  echo "${__MYZS_FINISH_TIME},${passed},${failed},${skipped},${unknown},${total},${PROGRESS_LOADTIME_MS}" >>"$data_file"
 }
 
 export __myzs_is_command_exist
@@ -367,6 +384,55 @@ __myzs_is_plugin_installed() {
   fi
 }
 
+# __myzs_loop_modules = looping all modules and get the information
+#     @param 1 (cmd)  = the bash function accept 6 parameters
+#                     = cmd "$module_name" "$module_path" "$module_status" "$module_index" "$total_module" "$module_raw"
+#     @example
+#                       cmd() {
+#                           local module_name="$1"
+#                           local module_path="$2"
+#                           local module_status="$3"
+#                           local module_index="$4"
+#                           local total_module="$5"
+#                           local module_raw="$6"
+#                       }
+export __myzs_loop_modules
+__myzs_loop_modules() {
+  local cmd="$1"
+
+  ! __myzs_is_command_exist "${cmd}" && echo "Input command ${cmd} is not valid" && __myzs_failure "2"
+
+  local mod reg1 reg2 reg3 filename filepath filestatus raw raw1
+
+  reg1="\{1\{([^\{\}]+)\}\}"
+  reg2="\{2\{([^\{\}]+)\}\}"
+  reg3="\{3\{(pass|fail|skip)\}\}"
+
+  local size=0 current=0
+
+  size="${#__MYZS_MODULES[@]}"
+  for mod in "${__MYZS_MODULES[@]}"; do
+    ((current++))
+    raw="$(echo "$mod" | grep -Eoi "${reg1}")"
+    raw1="${raw//\{1\{/}"
+    filename="${raw1//\}\}/}"
+
+    raw="$(echo "$mod" | grep -Eo "${reg2}")"
+    raw1="${raw//\{2\{/}"
+    filepath="${raw1//\}\}/}"
+    filepath="${filepath//$MYZS_ROOT/\$MYZS_ROOT}"
+
+    raw="$(echo "$mod" | grep -Eoi "${reg3}")"
+    raw1="${raw//\{3\{/}"
+    filestatus="${raw1//\}\}/}"
+
+    # if command return non-zero exit, break the loop
+    if ! $cmd "$filename" "$filepath" "$filestatus" "$current" "$size" "$mod"; then
+      return $?
+    fi
+  done
+}
+
 export __myzs__is_valid_module
 __myzs__is_valid_module() {
   local input="$1"
@@ -389,23 +455,26 @@ __myzs__get_module_index() {
   ! __myzs_is_string_exist "${input}" && __myzs_failure "2"
   ! __myzs_is_string_exist "${__MYZS_MODULES[*]}" && __myzs_failure "2"
 
-  local mod reg index result raw raw1
+  local index
+  __myzs__get_module_index__internal() {
+    local module_raw="$6"
+    local module_index="$4" # start with 1
 
-  reg="\{3\{(pass|fail|skip)\}\}"
-
-  index="$starter_index"
-  for mod in "${__MYZS_MODULES[@]}"; do
-    if [[ $mod =~ $input ]]; then
-      result="$index"
-      echo "$result"
-      break
+    if [[ "$module_raw" =~ $input ]]; then
+      index=$((module_index - (starter_index - 1)))
+      echo "$index"
+      return 1
     fi
-    ((index++))
-  done
+  }
 
-  ! __myzs_is_string_exist "$result" &&
-    echo "-1" &&
+  __myzs_loop_modules __myzs__get_module_index__internal
+
+  if __myzs_is_string_exist "$index"; then
+    __myzs_complete
+  else
+    echo "-1"
     __myzs_failure "3"
+  fi
 }
 
 export __myzs__get_module_status
@@ -431,3 +500,10 @@ __myzs__get_module_status() {
     __myzs_failure "3"
   fi
 }
+
+# update cache directory if not exist
+if __myzs_is_string_exist "$__MYZS_DATADIR" && ! __myzs_is_folder_exist "$__MYZS_DATADIR"; then
+  mkdir "$__MYZS_DATADIR"
+fi
+
+export MYZS_METRICPATH="$__MYZS_DATADIR/metric.csv"
