@@ -7,9 +7,9 @@ export __MYZS_ZPLUG="${ZPLUG_HOME:-${__MYZS_ROOT}/zplug}"
 
 export __MYZS_USER="${MYZS_USER:-$USER}"
 export __MYZS_OWNER="Kamontat Chantrachirathumrong"
-export __MYZS_VERSION="4.7.2"
+export __MYZS_VERSION="4.7.3"
 export __MYZS_SINCE="21 Apr 2018"
-export __MYZS_LAST_UPDATED="22 Aug 2020"
+export __MYZS_LAST_UPDATED="25 Aug 2020"
 export __MYZS_LICENSE="MIT"
 export __MYZS_MODULES=()
 export __MYZS_FULLY_MODULES=(
@@ -49,6 +49,12 @@ export __MYZS_FULLY_MODULES=(
 )
 
 export __MYZS_CHANGELOGS=(
+  "4.7.3" "25 Aug 2020"
+  " - change metric from /caches/data.csv to /data/metric.csv
+ - improve metrics format as load time in millisecond
+ - refactor modules deserialization
+ - add support loop modules by function
+ - add new agrun-<application> category in alias/agoda.sh"
   "4.7.2" "22 Aug 2020"
   " - add new alias/project.sh modules for create new tmp project
  - include environment loading in progress bar
