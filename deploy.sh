@@ -45,3 +45,5 @@ git tag "$VERSION"
 
 echo "[7/7] push all changes and tag to Github repository"
 git push && git push --tag
+
+unset VERSION
