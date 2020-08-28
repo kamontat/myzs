@@ -9,17 +9,17 @@
 # set -n #EVALUATE - Check syntax of the script but don't execute.
 
 echo "[1/7] Prepare and update version:
-        1. update \$__MYZS_VERSION
-        2. update \$__MYZS_LAST_UPDATED
-        3. update \$__MYZS_CHANGELOGS"
+        1. update \$__MYZS__VERSION
+        2. update \$__MYZS__LAST_UPDATED
+        3. update \$__MYZS__CHANGELOGS"
 
 echo "[2/7] List all tags that already exist:"
 git tag --column
 
 # shellcheck disable=SC2034
-printf "[3/7] Enter release version: (current=%s)" "${__MYZS_VERSION}"
-if ! git tag | grep -q "${__MYZS_VERSION}"; then
-  VERSION="$__MYZS_VERSION"
+printf "[3/7] Enter release version: (current=%s)" "${__MYZS__VERSION}"
+if ! git tag | grep -q "${__MYZS__VERSION}"; then
+  VERSION="$__MYZS__VERSION"
   echo
 else
   echo
@@ -38,7 +38,7 @@ echo "[4/7] Add all changes to git"
 git add .
 
 echo "[5/7] Commit all changes with release version message"
-git commit --allow-empty -m "[release] version: $VERSION"
+git commit --allow-empty -m "chore(release): version $VERSION"
 
 echo "[6/7] create new git tag called $VERSION"
 git tag "$VERSION"

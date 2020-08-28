@@ -6,9 +6,9 @@ export DOCKER_COMPLETION="$HOME/.myzs/zplug/repos/zsh-users/zsh-completions/src/
 export DOCKER_COMPOSE_COMPLETION="$HOME/.myzs/zplug/repos/zsh-users/zsh-completions/src/_docker-compose"
 
 if ! __myzs_is_file_exist "$DOCKER_COMPLETION"; then
-  cp "${__MYZS_RESOURCES}/_docker" "$DOCKER_COMPLETION"
+  cp "${__MYZS__RES}/_docker" "$DOCKER_COMPLETION"
 fi
 
 if ! __myzs_is_file_exist "$DOCKER_COMPOSE_COMPLETION"; then
-  cp "${__MYZS_RESOURCES}/_docker-compose" "$DOCKER_COMPOSE_COMPLETION"
+  cp "${__MYZS__RES}/_docker-compose" "$DOCKER_COMPOSE_COMPLETION"
 fi

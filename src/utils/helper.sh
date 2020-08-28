@@ -8,15 +8,15 @@ export __MYZS_LOGTYPE="${MYZS_LOGTYPE:-auto}"
 export __MYZS_LOGDIR="${MYZS_LOGDIR:-/tmp/myzs/logs}"
 export __MYZS_DATADIR="${MYZS_DATADIR:-/tmp/myzs/data}"
 export __MYZS_LOGFILE="${MYZS_LOGFILE:-main.log}"
-export __MYZS_ZPLUG_LOGFILE="${MYZS_ZPLUG_LOGFILE:-zplug.log}"
+export __MYZS__ZPLUG_LOGFILE="${MYZS_ZPLUG_LOGFILE:-zplug.log}"
 
 if [[ "$__MYZS_LOGTYPE" == "auto" ]]; then
   __MYZS_LOGFILE="main-$(date +"%y%m%d").log"
-  __MYZS_ZPLUG_LOGFILE="zplug-$(date +"%y%m%d").log"
+  __MYZS__ZPLUG_LOGFILE="zplug-$(date +"%y%m%d").log"
 fi
 
 export MYZS_LOGPATH="${__MYZS_LOGDIR}/${__MYZS_LOGFILE}"
-export MYZS_ZPLUG_LOGPATH="${__MYZS_LOGDIR}/${__MYZS_ZPLUG_LOGFILE}"
+export MYZS_ZPLUG_LOGPATH="${__MYZS_LOGDIR}/${__MYZS__ZPLUG_LOGFILE}"
 
 __myzs__log() {
   if [[ "$__MYZS_LOGDIR" != "" ]] && [[ $__MYZS_LOGFILE != "" ]]; then
@@ -100,6 +100,8 @@ __myzs_cleanup() {
   __myzs_info "cleanup application"
   unset __MYZS__CURRENT_FILENAME __MYZS__CURRENT_FILEPATH __MYZS__CURRENT_STATUS
 
+  unset MYZS_SETTINGS_WELCOME_MESSAGE MYZS_START_COMMAND MYZS_START_COMMAND_ARGUMENTS
+
   # for e in $(env | grep MYZS); do
   #   echo "e: $e"
   # done
@@ -130,7 +132,7 @@ __myzs_metric() {
 
   __myzs_loop_modules __myzs_metric_module_counter_internal
 
-  echo "${__MYZS_FINISH_TIME},${passed},${failed},${skipped},${unknown},${total},${PROGRESS_LOADTIME_MS}" >>"$data_file"
+  echo "${__MYZS__FINISH_TIME},${passed},${failed},${skipped},${unknown},${total},${PROGRESS_LOADTIME_MS}" >>"$data_file"
 }
 
 export __myzs_is_command_exist
@@ -191,12 +193,12 @@ __myzs_is_string_exist() {
 
 export __myzs_is_fully
 __myzs_is_fully() {
-  [[ "${__MYZS_TYPE}" == "FULLY" ]]
+  [[ "${__MYZS__TYPE}" == "FULLY" ]]
 }
 
 export __myzs_is_small
 __myzs_is_small() {
-  [[ "${__MYZS_TYPE}" == "SMALL" ]]
+  [[ "${__MYZS__TYPE}" == "SMALL" ]]
 }
 
 export __myzs_shell_is_bash
@@ -259,16 +261,16 @@ __myzs_load_module() {
   index="$(__myzs__get_module_index "$__MYZS__CURRENT_FILENAME" "0")"
   if [[ "${index}" != "-1" ]]; then
     __myzs_info "load exist module $__MYZS__CURRENT_FILENAME at $index"
-    __myzs__remove_array_index "__MYZS_MODULES" "${index}"
+    __myzs__remove_array_index "__MYZS__MODULES" "${index}"
   fi
 
   if __myzs_load "$__MYZS__CURRENT_FILENAME" "$__MYZS__CURRENT_FILEPATH"; then
     __MYZS__CURRENT_STATUS="pass"
-    __MYZS_MODULES+=("{1{${__MYZS__CURRENT_FILENAME}}}{2{${__MYZS__CURRENT_FILEPATH}}}{3{$__MYZS__CURRENT_STATUS}}")
+    __MYZS__MODULES+=("{1{${__MYZS__CURRENT_FILENAME}}}{2{${__MYZS__CURRENT_FILEPATH}}}{3{$__MYZS__CURRENT_STATUS}}")
     __myzs_complete
   else
     __MYZS__CURRENT_STATUS="fail"
-    __MYZS_MODULES+=("{1{${__MYZS__CURRENT_FILENAME}}}{2{${__MYZS__CURRENT_FILEPATH}}}{3{$__MYZS__CURRENT_STATUS}}")
+    __MYZS__MODULES+=("{1{${__MYZS__CURRENT_FILENAME}}}{2{${__MYZS__CURRENT_FILEPATH}}}{3{$__MYZS__CURRENT_STATUS}}")
     __myzs_failure 2
   fi
 }
@@ -279,7 +281,7 @@ __myzs_skip_module() {
   export __MYZS__CURRENT_FILEPATH="$2"
   export __MYZS__CURRENT_STATUS="skip"
 
-  __MYZS_MODULES+=("{1{${__MYZS__CURRENT_FILENAME}}}{2{${__MYZS__CURRENT_FILEPATH}}}{3{$__MYZS__CURRENT_STATUS}}")
+  __MYZS__MODULES+=("{1{${__MYZS__CURRENT_FILENAME}}}{2{${__MYZS__CURRENT_FILEPATH}}}{3{$__MYZS__CURRENT_STATUS}}")
 }
 
 export __myzs_alias
@@ -410,8 +412,8 @@ __myzs_loop_modules() {
 
   local size=0 current=0
 
-  size="${#__MYZS_MODULES[@]}"
-  for mod in "${__MYZS_MODULES[@]}"; do
+  size="${#__MYZS__MODULES[@]}"
+  for mod in "${__MYZS__MODULES[@]}"; do
     ((current++))
     raw="$(echo "$mod" | grep -Eoi "${reg1}")"
     raw1="${raw//\{1\{/}"
@@ -438,9 +440,9 @@ __myzs__is_valid_module() {
   local input="$1"
 
   ! __myzs_is_string_exist "${input}" && echo "Cannot found input string" && __myzs_failure "2"
-  ! __myzs_is_string_exist "${__MYZS_FULLY_MODULES[*]}" && echo "Cannot find any modules exist" && __myzs_failure "2"
+  ! __myzs_is_string_exist "${__MYZS__FULLY_MODULES[*]}" && echo "Cannot find any modules exist" && __myzs_failure "2"
 
-  if [[ "${__MYZS_FULLY_MODULES[*]}" =~ $input ]]; then
+  if [[ "${__MYZS__FULLY_MODULES[*]}" =~ $input ]]; then
     __myzs_complete
   else
     __myzs_failure
@@ -453,7 +455,7 @@ __myzs__get_module_index() {
   local starter_index="${2:-1}"
 
   ! __myzs_is_string_exist "${input}" && __myzs_failure "2"
-  ! __myzs_is_string_exist "${__MYZS_MODULES[*]}" && __myzs_failure "2"
+  ! __myzs_is_string_exist "${__MYZS__MODULES[*]}" && __myzs_failure "2"
 
   local index
   __myzs__get_module_index__internal() {
@@ -482,14 +484,14 @@ __myzs__get_module_status() {
   local input="$1"
 
   ! __myzs_is_string_exist "${input}" && __myzs_failure "2"
-  ! __myzs_is_string_exist "${__MYZS_MODULES[*]}" && __myzs_failure "2"
+  ! __myzs_is_string_exist "${__MYZS__MODULES[*]}" && __myzs_failure "2"
 
   local mod reg index result raw raw1
 
   reg="\{3\{(pass|fail|skip)\}\}"
 
   index="$(__myzs__get_module_index "$input")"
-  mod="${__MYZS_MODULES[$index]}"
+  mod="${__MYZS__MODULES[$index]}"
   if [[ $mod =~ $input ]]; then
     raw="$(echo "$mod" | grep -Eoi "${reg}")"
     raw1="${raw//\{3\{/}"

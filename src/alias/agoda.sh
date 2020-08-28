@@ -26,24 +26,34 @@ __agoda_docker_run_consul() {
 __myzs_alias "agrun-consul" "__agoda_docker_run_consul"
 
 __agoda_docker_run() {
-  local image="$1"
-  shift
+  local default_image="$1"
+  local image="${2:-$default_image}"
+
+  [[ $image == "default" ]] && image="$default_image"
+  shift 2
 
   local arguments=("$@")
 
-  docker pull "${image}"
-  docker run --rm -it "${image}" "${arguments[@]}"
+  echo "exec: docker pull ${image}"
+  echo "exec: docker run --rm -it ${arguments[*]} ${image}"
+  docker run --rm -it "${arguments[@]}" "${image}"
 }
 
 __agoda_docker_run_cdb() {
-  local image="${1:-reg-hk.agodadev.io/dbdev/qa_sql_cdb_data_hotel-list-affiliate}"
-  __agoda_docker_run "$image" -p "1433:1433"
+  local default_image="reg-hk.agodadev.io/dbdev/qa_sql_cdb_data_hotel-list-affiliate"
+  local image="${1}"
+  shift 1
+
+  __agoda_docker_run "${default_image}" "$image" -p "1433:1433" "$@"
 }
 __myzs_alias "agrun-cdb" "__agoda_docker_run_cdb"
 
 __agoda_docker_run_mdb() {
-  local image="${1:-reg-hk.agodadev.io/dbdev/qa_sql_mdb_schema_nodata}"
-  __agoda_docker_run "$image" -p "1433:1433"
+  local default_image="reg-hk.agodadev.io/dbdev/qa_sql_mdb_schema_nodata"
+  local image="${1}"
+  shift 1
+
+  __agoda_docker_run "${default_image}" "$image" -p "1433:1433" "$@"
 }
 __myzs_alias "agrun-mdb" "__agoda_docker_run_mdb"
 

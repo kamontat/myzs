@@ -4,21 +4,21 @@
 export LAZY_NAME=""
 export LAZY_START_TIME=""
 
-export __REVOLVER_CMD="${REVOLVER_CMD:./revolver}"
+export ____MYZS__REVOLVER_CMD="${__MYZS__REVOLVER_CMD:./revolver}"
 
 # Start Lazy Loading
 lazy_start() {
   LAZY_NAME=$1
   LAZY_START_TIME=$(sec)
 
-  "$__REVOLVER_CMD" -s 'bouncingBall' start "${GREEN}Lazy Loading ${YELLOW}${1}${GREEN}..."
+  "$____MYZS__REVOLVER_CMD" -s 'bouncingBall' start "${GREEN}Lazy Loading ${YELLOW}${1}${GREEN}..."
 }
 
 # Stop Lazy Loading
 lazy_stop() {
   TIME=$(($(sec) - $LAZY_START_TIME))
 
-  "$__REVOLVER_CMD" stop
+  "$____MYZS__REVOLVER_CMD" stop
 
   echo "${GREEN}[+] Lazy Loaded ${YELLOW}${LAZY_NAME}${GREEN} in ${YELLOW}${TIME}${GREEN} ms." $(tput sgr0)
 }

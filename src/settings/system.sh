@@ -2,7 +2,8 @@
 
 __myzs_initial "$0"
 
-export DEFAULT_USER="$USER"
+export USER="${__MYZS__USER:-$USER}"
+export DEFAULT_USER="${USER}"
 
 export SHELL_FILE="${SHELL_FILE:-/etc/shells}"
 export MYZS_DEFAULT_SHELL="${MYZS_DEFAULT_SHELL:-$SHELL}"

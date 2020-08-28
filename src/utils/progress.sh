@@ -31,7 +31,7 @@ export __MYZS_PG_SHOW_PERF="${MYZS_PG_SHOW_PERF:-true}"
 export MESSAGE_LENGTH=55
 export PG_PROCESS_COUNT=1
 
-export __REVOLVER_CMD="${REVOLVER_CMD:-./revolver}"
+export ____MYZS__REVOLVER_CMD="${__MYZS__REVOLVER_CMD:-./revolver}"
 
 sec() {
   if command -v "gdate" &>/dev/null; then
@@ -126,13 +126,13 @@ PG_PREV_STATE="C" # C = completed, F = failured, S = skipped
 pg_start() {
   local message
   message="${1:-Initialization shell. Please Wait...}"
-  "${__REVOLVER_CMD}" -s "$__PG_STYLE" start "${MYZS_PG_LOADING_CL}${message}"
+  "${____MYZS__REVOLVER_CMD}" -s "$__PG_STYLE" start "${MYZS_PG_LOADING_CL}${message}"
 }
 
 pg_mark() {
   TIME=$(($(sec) - PG_PREV_TIME))
 
-  "${__REVOLVER_CMD}" -s "$__PG_STYLE" update "${MYZS_PG_LOADING_CL}$2.."
+  "${____MYZS__REVOLVER_CMD}" -s "$__PG_STYLE" update "${MYZS_PG_LOADING_CL}$2.."
 
   if [[ "$__MYZS_PG_SHOW_PERF" == "true" ]]; then
     show_message_by "$PG_PREV_STATE" "$TIME" "$PG_PREV_MSG"
@@ -163,7 +163,7 @@ pg_stop() {
     show_message_by "$PG_PREV_STATE" "$TIME" "$PG_PREV_MSG"
   fi
 
-  "${__REVOLVER_CMD}" stop
+  "${____MYZS__REVOLVER_CMD}" stop
 
   TIME=$(($(sec) - PG_START_TIME))
   load_time="$(conv_time "${TIME}")"

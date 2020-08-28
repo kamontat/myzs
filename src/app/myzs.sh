@@ -33,18 +33,18 @@ You can upgrade version by run 'myzs-download' to fetch latest version.
 ## Information
 
 1. Current user:         ${USER}
-2. Application location: ${__MYZS_ROOT}
-3. Application version:  ${__MYZS_VERSION}
-4. Application type:     ${__MYZS_TYPE}
+2. Application location: ${_MYZS_ROOT}
+3. Application version:  ${__MYZS__VERSION}
+4. Application type:     ${__MYZS__TYPE}
 5. Log location:         ${MYZS_LOGPATH}
 6. Loading time:         ${PROGRESS_LOADTIME}
-7. Loaded time:          ${__MYZS_FINISH_TIME}
+7. Loaded time:          ${__MYZS__FINISH_TIME}
 
 ## Credit
 
-Created by '$__MYZS_OWNER'
-Since      '$__MYZS_SINCE' => '$__MYZS_LAST_UPDATED'
-License    '$__MYZS_LICENSE'
+Created by '$__MYZS__OWNER'
+Since      '$__MYZS__SINCE' => '$__MYZS__LAST_UPDATED'
+License    '$__MYZS__LICENSE'
 "
 }
 
@@ -52,17 +52,17 @@ myzs-list-changelogs() {
   echo "# Release notes"
   echo
 
-  if test -z "${__MYZS_CHANGELOGS[*]}"; then
+  if test -z "${__MYZS__CHANGELOGS[*]}"; then
     echo "Cannot found any notes"
   else
     local size version date changelog
 
-    size="${#__MYZS_CHANGELOGS[@]}"
+    size="${#__MYZS__CHANGELOGS[@]}"
 
     for ((i = 1; i < size; i += 3)); do
-      version="${__MYZS_CHANGELOGS[i]}"
-      date="${__MYZS_CHANGELOGS[i + 1]}"
-      changelog="${__MYZS_CHANGELOGS[i + 2]}"
+      version="${__MYZS__CHANGELOGS[i]}"
+      date="${__MYZS__CHANGELOGS[i + 1]}"
+      changelog="${__MYZS__CHANGELOGS[i + 2]}"
 
       echo "## Version $version ($date)"
       echo
@@ -76,7 +76,7 @@ myzs-list-modules() {
   echo "# Modules"
   echo
 
-  ! __myzs_is_string_exist "${__MYZS_MODULES[*]}" && echo "Cannot find any modules exist" && exit 2
+  ! __myzs_is_string_exist "${__MYZS__MODULES[*]}" && echo "Cannot find any modules exist" && exit 2
 
   printf '| %-7s | %-20s | %-35s | %-10s |\n' "[index]" "[name]" "[path]" "[status]"
 
@@ -92,7 +92,7 @@ myzs-list-modules() {
   __myzs_loop_modules __myzs_list_modules_internal
 
   echo
-  printf 'Total %s modules\n' "${#__MYZS_MODULES[@]}"
+  printf 'Total %s modules\n' "${#__MYZS__MODULES[@]}"
 }
 
 # load modules
@@ -104,7 +104,7 @@ myzs-load() {
   local name="$1" # fully_modules format
   local debug="$2"
 
-  fullpath="${__MYZS_SOURCE_CODE}/${name}"
+  fullpath="${__MYZS__SRC}/${name}"
 
   __myzs_is_string_exist "$debug" && echo "input name: $name"
   __myzs_is_string_exist "$debug" && echo "input path: $fullpath"

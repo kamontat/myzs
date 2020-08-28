@@ -9,8 +9,8 @@
 # Enable debug mode;
 # export MYZS_DEBUG=true
 
-# Your username, this shouldn't be change except you want coller name
-export MYZS_USER="$USER"
+# Your username. This will fallback to $USER with not specify
+# export MYZS_USER="$USER"
 
 # Copy path you would like to go, the start shell will try to cd to that path automatically
 export MYZS_SETTINGS_AUTO_OPEN_PATH=true
@@ -105,8 +105,8 @@ export MYZS_PG_TIME_CL=""
 #   zplug "zsh-users/zsh-autosuggestions"
 # }
 
-# This shouldn't be changes, except you would like to use custom zplug
-export ZPLUG_HOME="${MYZS_ROOT}/zplug"
+# Uncommand this, to use custom zplug application.
+# export MYZS_ZPLUG=""
 
 ################################
 # Zsh settings                 #
