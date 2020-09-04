@@ -51,10 +51,10 @@ __myzs__dump_return() {
 }
 
 __myzs__shell_is() {
-  if [[ "$SHELL" =~ $1 ]]; then
-    return 0
+  if grep -q "$1" <<<"$SHELL"; then
+    __myzs_complete
   else
-    return 1
+    __myzs_failure 1
   fi
 }
 
@@ -211,6 +211,26 @@ __myzs_shell_is_zsh() {
   __myzs__shell_is "zsh"
 }
 
+export __myzs_shell_is_fish
+__myzs_shell_is_fish() {
+  __myzs__shell_is "fish"
+}
+
+# Usage: __myzs_on_shell [zsh_string] [bash_string] [fish_string]
+# Ex1:   __myzs_on_shell             => zsh|bash|fish
+# Ex2:   __myzs_on_shell "z" "b" "f" => z|b|f
+export __myzs_on_shell
+__myzs_on_shell() {
+  local zsh="${1:-zsh}" bash="${1:-bash}" fish="${1:-fish}"
+  if __myzs_shell_is_zsh; then
+    echo "$zsh"
+  elif __myzs_shell_is_bash; then
+    echo "$bash"
+  elif __myzs_shell_is_fish; then
+    echo "$fish"
+  fi
+}
+
 export __myzs_is_mac
 __myzs_is_mac() {
   local name
@@ -232,8 +252,10 @@ __myzs__remove_array_index() {
 export __myzs_load
 __myzs_load() {
   local _name="$1" _path="$2" exitcode=1
+  shift 2
+  local args=("$@")
   if __myzs_is_file_exist "$_path"; then
-    source "${_path}"
+    source "${_path}" "${args[@]}"
     exitcode=$?
     if [[ "$exitcode" != "0" ]]; then
       __myzs_error "Cannot load ${_name} (${_path}) because source return $exitcode"
@@ -256,6 +278,8 @@ __myzs_load_module() {
   export __MYZS__CURRENT_FILEPATH="$2"
   export __MYZS__CURRENT_STATUS="unknown"
 
+  shift 2
+  local args=("$@")
   local index
 
   index="$(__myzs__get_module_index "$__MYZS__CURRENT_FILENAME" "0")"
@@ -264,7 +288,7 @@ __myzs_load_module() {
     __myzs__remove_array_index "__MYZS__MODULES" "${index}"
   fi
 
-  if __myzs_load "$__MYZS__CURRENT_FILENAME" "$__MYZS__CURRENT_FILEPATH"; then
+  if __myzs_load "$__MYZS__CURRENT_FILENAME" "$__MYZS__CURRENT_FILEPATH" "${args[@]}"; then
     __MYZS__CURRENT_STATUS="pass"
     __MYZS__MODULES+=("{1{${__MYZS__CURRENT_FILENAME}}}{2{${__MYZS__CURRENT_FILEPATH}}}{3{$__MYZS__CURRENT_STATUS}}")
     __myzs_complete
@@ -377,7 +401,7 @@ export __myzs_is_plugin_installed
 __myzs_is_plugin_installed() {
   local name="$1" # full name from plugin
   __myzs_debug "Checking is $name exist in zplug"
-  if zplug info "$name" >/dev/null; then
+  if zplug check "$name"; then
     __myzs_info "$name is installed"
     return 0
   else
@@ -422,7 +446,7 @@ __myzs_loop_modules() {
     raw="$(echo "$mod" | grep -Eo "${reg2}")"
     raw1="${raw//\{2\{/}"
     filepath="${raw1//\}\}/}"
-    filepath="${filepath//$MYZS_ROOT/\$MYZS_ROOT}"
+    # filepath="${filepath//$MYZS_ROOT/\$MYZS_ROOT}"
 
     raw="$(echo "$mod" | grep -Eoi "${reg3}")"
     raw1="${raw//\{3\{/}"
@@ -433,6 +457,15 @@ __myzs_loop_modules() {
       return $?
     fi
   done
+}
+
+export __myzs__get_module_fullpath
+__myzs__get_module_fullpath() {
+  local input="$1"
+
+  ! __myzs_is_string_exist "${input}" && echo "Cannot found input string" && __myzs_failure "2"
+
+  echo "${__MYZS__ROOT}/${input}"
 }
 
 export __myzs__is_valid_module

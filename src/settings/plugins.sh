@@ -8,44 +8,70 @@ __myzs__create_plugins() {
   if __myzs_is_command_exist "myzs__plugins_list"; then
     myzs__plugins_list
   else
+    # Require libraries
+    zplug "mafredri/zsh-async", from:github, use:"async.zsh"
+
     # zplug "b4b4r07/httpstat", as:command, use:'(*).sh', rename-to:'$1' # like curl -v
     # zplug "stedolan/jq", from:gh-r, as:command, rename-to:"jq"         # json query
 
     zplug "zsh-users/zsh-autosuggestions"
-
     zplug "zsh-users/zsh-completions"
-    # zplug "lib/completion", from:oh-my-zsh
 
     zplug "mfaerevaag/wd", as:command, use:"wd.sh", hook-load: "wd() { . $ZPLUG_REPOS/mfaerevaag/wd/wd.sh }"
 
-    # zplug "b4b4r07/enhancd", use:init.sh
-    # zplug "changyuheng/zsh-interactive-cd" # enhance cd command with fzf search
-    zplug "unixorn/tumult.plugin.zsh" # enhance functionality for macos; https://github.com/unixorn/tumult.plugin.zsh#included-scripts
-    zplug "peterhurford/up.zsh"       # no more cd ../../../;  just up <number>
-    zplug "djui/alias-tips"
-    zplug "supercrabtree/k"
-    zplug "hlissner/zsh-autopair"
-    zplug "MichaelAquilina/zsh-auto-notify" # auto send notification with long process completed
-    zplug "arzzen/calc.plugin.zsh"          # calculator
-    zplug "ael-code/zsh-colored-man-pages"
+    # zplug "b4b4r07/enhancd", use:init.sh       # enhance cd command
+    # zplug "changyuheng/zsh-interactive-cd"     # enhance cd command with fzf search
+    zplug "unixorn/tumult.plugin.zsh", lazy:true # enhance functionality for macos; https://github.com/unixorn/tumult.plugin.zsh#included-scripts
+    zplug "peterhurford/up.zsh"                  # no more cd ../../../;  just up <number>
+    zplug "djui/alias-tips"                      # add alias tips when run full command
+    zplug "supercrabtree/k"                      # enhance ls command
+    zplug "hlissner/zsh-autopair"                # add pair symbol (), {}, [] etc.
+    zplug "MichaelAquilina/zsh-auto-notify"      # auto send notification with long process completed
+    zplug "ael-code/zsh-colored-man-pages"       # add color to man page
+    zplug "rawkode/zsh-docker-run"               # for run any language without install them
+    zplug "unixorn/docker-helpers.zshplugin"     # useful command script for execute docker
+    zplug "arzzen/calc.plugin.zsh"               # calculator
 
-    zplug "rawkode/zsh-docker-run"                                  # for run any language without install them
-    zplug "unixorn/docker-helpers.zshplugin"                        # useful command script for execute docker
-    zplug "webyneter/docker-aliases", use:docker-aliases.plugin.zsh # alias docker command
-
-    # zplug "kiurchv/asdf.plugin.zsh", defer:2
-
-    # zplug "wfxr/forgit"                # Interactive git command
-    # zplug "unixorn/git-extra-commands" # add extra script command for git
-    # zplug "laggardkernel/git-ignore"   # offline git ignore generator
+    # zplug "wfxr/forgit"                        # Interactive git command
+    # zplug "unixorn/git-extra-commands"         # add extra script command for git
+    # zplug "laggardkernel/git-ignore"           # offline git ignore generator
 
     zplug "laggardkernel/zsh-thefuck"
 
     # load after compinit
     zplug "zdharma/fast-syntax-highlighting", defer:2
     zplug "zsh-users/zsh-history-substring-search", defer:2
+    # zplug "kiurchv/asdf.plugin.zsh", defer:2
 
-    zplug "mafredri/zsh-async", from:github
     zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
+  fi
+}
+
+__myzs__setup_plugins() {
+  if __myzs_is_plugin_installed 'zsh-users/zsh-history-substring-search'; then
+    zmodload zsh/terminfo
+
+    # shellcheck disable=SC1087,SC2154
+    bindkey "$terminfo[cuu1]" history-substring-search-up
+    # shellcheck disable=SC1087,SC2154
+    bindkey "$terminfo[kcud1]" history-substring-search-down
+
+    bindkey '^[[A' history-substring-search-up
+    # shellcheck disable=SC1087,SC2154
+    bindkey -M emacs "$terminfo[kcuu1]" history-substring-search-up
+    # shellcheck disable=SC1087,SC2154
+    bindkey -M viins "$terminfo[kcuu1]" history-substring-search-up
+
+    bindkey '^[[B' history-substring-search-down
+    # shellcheck disable=SC1087,SC2154
+    bindkey -M emacs "$terminfo[kcud1]" history-substring-search-down
+    # shellcheck disable=SC1087,SC2154
+    bindkey -M viins "$terminfo[kcud1]" history-substring-search-down
+
+    export HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='fg=magenta,bold'
+    export HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='fg=red,bold'
+    export HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS='i'
+    export HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE='yes'
+    export HISTORY_SUBSTRING_SEARCH_FUZZY=''
   fi
 }
