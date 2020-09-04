@@ -17,13 +17,13 @@ export __MYZS__FULLY_MODULES=(
   "app/android.sh"
   "app/docker.sh"
   "app/fzf.sh"
-  "app/history.sh"
   "app/kube.sh"
   "app/myzs.sh"
   "app/tmux.sh"
   "app/wireshark.sh"
   "app/asdf.sh"
   "app/flutter.sh"
+  "app/gcloud.sh"
   "app/go.sh"
   "app/iterm.sh"
   "app/macgpg.sh"
@@ -155,7 +155,7 @@ if __myzs_is_fully && __myzs_shell_is_zsh; then
 fi
 
 if __myzs_is_fully && __myzs_shell_is_zsh; then
-  pg_mark "Plugin" "Loading plugins from zplug"
+  pg_mark "Plugin" "Creating plugins for zplug"
   __myzs_load_module "settings/plugins.sh" "${__MYZS__SRC}/settings/plugins.sh" || pg_mark_false "Cannot load zplug plugins list"
 
   __myzs__create_plugins # create plugins
@@ -169,8 +169,12 @@ if __myzs_is_fully && __myzs_shell_is_zsh; then
     fi
   fi
 
+  pg_mark "Plugin" "Loading plugins to zplug"
   # load new plugins to system
   zplug load --verbose >>"$MYZS_ZPLUG_LOGPATH"
+
+  pg_mark "Plugin" "Settings plugins configuration"
+  __myzs__setup_plugins
 fi
 
 pg_mark "Helper" "Loading setup scripts"
