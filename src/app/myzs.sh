@@ -82,7 +82,7 @@ myzs-list-modules() {
 
   __myzs_list_modules_internal() {
     local module_name="$1"
-    local module_path="$2"
+    local module_path="${2//$MYZS_ROOT/\$MYZS_ROOT}" # replace path with ROOT variable if possible
     local module_status="$3"
     local module_index="$4"
 
@@ -102,23 +102,20 @@ myzs-load() {
   __myzs_initial "app/myzs.sh#myzs-load"
 
   local name="$1" # fully_modules format
-  local debug="$2"
+  shift 1
+  local args=("$@")
 
   fullpath="${__MYZS__SRC}/${name}"
 
-  __myzs_is_string_exist "$debug" && echo "input name: $name"
-  __myzs_is_string_exist "$debug" && echo "input path: $fullpath"
-
   if __myzs__is_valid_module "$name"; then
-    if __myzs_load_module "$name" "$fullpath"; then
-      __myzs_is_string_exist "$debug" && echo "loaded"
+    if __myzs_load_module "$name" "$fullpath" "${args[@]}"; then
       __myzs_complete
     else
-      __myzs_is_string_exist "$debug" && echo "loading module return error" >&2
+      __myzs_warn "loading module return error"
       __myzs_failure 2
     fi
   else
-    __myzs_is_string_exist "$debug" && echo "invalid modules ($name)" >&2
+    __myzs_warn "invalid modules ($name)"
     __myzs_failure 3
   fi
 }
