@@ -6,12 +6,6 @@ __myzs_alias "restart-zsh" "exec zsh"
 __myzs_alias "restart-bash" "exec bash"
 __myzs_alias "restart-fish" "exec fish"
 
-if grep -q "zsh" <<<"$SHELL"; then
-  __myzs_alias "restart-shell" "restart-zsh"
-elif grep -q "bash" <<<"$SHELL"; then
-  __myzs_alias "restart-shell" "restart-bash"
-elif grep -q "fish" <<<"$SHELL"; then
-  __myzs_alias "restart-shell" "restart-fish"
-fi
+__myzs_alias "restart-shell" "restart-$(__myzs_on_shell)"
 
 __myzs_alias "reshell" "restart-shell"
