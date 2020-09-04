@@ -39,12 +39,12 @@ export MYZS_LOADING_MODULES=(
   # "app/android.sh"
   # "app/docker.sh"
   # "app/fzf.sh"
-  # "app/history.sh"
   # "app/kube.sh"
   # "app/tmux.sh"
   # "app/wireshark.sh"
   # "app/asdf.sh"
   # "app/flutter.sh"
+  # "app/gcloud.sh"
   # "app/go.sh"
   # "app/iterm.sh"
   # "app/macgpg.sh"
@@ -76,7 +76,7 @@ export MYZS_LOADING_MODULES=(
 # If this is true, the application will trace each component in difference lines
 export MYZS_PG_SHOW_PERF=false
 # minimum millisecond will be shown as danger color
-export MYZS_PG_TIME_THRESHOLD_MS=300
+export MYZS_PG_TIME_THRESHOLD_MS=500
 
 # loading message color
 export MYZS_PG_LOADING_CL=""
