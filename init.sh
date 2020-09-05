@@ -8,9 +8,9 @@ export ZPLUG_HOME="${MYZS_ZPLUG:-${_MYZS_ROOT}/zplug}"
 
 export __MYZS__USER="${MYZS_USER:-$USER}"
 export __MYZS__OWNER="Kamontat Chantrachirathumrong"
-export __MYZS__VERSION="4.7.4"
+export __MYZS__VERSION="4.7.5"
 export __MYZS__SINCE="21 Apr 2018"
-export __MYZS__LAST_UPDATED="25 Aug 2020"
+export __MYZS__LAST_UPDATED="04 Sep 2020"
 export __MYZS__LICENSE="MIT"
 export __MYZS__MODULES=()
 export __MYZS__FULLY_MODULES=(
@@ -47,75 +47,6 @@ export __MYZS__FULLY_MODULES=(
   "alias/short.sh"
   "alias/yarn.sh"
   "alias/project.sh"
-)
-
-export __MYZS__CHANGELOGS=(
-  "4.7.4" "28 Aug 2020"
-  " - fix zplug not found"
-  "4.7.3" "25 Aug 2020"
-  " - change metric from /caches/data.csv to /data/metric.csv
- - improve metrics format as load time in millisecond
- - refactor modules deserialization
- - add support loop modules by function
- - add new agrun-<application> category in alias/agoda.sh"
-  "4.7.2" "22 Aug 2020"
-  " - add new alias/project.sh modules for create new tmp project
- - include environment loading in progress bar
- - remove gc for git commit and use gcm for git commit
- - change gcod from dev branch to develop branch
- - fix linter in ggc command
- - cleanup output from myzs-info message
- - fix 'mload' didn't check modules name before load
- - add 'minfo' as alias of 'myzs-info'
- - add 'reshell' as alias of 'restart-shell'"
-  "4.7.1" "10 Aug 2020"
-  " - add short command as default enable modules"
-  "4.7.0" "10 Aug 2020"
-  " - reduce start time by loading only important modules
- - add myzs-load / mload for load modules after initial finish
- - alias all myzs-XXXXX command
- - reduce start time from ~7 seconds to ~2 seconds
- - add .myzs-setup file to automatic load when it present (configuable)
- - manually load .myzs-setup file by run myzs-setup-local command"
-  "4.6.0" "10 Aug 2020"
-  " - change logic to load modules
- - remove exclude module variable
- - add prefix to modules name
- - improve around 1% load time"
-  "4.5.2" "13 Jul 2020"
-  " - update alias of agoda and mac
- - update app of asdf and add new tmux app
- - add more helper in utils helper
- - update some minor config in init.sh"
-  "4.5.1" "18 Jun 2020"
-  " - update some default variable
- - improve documents on zshrc file"
-  "4.5.0" "18 Jun 2020"
-  " - Introduce new command 'myzs-info' for print myzs information
- - Introduce new command 'myzs-list-changelogs' for print myzs changelogs
- - Add filename to log message
- - Change log files location to /tmp/myzs/logs
- - Rename logfile variable from \$MYZS_LOGFILE to \$MYZS_LOGPATH
- - Update new changelog format"
-  "4.4.0" "01 Jun 2020"
-  " - Add substring history search plugins 
- - Add more alias and application"
-  "4.3.0" "24 Apr 2020"
-  " - Add modules loaded 
- - Add new myzs command myzs-list-modules 
- - Add start command"
-  "4.2.0" "15 Apr 2020"
-  " - Add skipping process 
- - Add new customizable settings"
-  "4.1.1" "04 Feb 2020"
-  " - Add documentation
- - Change some default value"
-  "4.1.0" "31 Dec 2019"
-  " - Add more alias
- - Fix log detail missing
- - Fix duplicate \$PATH variable"
-  "4.0.0" "23 Sep 2019"
-  " - First v4.x.x released"
 )
 
 # Accept values: FULLY | SMALL

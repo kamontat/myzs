@@ -49,26 +49,13 @@ License    '$__MYZS__LICENSE'
 }
 
 myzs-list-changelogs() {
-  echo "# Release notes"
-  echo
+  local cl="$_MYZS_ROOT/CHANGELOG.md"
 
-  if test -z "${__MYZS__CHANGELOGS[*]}"; then
-    echo "Cannot found any notes"
+  if __myzs_is_file_exist "$cl"; then
+    cat "$cl"
   else
-    local size version date changelog
-
-    size="${#__MYZS__CHANGELOGS[@]}"
-
-    for ((i = 1; i < size; i += 3)); do
-      version="${__MYZS__CHANGELOGS[i]}"
-      date="${__MYZS__CHANGELOGS[i + 1]}"
-      changelog="${__MYZS__CHANGELOGS[i + 2]}"
-
-      echo "## Version $version ($date)"
-      echo
-      echo "$changelog"
-      echo
-    done
+    echo "Cannot found any notes" >&2
+    __myzs_failure 2
   fi
 }
 

@@ -410,6 +410,55 @@ __myzs_is_plugin_installed() {
   fi
 }
 
+export __myzs_loop_changelogs
+__myzs_loop_changelogs() {
+  local cl="$_MYZS_ROOT/CHANGELOG.md"
+
+  # changelogs array format
+  # [ <version_number> <release_date> <description_per_line> ]
+  local changelogs=()
+  local descriptions=""
+  local desc=""
+
+  if __myzs_is_file_exist "$cl"; then
+    while IFS= read -r line; do
+      if [[ "$line" =~ "^##" ]]; then
+        if __myzs_is_string_exist "$descriptions"; then
+          changelogs+=("$descriptions")
+          descriptions=""
+        fi
+
+        version="$(echo "$line" | grep -oE "[0-9].[0-9].[0-9](-(beta|alpha|rc)\.[0-9]+)? " | tr -d ' ')"
+        datetime="$(echo "$line" | grep -oE "\([0-9]{1,2} [A-Z][a-z][a-z] [0-9]{4}\)" | tr -d '(' | tr -d ')')"
+
+        changelogs+=("${version}" "${datetime}")
+
+      elif [[ "$line" =~ "^-" ]]; then
+        desc="$(echo "$line" | grep -oE "\- .+" | cut -c3-)"
+        descriptions="${descriptions}\n${desc}"
+      fi
+    done <"$cl"
+    # final check
+    if __myzs_is_string_exist "$descriptions"; then
+      changelogs+=("$descriptions")
+      descriptions=""
+    fi
+
+    local cmd="$1"
+    local size="${#changelogs[@]}"
+
+    for ((i = 1; i < size; i += 3)); do
+      version="${changelogs[i]}"
+      date="${changelogs[i + 1]}"
+      description="${changelogs[i + 2]}"
+
+      $cmd "$version" "$date" "$description"
+    done
+  else
+    __myzs_error "changelog not found at $cl"
+  fi
+}
+
 # __myzs_loop_modules = looping all modules and get the information
 #     @param 1 (cmd)  = the bash function accept 6 parameters
 #                     = cmd "$module_name" "$module_path" "$module_status" "$module_index" "$total_module" "$module_raw"
