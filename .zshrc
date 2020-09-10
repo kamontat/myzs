@@ -36,6 +36,7 @@ export MYZS_ROOT="$HOME/.myzs"
 
 export MYZS_LOADING_MODULES=(
   "app/myzs.sh"
+  # "app/myzs-git.sh"
   # "app/android.sh"
   # "app/docker.sh"
   # "app/fzf.sh"
@@ -133,3 +134,11 @@ fi
 ################################
 # Appending by user or scripts #
 ################################
+
+# doing something
+
+################################
+#           Cleanup            #
+################################
+
+__myzs_final_cleanup

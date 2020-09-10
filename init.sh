@@ -19,6 +19,7 @@ export __MYZS__FULLY_MODULES=(
   "app/fzf.sh"
   "app/kube.sh"
   "app/myzs.sh"
+  "app/myzs-git.sh"
   "app/tmux.sh"
   "app/wireshark.sh"
   "app/asdf.sh"
@@ -154,6 +155,9 @@ done <"$__MYZS__ENVFILE"
 [[ ${#env_list[@]} -gt 0 ]] && __myzs_info "exporting [ ${env_list[*]} ]"
 unset line env_list
 
+pg_mark "Helper" "Loading setup file"
+$MYZS_SETTINGS_AUTOLOAD_SETUP_LOCAL && myzs-setup-local
+
 pg_stop
 
 __myzs_initial "$0"
@@ -179,11 +183,3 @@ if __myzs_is_fully; then
     $MYZS_START_COMMAND "${MYZS_START_COMMAND_ARGUMENTS[@]}"
   fi
 fi
-
-$MYZS_SETTINGS_AUTOLOAD_SETUP_LOCAL && myzs-setup-local
-
-export __MYZS__FINISH_TIME
-__MYZS__FINISH_TIME="$(date +"%d/%m/%Y %H:%M:%S")"
-
-__myzs_cleanup
-__myzs_metric
