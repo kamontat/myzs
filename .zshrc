@@ -18,6 +18,10 @@ export MYZS_SETTINGS_AUTO_OPEN_PATH=true
 # add trigger event to cd command to check .myzs-setup file
 export MYZS_SETTINGS_AUTOLOAD_SETUP_LOCAL=false
 
+# when checking auto setup file,
+# it will use this list to file the exist file and load to enviroment
+export MYZS_SETTINGS_SETUP_FILES=("myzs-setup" ".myzs-setup" ".myzs" "myzs")
+
 # start command; this will run after exit init.sh
 export MYZS_START_COMMAND=""
 # start command arguments

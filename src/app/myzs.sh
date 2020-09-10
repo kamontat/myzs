@@ -111,6 +111,13 @@ myzs-load() {
 myzs-setup-local() {
   __myzs_initial "app/myzs.sh#myzs-setup-local"
 
-  local fullpath="$PWD/.myzs-setup"
-  __myzs_load "local-setup" "$fullpath"
+  local fullpath="" current="${1:-$PWD}"
+  local filenames=("${MYZS_SETTINGS_SETUP_FILES[@]}")
+
+  for name in "${filenames[@]}"; do
+    fullpath="${current}/${name}"
+    if __myzs_is_file_exist "$fullpath"; then
+      __myzs_load "local-setup" "$fullpath"
+    fi
+  done
 }
