@@ -1,0 +1,24 @@
+version: 4
+commit:
+  keys:
+    - type: feat
+      value: Introducing new features.
+    - type: perf
+      value: Improving user experience / usability / reliablity.
+    - type: fix
+      value: Fixing a bug.
+    - type: refac
+      value: A code change that neither fixes a bug nor adds a feature.
+    - type: chore
+      value: Other changes that don't modify src or test files.
+  scopes:
+    - type: core
+      value: Core application
+    - type: module
+      value: Module files (app, alias, and settings folder in src)
+    - type: lib
+      value: Libraries and dependencies
+    - type: utils
+      value: Utilities and Helper (helper folder in src)
+    - type: config
+      value: Configuration
