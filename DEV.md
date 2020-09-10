@@ -39,7 +39,7 @@ update script configuration
 Private method should using by current file only, 
 not shared with any files or directories
 
-1. Must prefix with `myzs:private:`
+1. Must prefix with `_myzs:private:`
 
 ### Internal
 
@@ -47,7 +47,7 @@ Internal method will available for this scripts only.
 This not meant to used by any end user.
 Expected rapidly changes from time over time.
 
-1. Must prefix with `myzs:internal:`
+1. Must prefix with `_myzs:internal:`
 
 ### Public
 
@@ -63,4 +63,4 @@ Configable variable syntax
 
 Method syntax
 
-1. Must prefix with `myzs:progressbar:`
+1. Must prefix with `pg:myzs:`
