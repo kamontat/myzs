@@ -1,5 +1,14 @@
 # Release notes
 
+## Version 4.8.0 (10 Sep 2020)
+
+- move `alias/agoda.sh` to `app/agoda.sh`
+- add gitgo config to ensure commit syntax
+- change private and internal method name to prefix with _
+- add 2 more command myzs-git-personal (mgitp) and myzs-git-agoda (mgita)
+- add new config $MYZS_SETTINGS_SETUP_FILES to custom myzs setup files
+- myzs-setup-local now able to load multiple files (base on $MYZS_SETTINGS_SETUP_FILES config)
+
 ## Version 4.7.5 (04 Sep 2020)
 
 - update default plugins list

@@ -8,9 +8,9 @@ export ZPLUG_HOME="${MYZS_ZPLUG:-${_MYZS_ROOT}/zplug}"
 
 export __MYZS__USER="${MYZS_USER:-$USER}"
 export __MYZS__OWNER="Kamontat Chantrachirathumrong"
-export __MYZS__VERSION="4.7.5"
+export __MYZS__VERSION="4.8.0"
 export __MYZS__SINCE="21 Apr 2018"
-export __MYZS__LAST_UPDATED="04 Sep 2020"
+export __MYZS__LAST_UPDATED="10 Sep 2020"
 export __MYZS__LICENSE="MIT"
 export __MYZS__MODULES=()
 export __MYZS__FULLY_MODULES=(
