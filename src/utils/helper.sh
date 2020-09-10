@@ -4,24 +4,24 @@ if [[ "$MYZS_DEBUG" == "true" ]]; then
   set -x # enable DEBUG MODE
 fi
 
-export __MYZS_LOGTYPE="${MYZS_LOGTYPE:-auto}"
-export __MYZS_LOGDIR="${MYZS_LOGDIR:-/tmp/myzs/logs}"
-export __MYZS_DATADIR="${MYZS_DATADIR:-/tmp/myzs/data}"
-export __MYZS_LOGFILE="${MYZS_LOGFILE:-main.log}"
+export __MYZS__LOGTYPE="${MYZS_LOGTYPE:-auto}"
+export __MYZS__LOGDIR="${MYZS_LOGDIR:-/tmp/myzs/logs}"
+export __MYZS__DATADIR="${MYZS_DATADIR:-/tmp/myzs/data}"
+export __MYZS__LOGFILE="${MYZS_LOGFILE:-main.log}"
 export __MYZS__ZPLUG_LOGFILE="${MYZS_ZPLUG_LOGFILE:-zplug.log}"
 
-if [[ "$__MYZS_LOGTYPE" == "auto" ]]; then
-  __MYZS_LOGFILE="main-$(date +"%y%m%d").log"
+if [[ "$__MYZS__LOGTYPE" == "auto" ]]; then
+  __MYZS__LOGFILE="main-$(date +"%y%m%d").log"
   __MYZS__ZPLUG_LOGFILE="zplug-$(date +"%y%m%d").log"
 fi
 
-export MYZS_LOGPATH="${__MYZS_LOGDIR}/${__MYZS_LOGFILE}"
-export MYZS_ZPLUG_LOGPATH="${__MYZS_LOGDIR}/${__MYZS__ZPLUG_LOGFILE}"
+export MYZS_LOGPATH="${__MYZS__LOGDIR}/${__MYZS__LOGFILE}"
+export MYZS_ZPLUG_LOGPATH="${__MYZS__LOGDIR}/${__MYZS__ZPLUG_LOGFILE}"
 
-__myzs__log() {
-  if [[ "$__MYZS_LOGDIR" != "" ]] && [[ $__MYZS_LOGFILE != "" ]]; then
-    if ! test -d "$__MYZS_LOGDIR"; then
-      mkdir -p "$__MYZS_LOGDIR" >/dev/null
+_myzs:private:log() {
+  if [[ "$__MYZS__LOGDIR" != "" ]] && [[ $__MYZS__LOGFILE != "" ]]; then
+    if ! test -d "$__MYZS__LOGDIR"; then
+      mkdir -p "$__MYZS__LOGDIR" >/dev/null
     fi
 
     local filepath="${MYZS_LOGPATH}"
@@ -32,7 +32,7 @@ __myzs__log() {
     local type datetime filename
 
     datetime="$(date)"
-    if [[ "$__MYZS_LOGTYPE" == "auto" ]]; then
+    if [[ "$__MYZS__LOGTYPE" == "auto" ]]; then
       datetime="$(date +"%H:%M:%S")"
     fi
     filename="${__MYZS__CURRENT_FILENAME:-unknown}"
@@ -60,22 +60,22 @@ __myzs__shell_is() {
 
 export __myzs_debug
 __myzs_debug() {
-  __myzs__log "DEBUG" "$@"
+  _myzs:private:log "DEBUG" "$@"
 }
 
 export __myzs_info
 __myzs_info() {
-  __myzs__log "INFO" "$@"
+  _myzs:private:log "INFO" "$@"
 }
 
 export __myzs_warn
 __myzs_warn() {
-  __myzs__log "WARN" "$@"
+  _myzs:private:log "WARN" "$@"
 }
 
 export __myzs_error
 __myzs_error() {
-  __myzs__log "ERROR" "$@"
+  _myzs:private:log "ERROR" "$@"
 }
 
 export __myzs_initial
@@ -586,8 +586,8 @@ __myzs__get_module_status() {
 }
 
 # update cache directory if not exist
-if __myzs_is_string_exist "$__MYZS_DATADIR" && ! __myzs_is_folder_exist "$__MYZS_DATADIR"; then
-  mkdir "$__MYZS_DATADIR"
+if __myzs_is_string_exist "$__MYZS__DATADIR" && ! __myzs_is_folder_exist "$__MYZS__DATADIR"; then
+  mkdir "$__MYZS__DATADIR"
 fi
 
-export MYZS_METRICPATH="$__MYZS_DATADIR/metric.csv"
+export MYZS_METRICPATH="$__MYZS__DATADIR/metric.csv"
