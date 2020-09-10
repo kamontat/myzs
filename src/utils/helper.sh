@@ -107,6 +107,16 @@ __myzs_cleanup() {
   # done
 }
 
+# call only in end line of .zshrc file
+export __myzs_final_cleanup
+__myzs_final_cleanup() {
+  export __MYZS__FINISH_TIME
+  __MYZS__FINISH_TIME="$(date +"%d/%m/%Y %H:%M:%S")"
+
+  __myzs_cleanup
+  __myzs_metric
+}
+
 export __myzs_metric
 __myzs_metric() {
   local data_file="${MYZS_METRICPATH}"
