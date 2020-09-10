@@ -2,7 +2,7 @@
 
 __myzs_initial "$0"
 
-__agoda_kube() {
+__myzs__agoda_kube() {
   confpath="${1:-$HOME/.kube/config}"
   namespace="${2:-pricepush-ci1}"
   workspace="${3:-$HOME/Desktop/docker}"
@@ -18,14 +18,14 @@ __agoda_kube() {
     "reg-hk.agodadev.io/aiab/kubectl-helm:hkci-helm3" \
     /bin/bash
 }
-__myzs_alias "agkube" "__agoda_kube"
+__myzs_alias "agkube" "__myzs__agoda_kube"
 
-__agoda_docker_run_consul() {
+__myzs__agoda_docker_run_consul() {
   docker run --rm -it -p 8500:8500 consul:latest
 }
-__myzs_alias "agrun-consul" "__agoda_docker_run_consul"
+__myzs_alias "agrun-consul" "__myzs__agoda_docker_run_consul"
 
-__agoda_docker_run() {
+__myzs__agoda_docker_run() {
   local default_image="$1"
   local image="${2:-$default_image}"
 
@@ -39,23 +39,23 @@ __agoda_docker_run() {
   docker run --rm -it "${arguments[@]}" "${image}"
 }
 
-__agoda_docker_run_cdb() {
+__myzs__agoda_docker_run_cdb() {
   local default_image="reg-hk.agodadev.io/dbdev/qa_sql_cdb_data_hotel-list-affiliate"
   local image="${1}"
   shift 1
 
-  __agoda_docker_run "${default_image}" "$image" -p "1433:1433" "$@"
+  __myzs__agoda_docker_run "${default_image}" "$image" -p "1433:1433" "$@"
 }
-__myzs_alias "agrun-cdb" "__agoda_docker_run_cdb"
+__myzs_alias "agrun-cdb" "__myzs__agoda_docker_run_cdb"
 
-__agoda_docker_run_mdb() {
+__myzs__agoda_docker_run_mdb() {
   local default_image="reg-hk.agodadev.io/dbdev/qa_sql_mdb_schema_nodata"
   local image="${1}"
   shift 1
 
-  __agoda_docker_run "${default_image}" "$image" -p "1433:1433" "$@"
+  __myzs__agoda_docker_run "${default_image}" "$image" -p "1433:1433" "$@"
 }
-__myzs_alias "agrun-mdb" "__agoda_docker_run_mdb"
+__myzs_alias "agrun-mdb" "__myzs__agoda_docker_run_mdb"
 
 if __myzs_shell_is_zsh; then
   __agoda_ssh() {
