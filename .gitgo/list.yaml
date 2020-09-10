@@ -16,7 +16,7 @@ commit:
       value: Core application
     - type: module
       value: Module files (app, alias, and settings folder in src)
-    - type: lib
+    - type: dep
       value: Libraries and dependencies
     - type: utils
       value: Utilities and Helper (helper folder in src)
