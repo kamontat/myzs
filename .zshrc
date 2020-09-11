@@ -38,6 +38,9 @@ export MYZS_TYPE="FULLY"
 # This shouldn't be changes, except you install the application to difference
 export MYZS_ROOT="$HOME/.myzs"
 
+# plugins/kamontat/myzs-plugin-core#app/hello.sh
+# core#app/myzs.sh
+
 export MYZS_LOADING_MODULES=(
   "app/myzs.sh"
   # "app/myzs-git.sh"
@@ -62,7 +65,7 @@ export MYZS_LOADING_MODULES=(
   # "alias/docker.sh"
   # "alias/fuck.sh"
   "alias/git.sh"
-  "alias/mac.sh"
+  # "alias/mac.sh"
   "alias/shell.sh"
   # "alias/vim.sh"
   # "alias/coreutils.sh"
