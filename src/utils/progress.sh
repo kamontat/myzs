@@ -20,8 +20,10 @@ export MYZS_PG_FAIL_CL="${MYZS_PG_FAIL_CL:-$PG_RED}"
 
 # time danger
 export MYZS_PG_DANGER_CL="${MYZS_PG_DANGER_CL:-$PG_RED}"
+# warning time color
+export MYZS_PG_WARN_CL="${MYZS_PG_TIME_CL:-$PG_YELLOW}"
 # normal time color
-export MYZS_PG_TIME_CL="${MYZS_PG_TIME_CL:-$PG_YELLOW}"
+export MYZS_PG_TIME_CL="${MYZS_PG_TIME_CL:-$PG_GREEN}"
 
 # Progress setting
 export __PG_STYLE="${PG_STYLE:-shark}"
@@ -70,8 +72,10 @@ _myzs:pg:private:message() {
   dur="$(_myzs:pg:private:time:convert "${raw_time}")"
   message="$*"
 
-  if ((raw_time > MYZS_PG_TIME_THRESHOLD_MS)); then
+  if ((raw_time > MYZS_PG_TIME_DANGER_THRESHOLD_MS)); then
     time_color=${MYZS_PG_DANGER_CL}
+  elif ((raw_time > MYZS_PG_TIME_WARN_THRESHOLD_MS)); then
+    time_color=${MYZS_PG_WARN_CL}
   else
     time_color=${MYZS_PG_TIME_CL}
   fi

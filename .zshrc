@@ -79,9 +79,12 @@ export MYZS_LOADING_MODULES=(
 ################################
 
 # If this is true, the application will trace each component in difference lines
-export MYZS_PG_SHOW_PERF=false
+export MYZS_PG_SHOW_PERF=true
+
 # minimum millisecond will be shown as danger color
-export MYZS_PG_TIME_THRESHOLD_MS=500
+export MYZS_PG_TIME_DANGER_THRESHOLD_MS=500
+# minimum millisecond will be shown as warning color
+export MYZS_PG_TIME_WARN_THRESHOLD_MS=100
 
 # loading message color
 export MYZS_PG_LOADING_CL=""
@@ -93,8 +96,10 @@ export MYZS_PG_SKIP_CL=""
 # fail status indicator
 export MYZS_PG_FAIL_CL=""
 
-# time danger
+# time danger color
 export MYZS_PG_DANGER_CL=""
+# time warning color
+export MYZS_PG_WARN_CL=""
 # normal time color
 export MYZS_PG_TIME_CL=""
 
