@@ -1,6 +1,6 @@
 # shellcheck disable=SC1090,SC2148
 
-__myzs_initial "$0"
+_myzs:internal:module:initial "$0"
 
 # Switch command
 
@@ -34,9 +34,9 @@ __myzs__switch_git_to() {
 }
 
 export GIT_PERSONAL_SIGNKEY="E9BD16F7EC800F7AFAA3C65E705CB6B32BBCBABA"
-__myzs_alias "myzs-git-personal" "__myzs__switch_git_to 'global' 'developer@kamontat.net' '$GIT_PERSONAL_SIGNKEY' 'kamontat'"
-__myzs_alias "mgitp" "myzs-git-personal"
+_myzs:internal:alias "myzs-git-personal" "__myzs__switch_git_to 'global' 'developer@kamontat.net' '$GIT_PERSONAL_SIGNKEY' 'kamontat'"
+_myzs:internal:alias "mgitp" "myzs-git-personal"
 
 export GIT_AGODA_SIGNKEY="508575A2923D2AB5997A311CDD18B41623EB11D1"
-__myzs_alias "myzs-git-agoda" "__myzs__switch_git_to 'global' 'kamontat.chantrachirathumrong@agoda.com' '$GIT_AGODA_SIGNKEY' 'kchantrachir'"
-__myzs_alias "mgita" "myzs-git-agoda"
+_myzs:internal:alias "myzs-git-agoda" "__myzs__switch_git_to 'global' 'kamontat.chantrachirathumrong@agoda.com' '$GIT_AGODA_SIGNKEY' 'kchantrachir'"
+_myzs:internal:alias "mgita" "myzs-git-agoda"

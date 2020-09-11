@@ -1,19 +1,19 @@
 # shellcheck disable=SC1090,SC2148
 
-__myzs_initial "$0" "force"
+_myzs:internal:module:initial "$0" "force"
 
-pg_start() {
-  __myzs_debug "start dump progress bar"
+myzs:pg:start() {
+  _myzs:internal:log:debug "start dump progress bar"
 }
 
-pg_mark() {
-  __myzs_debug "start mark progress bar task as COMPLETED"
+myzs:pg:mark() {
+  _myzs:internal:log:debug "start mark progress bar task as COMPLETED"
 }
 
-pg_mark_false() {
-  __myzs_debug "start mark progress bar task as FAILURE"
+myzs:pg:mark-fail() {
+  _myzs:internal:log:debug "start mark progress bar task as FAILURE"
 }
 
-pg_stop() {
-  __myzs_debug "stop progress bar"
+myzs:pg:stop() {
+  _myzs:internal:log:debug "stop progress bar"
 }

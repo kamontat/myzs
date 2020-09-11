@@ -1,6 +1,6 @@
 # shellcheck disable=SC1090,SC2148
 
-__myzs_initial "$0" "force"
+_myzs:internal:module:initial "$0" "force"
 
 # Theme setting
 export PG_RED="\033[1;31m"
@@ -33,7 +33,8 @@ export PG_PROCESS_COUNT=1
 
 export ____MYZS__REVOLVER_CMD="${__MYZS__REVOLVER_CMD:-./revolver}"
 
-sec() {
+# get current time in millisecond
+_myzs:pg:private:time:ms() {
   if command -v "gdate" &>/dev/null; then
     gdate +%s%3N
   else
@@ -41,21 +42,24 @@ sec() {
   fi
 }
 
-conv_time() {
+# convert millisecond to string
+_myzs:pg:private:time:convert() {
   ! $PG_FORMAT_TIME && echo "$1" && return 0
 
   local ms="$1"
   printf '%0dm:%0ds:%0dms' $((ms / 60000)) $((ms % 60000 / 1000)) $((ms % 1000))
 }
 
-format_message() {
+# convert input to log message format
+_myzs:pg:private:message:format() {
   local title="$1"
   shift
   local message="$*"
   printf "[ %-13s ] %s" "$title" "$message"
 }
 
-_message() {
+# create full output message
+_myzs:pg:private:message() {
   local color symbol raw_time dur message time_color
 
   color="$1"
@@ -63,7 +67,7 @@ _message() {
   raw_time="$3"
   shift 3
 
-  dur="$(conv_time "${raw_time}")"
+  dur="$(_myzs:pg:private:time:convert "${raw_time}")"
   message="$*"
 
   if ((raw_time > MYZS_PG_TIME_THRESHOLD_MS)); then
@@ -76,101 +80,103 @@ _message() {
 
 }
 
-show_message_by() {
+_myzs:pg:private:log:completed() {
+  local dur="$1"
+  shift
+  local message="$*"
+
+  _myzs:pg:private:message "$MYZS_PG_COMPLETE_CL" "+" "$dur" "$message"
+}
+
+_myzs:pg:private:log:skipped() {
+  local dur="$1"
+  shift
+  local message="$*"
+
+  _myzs:pg:private:message "$MYZS_PG_SKIP_CL" "*" "$dur" "$message"
+}
+
+_myzs:pg:private:log:failured() {
+  local dur="$1"
+  shift
+  local message="$*"
+
+  _myzs:pg:private:message "$MYZS_PG_FAIL_CL" "-" "$dur" "$message"
+}
+
+_myzs:pg:private:log() {
   if [[ "$1" == "C" ]]; then
-    completed_message "$2" "$3"
+    _myzs:pg:private:log:completed "$2" "$3"
   elif [[ "$1" == "F" ]]; then
-    failured_message "$2" "$3"
+    _myzs:pg:private:log:failured "$2" "$3"
   elif [[ "$1" == "S" ]]; then
-    skipped_message "$2" "$3"
+    _myzs:pg:private:log:skipped "$2" "$3"
   fi
   echo
 }
 
-completed_message() {
-  local dur="$1"
-  shift
-  local message="$*"
-
-  _message "$MYZS_PG_COMPLETE_CL" "+" "$dur" "$message"
-}
-
-skipped_message() {
-  local dur="$1"
-  shift
-  local message="$*"
-
-  _message "$MYZS_PG_SKIP_CL" "*" "$dur" "$message"
-}
-
-failured_message() {
-  local dur="$1"
-  shift
-  local message="$*"
-
-  _message "$MYZS_PG_FAIL_CL" "-" "$dur" "$message"
-}
-
 export PG_START_TIME
-PG_START_TIME="$(sec)"
+PG_START_TIME="$(_myzs:pg:private:time:ms)"
 
 export PG_PREV_TIME
-PG_PREV_TIME="$(sec)"
+PG_PREV_TIME="$(_myzs:pg:private:time:ms)"
 
 export PG_PREV_MSG
-PG_PREV_MSG=$(format_message "Start" "Initialization")
+PG_PREV_MSG=$(_myzs:pg:private:message:format "Start" "Initialization")
 
 export PG_PREV_STATE
 PG_PREV_STATE="C" # C = completed, F = failured, S = skipped
 
-pg_start() {
+myzs:pg:start() {
   local message
   message="${1:-Initialization shell. Please Wait...}"
   "${____MYZS__REVOLVER_CMD}" -s "$__PG_STYLE" start "${MYZS_PG_LOADING_CL}${message}"
 }
 
-pg_mark() {
-  TIME=$(($(sec) - PG_PREV_TIME))
+myzs:pg:mark() {
+  TIME=$(($(_myzs:pg:private:time:ms) - PG_PREV_TIME))
 
   "${____MYZS__REVOLVER_CMD}" -s "$__PG_STYLE" update "${MYZS_PG_LOADING_CL}$2.."
 
   if [[ "$__MYZS_PG_SHOW_PERF" == "true" ]]; then
-    show_message_by "$PG_PREV_STATE" "$TIME" "$PG_PREV_MSG"
+    _myzs:pg:private:log "$PG_PREV_STATE" "$TIME" "$PG_PREV_MSG"
   fi
 
-  PG_PREV_TIME=$(sec)
-  PG_PREV_MSG=$(format_message "$@")
+  PG_PREV_TIME=$(_myzs:pg:private:time:ms)
+  PG_PREV_MSG=$(_myzs:pg:private:message:format "$@")
   PG_PREV_STATE="C"
   ((PG_PROCESS_COUNT++))
 }
 
-pg_mark_false() {
+myzs:pg:mark-fail() {
   PG_PREV_STATE="F"
-  PG_PREV_MSG=$(format_message "Error" "$1")
+  PG_PREV_MSG=$(_myzs:pg:private:message:format "Error" "$1")
 }
 
-pg_mark_skip() {
+myzs:pg:mark-skip() {
   PG_PREV_STATE="S"
-  PG_PREV_MSG=$(format_message "Skip" "Skipping $1 component")
+  PG_PREV_MSG=$(_myzs:pg:private:message:format "Skip" "Skipping $1 component")
 }
 
-pg_stop() {
+myzs:pg:stop() {
   local load_time
 
-  TIME=$(($(sec) - PG_PREV_TIME))
+  TIME=$(($(_myzs:pg:private:time:ms) - PG_PREV_TIME))
 
   if "$__MYZS_PG_SHOW_PERF"; then
-    show_message_by "$PG_PREV_STATE" "$TIME" "$PG_PREV_MSG"
+    _myzs:pg:private:log "$PG_PREV_STATE" "$TIME" "$PG_PREV_MSG"
   fi
 
   "${____MYZS__REVOLVER_CMD}" stop
 
-  TIME=$(($(sec) - PG_START_TIME))
-  load_time="$(conv_time "${TIME}")"
+  TIME=$(($(_myzs:pg:private:time:ms) - PG_START_TIME))
+  load_time="$(_myzs:pg:private:time:convert "${TIME}")"
 
-  printf "${MYZS_PG_COMPLETE_CL}[+]${PG_RESET} %-${MESSAGE_LENGTH}s      in ${MYZS_PG_TIME_CL}%s${PG_RESET}." "$(format_message "Completed" "Initialization $PG_PROCESS_COUNT tasks")" "${load_time}"
+  printf "${MYZS_PG_COMPLETE_CL}[+]${PG_RESET} %-${MESSAGE_LENGTH}s      in ${MYZS_PG_TIME_CL}%s${PG_RESET}." "$(_myzs:pg:private:message:format "Completed" "Initialization $PG_PROCESS_COUNT tasks")" "${load_time}"
   echo
 
   export PROGRESS_LOADTIME="$load_time"
   export PROGRESS_LOADTIME_MS="$TIME"
+
+  unset PG_PREV_TIME PG_PREV_MSG PG_PREV_STATE
 }

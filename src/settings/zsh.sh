@@ -1,6 +1,6 @@
 # shellcheck disable=SC1090,SC2148
 
-__myzs_initial "$0"
+_myzs:internal:module:initial "$0"
 
 emulate -L zsh
 unsetopt CORRECT_ALL

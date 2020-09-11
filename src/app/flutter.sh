@@ -1,17 +1,17 @@
 # shellcheck disable=SC1090,SC2148
 
-__myzs_initial "$0"
+_myzs:internal:module:initial "$0"
 
 export FLUTTER_HOME="/usr/local/opt/flutter"
 
-if __myzs_is_folder_exist "$FLUTTER_HOME"; then
-  __myzs_push_path "${FLUTTER_HOME}/bin"
+if _myzs:internal:checker:folder-exist "$FLUTTER_HOME"; then
+  _myzs:internal:path-push "${FLUTTER_HOME}/bin"
   export DART_SDK="${FLUTTER_HOME}/bin/cache/dart-sdk"
 
   flutter config --no-analytics >/dev/null
 
   export DART_PUB_BIN="$HOME/.pub-cache/bin"
-  if __myzs_is_folder_exist "$DART_PUB_BIN"; then
-    __myzs_push_path "${DART_PUB_BIN}"
+  if _myzs:internal:checker:folder-exist "$DART_PUB_BIN"; then
+    _myzs:internal:path-push "${DART_PUB_BIN}"
   fi
 fi

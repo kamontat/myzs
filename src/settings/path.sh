@@ -1,17 +1,17 @@
 # shellcheck disable=SC1090,SC2148
 
-__myzs_initial "$0"
+_myzs:internal:module:initial "$0"
 
-__myzs_push_path "/usr/local/opt/openssl"
+_myzs:internal:path-push "/usr/local/opt/openssl"
 
-__myzs_push_path "/usr/local/opt/coreutils/libexec/gnubin"
+_myzs:internal:path-push "/usr/local/opt/coreutils/libexec/gnubin"
 
-__myzs_push_path "/Users/kamontat/.rbenv/shims"
+_myzs:internal:path-push "/Users/kamontat/.rbenv/shims"
 
-__myzs_push_path "/usr/local/opt/coreutils/libexec/gnubin"
+_myzs:internal:path-push "/usr/local/opt/coreutils/libexec/gnubin"
 
-__myzs_push_path "/usr/local/opt/icu4c/bin"
+_myzs:internal:path-push "/usr/local/opt/icu4c/bin"
 
-__myzs_push_path "/usr/local/opt/icu4c/sbin"
+_myzs:internal:path-push "/usr/local/opt/icu4c/sbin"
 
-__myzs_manpath "/usr/local/opt/coreutils/libexec/gnuman"
+_myzs:internal:manpath-push "/usr/local/opt/coreutils/libexec/gnuman"

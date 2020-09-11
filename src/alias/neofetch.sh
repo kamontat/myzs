@@ -1,11 +1,11 @@
 # shellcheck disable=SC1090,SC2148
 
-__myzs_initial "$0"
+_myzs:internal:module:initial "$0"
 
-if __myzs_is_command_exist "neofetch"; then
-  if __myzs_is_file_exist "$NEOFETCH_CONFIG"; then
-    __myzs_alias "sysinfo" "neofetch --config $NEOFETCH_CONFIG"
+if _myzs:internal:checker:command-exist "neofetch"; then
+  if _myzs:internal:checker:file-exist "$NEOFETCH_CONFIG"; then
+    _myzs:internal:alias "sysinfo" "neofetch --config $NEOFETCH_CONFIG"
   else
-    __myzs_alias "sysinfo" "neofetch"
+    _myzs:internal:alias "sysinfo" "neofetch"
   fi
 fi

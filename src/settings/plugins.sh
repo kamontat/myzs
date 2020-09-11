@@ -1,12 +1,12 @@
 # shellcheck disable=SC1090,SC2148
 
-__myzs_initial "$0"
+_myzs:internal:module:initial "$0"
 
-__myzs__create_plugins() {
+myzs:zplug:initial-plugins() {
   zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
-  if __myzs_is_command_exist "myzs__plugins_list"; then
-    myzs__plugins_list
+  if _myzs:internal:checker:command-exist "myzs:zplug:plugin-list"; then
+    myzs:zplug:plugin-list
   else
     # Require libraries
     zplug "mafredri/zsh-async", from:github, use:"async.zsh"
@@ -47,8 +47,8 @@ __myzs__create_plugins() {
   fi
 }
 
-__myzs__setup_plugins() {
-  if __myzs_is_plugin_installed 'zsh-users/zsh-history-substring-search'; then
+myzs:zplug:setup-plugins() {
+  if myzs:zplug:checker:plugin-installed 'zsh-users/zsh-history-substring-search'; then
     zmodload zsh/terminfo
 
     # shellcheck disable=SC1087,SC2154

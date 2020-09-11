@@ -1,16 +1,16 @@
 # shellcheck disable=SC1090,SC2148
 
-__myzs_initial "$0"
+_myzs:internal:module:initial "$0"
 
-if __myzs_is_mac && __myzs_is_command_exist "osascript"; then
+if _myzs:internal:checker:mac && _myzs:internal:checker:command-exist "osascript"; then
   newtab() {
     clipboard="$(pbpaste)"
 
     # check is input is path
-    if __myzs_is_string_exist "$1" && __myzs_is_folder_exist "$1"; then
+    if _myzs:internal:checker:string-exist "$1" && _myzs:internal:checker:folder-exist "$1"; then
       echo "$1" | pbcopy
       # check is clipboard is path
-    elif ! __myzs_is_folder_exist "$clipboard"; then
+    elif ! _myzs:internal:checker:folder-exist "$clipboard"; then
       pwd | pbcopy
     fi
 
@@ -53,9 +53,9 @@ EOF
     }
   }
 
-  __myzs_alias "tab" "newtab"
+  _myzs:internal:alias "tab" "newtab"
 
-  if __myzs_is_command_exist "system_profiler"; then
-    __myzs_alias "batt" "system_profiler SPPowerDataType"
+  if _myzs:internal:checker:command-exist "system_profiler"; then
+    _myzs:internal:alias "batt" "system_profiler SPPowerDataType"
   fi
 fi

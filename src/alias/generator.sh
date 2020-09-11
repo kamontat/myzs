@@ -1,8 +1,8 @@
 # shellcheck disable=SC1090,SC2148
 
-__myzs_initial "$0"
+_myzs:internal:module:initial "$0"
 
-if __myzs_is_command_exist "generator"; then
-  __myzs_alias "template" "generator"
-  __myzs_alias "template_update" "generator --reinstall"
+if _myzs:internal:checker:command-exist "generator"; then
+  _myzs:internal:alias "template" "generator"
+  _myzs:internal:alias "template_update" "generator --reinstall"
 fi

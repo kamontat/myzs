@@ -1,8 +1,8 @@
 # shellcheck disable=SC1090,SC2148
 
-__myzs_initial "$0"
+_myzs:internal:module:initial "$0"
 
-if __myzs_is_command_exist "fuck"; then
-  __myzs_alias "f" "fuck"
-  __myzs_alias "fy" "fuck --yes"
+if _myzs:internal:checker:command-exist "fuck"; then
+  _myzs:internal:alias "f" "fuck"
+  _myzs:internal:alias "fy" "fuck --yes"
 fi

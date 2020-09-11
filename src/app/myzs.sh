@@ -1,6 +1,6 @@
 # shellcheck disable=SC1090,SC2148
 
-__myzs_initial "$0"
+_myzs:internal:module:initial "$0"
 
 myzs-upload() {
   test -z "$MYZS_ROOT" && echo "\$MYZS_ROOT is required" && exit 2
@@ -51,11 +51,11 @@ License    '$__MYZS__LICENSE'
 myzs-list-changelogs() {
   local cl="$_MYZS_ROOT/CHANGELOG.md"
 
-  if __myzs_is_file_exist "$cl"; then
+  if _myzs:internal:checker:file-exist "$cl"; then
     cat "$cl"
   else
     echo "Cannot found any notes" >&2
-    __myzs_failure 2
+    _myzs:internal:failed 2
   fi
 }
 
@@ -63,7 +63,7 @@ myzs-list-modules() {
   echo "# Modules"
   echo
 
-  ! __myzs_is_string_exist "${__MYZS__MODULES[*]}" && echo "Cannot find any modules exist" && exit 2
+  ! _myzs:internal:checker:string-exist "${__MYZS__MODULES[*]}" && echo "Cannot find any modules exist" && exit 2
 
   printf '| %-7s | %-20s | %-35s | %-10s |\n' "[index]" "[name]" "[path]" "[status]"
 
@@ -76,7 +76,7 @@ myzs-list-modules() {
     printf '| %-7s | %-20s | %-35s | %-10s |\n' "${module_index}" "${module_name}" "${module_path}" "${module_status}"
   }
 
-  __myzs_loop_modules __myzs_list_modules_internal
+  _myzs:internal:module:loop __myzs_list_modules_internal
 
   echo
   printf 'Total %s modules\n' "${#__MYZS__MODULES[@]}"
@@ -86,7 +86,7 @@ myzs-list-modules() {
 # param $1 - module name in src only
 #       $2 - string as 'debug' to print debug information
 myzs-load() {
-  __myzs_initial "app/myzs.sh#myzs-load"
+  _myzs:internal:module:initial "app/myzs.sh#myzs-load"
 
   local name="$1" # fully_modules format
   shift 1
@@ -94,30 +94,30 @@ myzs-load() {
 
   fullpath="${__MYZS__SRC}/${name}"
 
-  if __myzs__is_valid_module "$name"; then
-    if __myzs_load_module "$name" "$fullpath" "${args[@]}"; then
-      __myzs_complete
+  if _myzs:internal:module:checker:validate "$name"; then
+    if _myzs:internal:module:load "$name" "$fullpath" "${args[@]}"; then
+      _myzs:internal:completed
     else
-      __myzs_warn "loading module return error"
-      __myzs_failure 2
+      _myzs:internal:log:warn "loading module return error"
+      _myzs:internal:failed 2
     fi
   else
-    __myzs_warn "invalid modules ($name)"
-    __myzs_failure 3
+    _myzs:internal:log:warn "invalid modules ($name)"
+    _myzs:internal:failed 3
   fi
 }
 
 # run myzs load set file: $PWD/.myzs-setup
 myzs-setup-local() {
-  __myzs_initial "app/myzs.sh#myzs-setup-local"
+  _myzs:internal:module:initial "app/myzs.sh#myzs-setup-local"
 
   local fullpath="" current="${1:-$PWD}"
   local filenames=("${MYZS_SETTINGS_SETUP_FILES[@]}")
 
   for name in "${filenames[@]}"; do
     fullpath="${current}/${name}"
-    if __myzs_is_file_exist "$fullpath"; then
-      __myzs_load "local-setup" "$fullpath"
+    if _myzs:internal:checker:file-exist "$fullpath"; then
+      _myzs:internal:load "local-setup" "$fullpath"
     fi
   done
 }

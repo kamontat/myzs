@@ -2,6 +2,8 @@
 
 export _MYZS_ROOT="${MYZS_ROOT:-"$HOME/.myzs"}"
 export __MYZS__SRC="${_MYZS_ROOT}/src"
+export __MYZS__HLP="${_MYZS_ROOT}/src/utils/helper"
+export __MYZS__PGL="${_MYZS_ROOT}/plugins"
 export __MYZS__RES="${_MYZS_ROOT}/resources"
 
 export ZPLUG_HOME="${MYZS_ZPLUG:-${_MYZS_ROOT}/zplug}"
@@ -61,36 +63,36 @@ export __MYZS__REVOLVER_CMD="${__MYZS__SRC}/utils/revolver"
 # Start loading dependencies #
 # ########################## #
 
-source "${__MYZS__SRC}/utils/helper.sh"
+source "${__MYZS__HLP}/index.sh"
 
-__myzs_initial
+_myzs:internal:module:initial
 
-if __myzs_is_fully; then
+if _myzs:internal:checker:fully-type; then
   source "${__MYZS__SRC}/utils/progress.sh"
 else
   source "${__MYZS__SRC}/utils/dump-progress.sh"
 fi
 
-pg_start
+myzs:pg:start
 
-pg_mark "Commandline" "setup system settings"
-__myzs_load_module "settings/system.sh" "${__MYZS__SRC}/settings/system.sh" || pg_mark_false "Cannot load system variable"
+myzs:pg:mark "Commandline" "Setup system settings"
+_myzs:internal:module:load "settings/system.sh" "${__MYZS__SRC}/settings/system.sh" || myzs:pg:mark-fail "Cannot load system variable"
 
-if __myzs_is_fully; then
-  pg_mark "Commandline" "setup commandline settings"
-  __myzs_load_module "settings/zsh.sh" "${__MYZS__SRC}/settings/zsh.sh" || pg_mark_false "Cannot load zsh settings"
+if _myzs:internal:checker:fully-type; then
+  myzs:pg:mark "Commandline" "Setup commandline settings"
+  _myzs:internal:module:load "settings/zsh.sh" "${__MYZS__SRC}/settings/zsh.sh" || myzs:pg:mark-fail "Cannot load zsh settings"
 fi
 
-if __myzs_is_fully && __myzs_shell_is_zsh; then
-  pg_mark "Plugin" "setup plugin manager"
-  __myzs_load_module "zplug/init.zsh" "${ZPLUG_HOME}/init.zsh" || pg_mark_false "Cannot load zplug initial script"
+if _myzs:internal:checker:fully-type && _myzs:internal:checker:shell:zsh; then
+  myzs:pg:mark "ZPlugin" "Initial zplug configuration"
+  _myzs:internal:module:load "zplug/init.zsh" "${ZPLUG_HOME}/init.zsh" || myzs:pg:mark-fail "Cannot load zplug initial script"
 fi
 
-if __myzs_is_fully && __myzs_shell_is_zsh; then
-  pg_mark "Plugin" "Creating plugins for zplug"
-  __myzs_load_module "settings/plugins.sh" "${__MYZS__SRC}/settings/plugins.sh" || pg_mark_false "Cannot load zplug plugins list"
+if _myzs:internal:checker:fully-type && _myzs:internal:checker:shell:zsh; then
+  myzs:pg:mark "ZPlugin" "Initial zplug plugin list"
+  _myzs:internal:module:load "settings/plugins.sh" "${__MYZS__SRC}/settings/plugins.sh" || myzs:pg:mark-fail "Cannot load zplug plugins list"
 
-  __myzs__create_plugins # create plugins
+  myzs:zplug:initial-plugins # initial plugins
 
   # Install plugins if there are plugins that have not been installed
   if ! zplug check --verbose; then
@@ -101,71 +103,74 @@ if __myzs_is_fully && __myzs_shell_is_zsh; then
     fi
   fi
 
-  pg_mark "Plugin" "Loading plugins to zplug"
+  myzs:pg:mark "ZPlugin" "Loading zplug plugin list"
   # load new plugins to system
   zplug load --verbose >>"$MYZS_ZPLUG_LOGPATH"
 
-  pg_mark "Plugin" "Settings plugins configuration"
-  __myzs__setup_plugins
+  myzs:pg:mark "ZPlugin" "Setup zplug plugin config"
+  myzs:zplug:setup-plugins
 fi
 
-pg_mark "Helper" "Loading setup scripts"
+myzs:pg:mark "Helper" "Loading setup scripts"
 for __path in "${MYZS_LOADING_MODULES[@]}"; do
-  pg_mark "Scripts" "Loading $__path"
+  myzs:pg:mark "Scripts" "Loading $__path"
 
   fullpath="${__MYZS__SRC}/${__path}"
 
   # supported modules
-  if __myzs__is_valid_module "$__path"; then
-    if __myzs_is_fully || [[ $__path =~ "alias" ]]; then
-      __myzs_load_module "${__path}" "$fullpath" || pg_mark_false "Cannot load $__path"
+  if _myzs:internal:module:checker:validate "$__path"; then
+    if _myzs:internal:checker:fully-type || [[ $__path =~ "alias" ]]; then
+      _myzs:internal:module:load "${__path}" "$fullpath" || myzs:pg:mark-fail "Cannot load $__path"
     else
-      pg_mark_false "non-alias modules cannot autoload in TYPE=$__MYZS__TYPE"
+      myzs:pg:mark-fail "non-alias modules cannot autoload in TYPE=$__MYZS__TYPE"
     fi
   else
-    pg_mark_false "'$__path' not found in __MYZS__FULLY_MODULES"
+    myzs:pg:mark-fail "'$__path' not found in __MYZS__FULLY_MODULES"
   fi
 done
 unset __path
 
-pg_mark "Helper" "Normalize all modules status"
+myzs:pg:mark "Helper" "Normalize all modules status"
 for __component in "${__MYZS__FULLY_MODULES[@]}"; do
   if ! [[ "${MYZS_LOADING_MODULES[*]}" =~ $__component ]]; then
     fullpath="${__MYZS__SRC}/${__component}"
-    __myzs_skip_module "${__component}" "$fullpath"
+    _myzs:internal:module:skip "${__component}" "$fullpath"
   fi
 done
 unset __component
 
-pg_mark "Helper" "Loading environment variable"
-env_list=()
-export __MYZS__ENVFILE="$MYZS_ROOT/.env"
+myzs:pg:mark "Plugin" "Initial myzs plugin list"
+_myzs:internal:initial-plugins
 
-__myzs_initial "$__MYZS__ENVFILE"
+myzs:pg:mark "Helper" "Loading environment variable"
+env_list=()
+export __MYZS__ENVFILE="$_MYZS_ROOT/.env"
+
+_myzs:internal:module:initial "$__MYZS__ENVFILE"
 while IFS= read -r line; do
   key="${line%=*}"
   value="${line##*=}"
 
-  if __myzs_is_string_exist "$key" && __myzs_is_string_exist "$value"; then
+  if _myzs:internal:checker:string-exist "$key" && _myzs:internal:checker:string-exist "$value"; then
     env_list+=("$key")
     # shellcheck disable=SC2163
     export "${key}"="${value}"
   fi
 done <"$__MYZS__ENVFILE"
-[[ ${#env_list[@]} -gt 0 ]] && __myzs_info "exporting [ ${env_list[*]} ]"
+[[ ${#env_list[@]} -gt 0 ]] && _myzs:internal:log:info "exporting [ ${env_list[*]} ]"
 unset line env_list
 
-pg_mark "Helper" "Loading setup file"
+myzs:pg:mark "Helper" "Loading setup file"
 $MYZS_SETTINGS_AUTOLOAD_SETUP_LOCAL && myzs-setup-local
 
-pg_stop
+myzs:pg:stop
 
-__myzs_initial "$0"
-if __myzs_is_fully; then
+_myzs:internal:module:initial "$0"
+if _myzs:internal:checker:fully-type; then
   # auto open path from clipboard
   if [[ "$MYZS_SETTINGS_AUTO_OPEN_PATH" == "true" ]]; then
     __clipboard="$(pbpaste)"
-    if __myzs_is_folder_exist "$__clipboard"; then
+    if _myzs:internal:checker:folder-exist "$__clipboard"; then
       cd "$__clipboard" || echo "$__clipboard not exist!"
     fi
 
@@ -173,13 +178,13 @@ if __myzs_is_fully; then
   fi
 
   # print open welcome message
-  if __myzs_is_string_exist "$MYZS_SETTINGS_WELCOME_MESSAGE"; then
+  if _myzs:internal:checker:string-exist "$MYZS_SETTINGS_WELCOME_MESSAGE"; then
     echo
     echo "$MYZS_SETTINGS_WELCOME_MESSAGE"
   fi
 
   # exec start command
-  if __myzs_is_command_exist "$MYZS_START_COMMAND"; then
+  if _myzs:internal:checker:command-exist "$MYZS_START_COMMAND"; then
     $MYZS_START_COMMAND "${MYZS_START_COMMAND_ARGUMENTS[@]}"
   fi
 fi

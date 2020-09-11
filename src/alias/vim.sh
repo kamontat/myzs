@@ -1,26 +1,26 @@
 # shellcheck disable=SC1090,SC2148
 
-__myzs_initial "$0"
+_myzs:internal:module:initial "$0"
 
-if __myzs_is_command_exist "nvim"; then
-  __myzs_alias "v" "nvim"
-  __myzs_alias_force "vi" "nvim"
+if _myzs:internal:checker:command-exist "nvim"; then
+  _myzs:internal:alias "v" "nvim"
+  _myzs:internal:alias-force "vi" "nvim"
 
-  __myzs_alias "vs" "sudo nvim"
-  __myzs_alias "vis" "sudo nvim"
-  __myzs_alias "vims" "sudo nvim"
+  _myzs:internal:alias "vs" "sudo nvim"
+  _myzs:internal:alias "vis" "sudo nvim"
+  _myzs:internal:alias "vims" "sudo nvim"
 
-  __myzs_alias "sv" "sudo nvim"
-  __myzs_alias "svi" "sudo nvim"
-  __myzs_alias "svim" "sudo nvim"
+  _myzs:internal:alias "sv" "sudo nvim"
+  _myzs:internal:alias "svi" "sudo nvim"
+  _myzs:internal:alias "svim" "sudo nvim"
 else
-  __myzs_alias "v" "vim"
+  _myzs:internal:alias "v" "vim"
 
-  __myzs_alias "vs" "sudo vim"
-  __myzs_alias "vis" "sudo vim"
-  __myzs_alias "vims" "sudo vim"
+  _myzs:internal:alias "vs" "sudo vim"
+  _myzs:internal:alias "vis" "sudo vim"
+  _myzs:internal:alias "vims" "sudo vim"
 
-  __myzs_alias "sv" "sudo vim"
-  __myzs_alias "svi" "sudo vim"
-  __myzs_alias "svim" "sudo vim"
+  _myzs:internal:alias "sv" "sudo vim"
+  _myzs:internal:alias "svi" "sudo vim"
+  _myzs:internal:alias "svim" "sudo vim"
 fi

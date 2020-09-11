@@ -1,11 +1,11 @@
 # shellcheck disable=SC1090,SC2148
 
-__myzs_initial "$0"
+_myzs:internal:module:initial "$0"
 
 export GOPATH="${__GOPATH:-$HOME/Desktop/Personal/go}"
 
-if __myzs_is_command_exist "go"; then
-  __myzs_append_path "$GOPATH/bin"
+if _myzs:internal:checker:command-exist "go"; then
+  _myzs:internal:path-append "$GOPATH/bin"
 
-  __myzs_fpath "$GOPATH/src/github.com/urfave/cli/autocomplete/zsh_autocomplete"
+  _myzs:internal:fpath-push "$GOPATH/src/github.com/urfave/cli/autocomplete/zsh_autocomplete"
 fi

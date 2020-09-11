@@ -1,6 +1,6 @@
 # shellcheck disable=SC1090,SC2148
 
-__myzs_initial "$0"
+_myzs:internal:module:initial "$0"
 
 export USER="${__MYZS__USER:-$USER}"
 export DEFAULT_USER="${USER}"
@@ -23,19 +23,19 @@ export LC_ALL="${LC_ALL:-en_US.UTF-8}"
 
 export MANPATH="/usr/local/man:$MANPATH"
 
-if __myzs_is_file_exist "$SHELL_FILE"; then
-  if ! __myzs_is_file_contains "$SHELL_FILE" "$MYZS_DEFAULT_SHELL"; then
-    __myzs_info "adding $MYZS_DEFAULT_SHELL to shell file ($SHELL_FILE)"
+if _myzs:internal:checker:file-exist "$SHELL_FILE"; then
+  if ! _myzs:internal:checker:file-contains "$SHELL_FILE" "$MYZS_DEFAULT_SHELL"; then
+    _myzs:internal:log:info "adding $MYZS_DEFAULT_SHELL to shell file ($SHELL_FILE)"
     echo "$MYZS_DEFAULT_SHELL" | sudo tee -a "$SHELL_FILE" >/dev/null
   fi
 
   if [[ "$MYZS_DEFAULT_SHELL" != "$SHELL" ]]; then
-    __myzs_warn "current shell is $SHELL but it should be $MYZS_DEFAULT_SHELL"
+    _myzs:internal:log:warn "current shell is $SHELL but it should be $MYZS_DEFAULT_SHELL"
     chsh -s "$MYZS_DEFAULT_SHELL"
   fi
 fi
 
-if __myzs_is_command_exist "nvim"; then
+if _myzs:internal:checker:command-exist "nvim"; then
   nvim_path="$(command -v nvim)"
   export GIT_EDITOR="$nvim_path"
   export VISUAL="$nvim_path"

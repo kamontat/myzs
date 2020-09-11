@@ -1,6 +1,6 @@
 # shellcheck disable=SC1090,SC2148
 
-__myzs_initial "$0"
+_myzs:internal:module:initial "$0"
 
 __myzs_alphabet=(
   "a" "b" "c"
@@ -32,4 +32,4 @@ __myzs_project_tmp() {
   mkdir "$pathname" && cd "$pathname" || exit 2
 }
 
-__myzs_alias "ptmp" "__myzs_project_tmp"
+_myzs:internal:alias "ptmp" "__myzs_project_tmp"

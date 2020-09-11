@@ -1,11 +1,11 @@
 # shellcheck disable=SC1090,SC2148
 
-__myzs_initial "$0"
+_myzs:internal:module:initial "$0"
 
-__myzs_alias "restart-zsh" "exec zsh"
-__myzs_alias "restart-bash" "exec bash"
-__myzs_alias "restart-fish" "exec fish"
+_myzs:internal:alias "restart-zsh" "exec zsh"
+_myzs:internal:alias "restart-bash" "exec bash"
+_myzs:internal:alias "restart-fish" "exec fish"
 
-__myzs_alias "restart-shell" "restart-$(__myzs_on_shell)"
+_myzs:internal:alias "restart-shell" "restart-$(_myzs:internal:shell)"
 
-__myzs_alias "reshell" "restart-shell"
+_myzs:internal:alias "reshell" "restart-shell"

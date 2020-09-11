@@ -1,8 +1,8 @@
 # shellcheck disable=SC1090,SC2148
 
-__myzs_initial "$0"
+_myzs:internal:module:initial "$0"
 
-if __myzs_is_command_exist "asdf"; then
+if _myzs:internal:checker:command-exist "asdf"; then
   __myzs_asdf_is_set() {
     asdf current "$1" >/dev/null
   }
@@ -11,8 +11,8 @@ if __myzs_is_command_exist "asdf"; then
   export ASDF_HOME
 
   # Install via Homebrew
-  __myzs_load "ASDF setup script" "$ASDF_HOME/asdf.sh"
-  # __myzs_load "ASDF completion script" "$ASDF_HOME/etc/bash_completion.d/asdf.bash"
+  _myzs:internal:load "ASDF setup script" "$ASDF_HOME/asdf.sh"
+  # _myzs:internal:load "ASDF completion script" "$ASDF_HOME/etc/bash_completion.d/asdf.bash"
 
   if __myzs_asdf_is_set java; then
     asdf_update_java_home() {
@@ -28,5 +28,5 @@ if __myzs_is_command_exist "asdf"; then
     add-zsh-hook precmd asdf_update_java_home
   fi
 else
-  __myzs_failure
+  _myzs:internal:failed
 fi

@@ -1,13 +1,13 @@
 # shellcheck disable=SC1090,SC2148
 
-__myzs_initial "$0"
+_myzs:internal:module:initial "$0"
 
-__myzs_alias "mupload" "myzs-upload"
-__myzs_alias "mdownload" "myzs-download"
+_myzs:internal:alias "mupload" "myzs-upload"
+_myzs:internal:alias "mdownload" "myzs-download"
 
-__myzs_alias "minfo" "myzs-info"
-__myzs_alias "mlc" "myzs-list-changelogs"
-__myzs_alias "mlm" "myzs-list-modules"
+_myzs:internal:alias "minfo" "myzs-info"
+_myzs:internal:alias "mlc" "myzs-list-changelogs"
+_myzs:internal:alias "mlm" "myzs-list-modules"
 
-__myzs_alias "mload" "myzs-load"
-__myzs_alias "mlocal" "myzs-setup-local"
+_myzs:internal:alias "mload" "myzs-load"
+_myzs:internal:alias "mlocal" "myzs-setup-local"

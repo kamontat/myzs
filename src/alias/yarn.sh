@@ -1,15 +1,15 @@
 # shellcheck disable=SC1090,SC2148
 
-__myzs_initial "$0"
+_myzs:internal:module:initial "$0"
 
-if __myzs_is_command_exist "yarn"; then
-  __myzs_alias "y" "yarn"
-  __myzs_alias "yi" "yarn install"
-  __myzs_alias "ya" "yarn add"
-  __myzs_alias "yad" "yarn add --dev"
+if _myzs:internal:checker:command-exist "yarn"; then
+  _myzs:internal:alias "y" "yarn"
+  _myzs:internal:alias "yi" "yarn install"
+  _myzs:internal:alias "ya" "yarn add"
+  _myzs:internal:alias "yad" "yarn add --dev"
 
-  __myzs_alias "ys" "yarn start"
-  __myzs_alias "yc" "yarn compile"
-  __myzs_alias "yb" "yarn build"
-  __myzs_alias "yd" "yarn dev"
+  _myzs:internal:alias "ys" "yarn start"
+  _myzs:internal:alias "yc" "yarn compile"
+  _myzs:internal:alias "yb" "yarn build"
+  _myzs:internal:alias "yd" "yarn dev"
 fi

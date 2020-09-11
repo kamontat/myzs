@@ -1,83 +1,83 @@
 # shellcheck disable=SC1090,SC2148
 
-__myzs_initial "$0"
+_myzs:internal:module:initial "$0"
 
-if __myzs_is_command_exist "git"; then
-  if __myzs_is_command_exist "hub"; then
+if _myzs:internal:checker:command-exist "git"; then
+  if _myzs:internal:checker:command-exist "hub"; then
     eval "$(hub alias -s)"
   fi
 
-  __myzs_alias "g" "git"
+  _myzs:internal:alias "g" "git"
 
-  __myzs_alias "gi" "git init"
+  _myzs:internal:alias "gi" "git init"
 
-  __myzs_alias "gs" "git status"
+  _myzs:internal:alias "gs" "git status"
 
-  __myzs_alias "ga" "git add"
+  _myzs:internal:alias "ga" "git add"
 
-  __myzs_alias "gcm" "git commit"
-  __myzs_alias "gcm-sign" "git commit -S"
+  _myzs:internal:alias "gcm" "git commit"
+  _myzs:internal:alias "gcm-sign" "git commit -S"
 
-  __myzs_alias "gco" "git checkout"
-  __myzs_alias "gcob" "git checkout -b"
-  __myzs_alias "gconb" "git checkout -b"
-  __myzs_alias "gcoeb" "git checkout --orphan"
-  __myzs_alias "gcod" "git checkout develop"
-  __myzs_alias "gcom" "git checkout master"
-
-  # for git version 2.23.0
-  __myzs_alias "grs" "git restore"
-  __myzs_alias "grss" "git restore --staged"
+  _myzs:internal:alias "gco" "git checkout"
+  _myzs:internal:alias "gcob" "git checkout -b"
+  _myzs:internal:alias "gconb" "git checkout -b"
+  _myzs:internal:alias "gcoeb" "git checkout --orphan"
+  _myzs:internal:alias "gcod" "git checkout develop"
+  _myzs:internal:alias "gcom" "git checkout master"
 
   # for git version 2.23.0
-  __myzs_alias "gsw" "git switch"
+  _myzs:internal:alias "grs" "git restore"
+  _myzs:internal:alias "grss" "git restore --staged"
 
-  __myzs_alias "gm" "git merge"
+  # for git version 2.23.0
+  _myzs:internal:alias "gsw" "git switch"
 
-  __myzs_alias "gb" "git branch"
-  __myzs_alias "gba" "git branch -a"
-  __myzs_alias "gbd" "git branch -D"
-  __myzs_alias "gbm" "git branch --merged"
-  __myzs_alias "gbnm" "git branch --no-merged"
-  __myzs_alias "gbr" "git fetch --all --prune" # remove remote branch, If not exist
+  _myzs:internal:alias "gm" "git merge"
 
-  __myzs_alias "gd" "git diff"
-  __myzs_alias "gdi" "git diff -w --ignore-all-space"
+  _myzs:internal:alias "gb" "git branch"
+  _myzs:internal:alias "gba" "git branch -a"
+  _myzs:internal:alias "gbd" "git branch -D"
+  _myzs:internal:alias "gbm" "git branch --merged"
+  _myzs:internal:alias "gbnm" "git branch --no-merged"
+  _myzs:internal:alias "gbr" "git fetch --all --prune" # remove remote branch, If not exist
 
-  __myzs_alias "gt" "git tag"
-  __myzs_alias "gtd" "git tag -d"
-  __myzs_alias "gta" "git tag -a"
-  __myzs_alias "gt-sign" "git tag -s"
+  _myzs:internal:alias "gd" "git diff"
+  _myzs:internal:alias "gdi" "git diff -w --ignore-all-space"
 
-  __myzs_alias "gr" "git reset"
-  __myzs_alias "grh" "git reset HEAD"
+  _myzs:internal:alias "gt" "git tag"
+  _myzs:internal:alias "gtd" "git tag -d"
+  _myzs:internal:alias "gta" "git tag -a"
+  _myzs:internal:alias "gt-sign" "git tag -s"
 
-  __myzs_alias "gf" "git fetch"
+  _myzs:internal:alias "gr" "git reset"
+  _myzs:internal:alias "grh" "git reset HEAD"
 
-  __myzs_alias "gp" "git push"
-  __myzs_alias "gP" "git pull"
+  _myzs:internal:alias "gf" "git fetch"
 
-  __myzs_alias "gsp" "git stash push"
-  __myzs_alias "gsP" "git stash pop"
+  _myzs:internal:alias "gp" "git push"
+  _myzs:internal:alias "gP" "git pull"
 
-  __myzs_alias "gl" "git log --graph"                       # log with graph and format in git config
-  __myzs_alias "gl-sign" "git log --graph --show-signature" # log with show sign information
-  __myzs_alias "gla" "git log --graph --all"                # log all branch and commit
-  __myzs_alias "glao" "git log --graph --all --oneline"     # log with oneline format
-  __myzs_alias "glo" "git log --graph --oneline"            # log all in oneline format
-  __myzs_alias "glss" "git log --graph --stat --summary"    # log with stat and summary
+  _myzs:internal:alias "gsp" "git stash push"
+  _myzs:internal:alias "gsP" "git stash pop"
+
+  _myzs:internal:alias "gl" "git log --graph"                       # log with graph and format in git config
+  _myzs:internal:alias "gl-sign" "git log --graph --show-signature" # log with show sign information
+  _myzs:internal:alias "gla" "git log --graph --all"                # log all branch and commit
+  _myzs:internal:alias "glao" "git log --graph --all --oneline"     # log with oneline format
+  _myzs:internal:alias "glo" "git log --graph --oneline"            # log all in oneline format
+  _myzs:internal:alias "glss" "git log --graph --stat --summary"    # log with stat and summary
 
   ggc() {
     if ls package.json >/dev/null 2>&1 && grep -q "\"commit\":" <"package.json" >/dev/null 2>&1; then
       yarn commit "$@"
-    elif __myzs_is_command_exist "committ"; then
+    elif _myzs:internal:checker:command-exist "committ"; then
       committ "$@"
-    elif __myzs_is_command_exist "gitgo"; then
+    elif _myzs:internal:checker:command-exist "gitgo"; then
       gitgo commit "$@"
     else
       git commit "$@"
     fi
   }
 
-  __myzs_alias "cm" "ggc"
+  _myzs:internal:alias "cm" "ggc"
 fi

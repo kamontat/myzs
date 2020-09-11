@@ -1,30 +1,30 @@
 # shellcheck disable=SC1090,SC2148
 
-__myzs_initial "$0"
+_myzs:internal:module:initial "$0"
 
-if __myzs_is_command_exist "docker"; then
-  __myzs_alias "dps" "docker ps"
-  __myzs_alias "dlog" "docker logs"
+if _myzs:internal:checker:command-exist "docker"; then
+  _myzs:internal:alias "dps" "docker ps"
+  _myzs:internal:alias "dlog" "docker logs"
 
-  __myzs_alias "drm" "docker rm"
-  __myzs_alias "drm-all" "docker rm $(docker ps -aq)"
+  _myzs:internal:alias "drm" "docker rm"
+  _myzs:internal:alias "drm-all" "docker rm $(docker ps -aq)"
 
-  __myzs_alias "di" "docker images"
-  __myzs_alias "drmi" "docker rmi"
-  __myzs_alias "drmi-all" "docker rmi $(docker images -aq)"
+  _myzs:internal:alias "di" "docker images"
+  _myzs:internal:alias "drmi" "docker rmi"
+  _myzs:internal:alias "drmi-all" "docker rmi $(docker images -aq)"
 
-  __myzs_alias "dhi" "docker history"
+  _myzs:internal:alias "dhi" "docker history"
 fi
 
-if __myzs_is_command_exist "docker-compose"; then
-  __myzs_alias "dcb" "docker-compose build"
-  __myzs_alias "dce" "docker-compose exec"
-  __myzs_alias "dcps" "docker-compose ps"
-  __myzs_alias "dcrestart" "docker-compose restart"
-  __myzs_alias "dcrm" "docker-compose rm"
-  __myzs_alias "dcr" "docker-compose run"
-  __myzs_alias "dcstop" "docker-compose stop"
-  __myzs_alias "dcup" "docker-compose up"
-  __myzs_alias "dcud" "docker-compose up -d"
-  __myzs_alias "dcdn" "docker-compose down"
+if _myzs:internal:checker:command-exist "docker-compose"; then
+  _myzs:internal:alias "dcb" "docker-compose build"
+  _myzs:internal:alias "dce" "docker-compose exec"
+  _myzs:internal:alias "dcps" "docker-compose ps"
+  _myzs:internal:alias "dcrestart" "docker-compose restart"
+  _myzs:internal:alias "dcrm" "docker-compose rm"
+  _myzs:internal:alias "dcr" "docker-compose run"
+  _myzs:internal:alias "dcstop" "docker-compose stop"
+  _myzs:internal:alias "dcup" "docker-compose up"
+  _myzs:internal:alias "dcud" "docker-compose up -d"
+  _myzs:internal:alias "dcdn" "docker-compose down"
 fi
