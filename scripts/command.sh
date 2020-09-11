@@ -30,8 +30,7 @@ ZSHRC=".zshrc"
 
 GIT_REPO="https://github.com/kamontat/myzs.git"
 
-DEFAULT_VERSION="4.1.1"
-VERSION="$([[ "$2" == "" ]] && echo "$DEFAULT_VERSION" || echo "$2")"
+VERSION="${2:-4.8.0}"
 
 help() {
   local t="$PWD"
