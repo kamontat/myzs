@@ -38,8 +38,12 @@ export MYZS_TYPE="FULLY"
 # This shouldn't be changes, except you install the application to difference
 export MYZS_ROOT="$HOME/.myzs"
 
-# plugins/kamontat/myzs-plugin-core#app/hello.sh
-# core#app/myzs.sh
+# builtin#app/myzs.sh                                     (builtin)
+# kamontat/myzs-plugin-core#app/hello.sh                  (plugin)
+
+export MYZS_LOADING_PLUGINS=(
+  "kamontat/myzs-plugin-core"
+)
 
 export MYZS_LOADING_MODULES=(
   "app/myzs.sh"

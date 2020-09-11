@@ -28,15 +28,7 @@ _myzs:private:load-plugin() {
 }
 
 _myzs:internal:initial-plugins() {
-  local plugin_list="${_MYZS_ROOT}/.plugins"
-  if _myzs:internal:checker:file-exist "$plugin_list"; then
-    while read -r line; do
-      # not comment
-      if ! [[ "$line" =~ "^#" ]]; then
-        _myzs:private:load-plugin "$line"
-      fi
-    done <"$plugin_list"
-  else
-    _myzs:internal:log:debug "the project didn't create .plugins file"
-  fi
+  for plugin in "${MYZS_LOADING_PLUGINS[@]}"; do
+    _myzs:private:load-plugin "$plugin"
+  done
 }
