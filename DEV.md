@@ -63,4 +63,14 @@ Configable variable syntax
 
 Method syntax
 
-1. Must prefix with `pg:myzs:`
+1. Must prefix with `myzs:pg:`
+
+# Zplug
+
+Configable variable syntax
+
+1. Must prefix with `MYZS_ZP_`
+
+Method syntax
+
+1. Must prefix with `myzs:zplug:`

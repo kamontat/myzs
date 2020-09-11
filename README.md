@@ -1,8 +1,11 @@
 # MYZS (My Z Shell)
 
-## Stack
+This is a configable rc file (shell initial file) support both `bash` and `zshrc`.
 
-1. [zplug](https://github.com/zplug/zplug) => A fastest plugin manager for Zsh
+## Dependencies
+
+1. [zplug](https://github.com/zplug/zplug): for plugin manangement
+2. [gitgo](https://github.com/kamontat/gitgo): for git commit management
 
 ## Usage
 
