@@ -105,8 +105,8 @@ export MYZS_PG_TIME_CL=""
 ## Override zplug plugins list.
 ## NOTES: This will remove all plugins from src/settings/plugins.sh except 'zplug/zplug'
 ## Uncommand function below
-# export myzs__plugins_list
-# myzs__plugins_list() {
+# export myzs:zplug:plugin-list
+# myzs:zplug:plugin-list() {
 #   zplug "zsh-users/zsh-autosuggestions"
 # }
 
@@ -145,4 +145,4 @@ fi
 #           Cleanup            #
 ################################
 
-__myzs_final_cleanup
+_myzs:internal:project:cleanup
