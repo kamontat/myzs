@@ -38,52 +38,47 @@ export MYZS_TYPE="FULLY"
 # This shouldn't be changes, except you install the application to difference
 export MYZS_ROOT="$HOME/.myzs"
 
-# builtin#app/myzs.sh                                     (builtin)
-# kamontat/myzs-plugin-core#app/hello.sh                  (plugin)
+# List of enabled log level, this is case insensitive
+export MYZS_LOG_LEVEL=("error" "warn" "info" "debug")
+
+# builtin#app/myzs.sh                              (builtin)
+# kamontat/myzs-plugin#app/hello.sh                (plugin)
 
 export MYZS_LOADING_PLUGINS=(
-  "kamontat/myzs-plugin-core"
+  "myzs-plugins/core#master"
+  "myzs-plugins/git#master"
+  "kamontat/mplugin-agoda#master"
 )
 
 export MYZS_LOADING_MODULES=(
-  "app/myzs.sh"
-  # "app/myzs-git.sh"
-  # "app/android.sh"
-  # "app/docker.sh"
-  # "app/fzf.sh"
-  # "app/kube.sh"
-  # "app/tmux.sh"
-  # "app/wireshark.sh"
-  # "app/asdf.sh"
-  # "app/flutter.sh"
-  # "app/gcloud.sh"
-  # "app/go.sh"
-  # "app/iterm.sh"
-  # "app/macgpg.sh"
-  # "app/thefuck.sh"
-  # "app/travis.sh"
-  # "app/yarn.sh"
-  "alias/initial.sh"
-  "alias/myzs.sh"
-  # "alias/agoda.sh"
-  # "alias/docker.sh"
-  # "alias/fuck.sh"
-  "alias/git.sh"
-  # "alias/mac.sh"
-  "alias/shell.sh"
-  # "alias/vim.sh"
-  # "alias/coreutils.sh"
-  "alias/editor.sh"
-  # "alias/generator.sh"
-  # "alias/github.sh"
-  # "alias/neofetch.sh"
-  "alias/short.sh"
-  # "alias/yarn.sh"
+  "builtin#app/myzs.sh"
+  "builtin#alias/myzs.sh"
+  "builtin#alias/initial.sh"
+
+  # "builtin#alias/editor.sh"
+)
+
+MYZS_LOADING_MODULES+=(
+  "myzs-plugins/core#alias/short.sh"
+  "myzs-plugins/core#alias/shell.sh"
+)
+
+MYZS_LOADING_MODULES+=(
+  "myzs-plugins/git#app/git.sh"
+  "myzs-plugins/git#alias/git.sh"
+)
+
+MYZS_LOADING_MODULES+=(
+  "kamontat/mplugin-agoda#app/agoda.sh"
+  "kamontat/mplugin-agoda#app/agoda-git.sh"
 )
 
 ################################
 # Dependenies settings         #
 ################################
+
+# Disable progress bar
+export MYZS_PG_DISABLED=false
 
 # If this is true, the application will trace each component in difference lines
 export MYZS_PG_SHOW_PERF=true
