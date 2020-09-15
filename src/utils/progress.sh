@@ -28,10 +28,11 @@ export MYZS_PG_TIME_CL="${MYZS_PG_TIME_CL:-$PG_GREEN}"
 # Progress setting
 export __PG_STYLE="${PG_STYLE:-shark}"
 
-export __MYZS_PG_SHOW_PERF="${MYZS_PG_SHOW_PERF:-true}"
+export __MYZS__PG_SHOW_PERF="${MYZS_PG_SHOW_PERF:-true}"
 
-export MESSAGE_LENGTH=55
-export PG_PROCESS_COUNT=1
+export __MYZS__PG_FULLMESSAGE_LENGTH="${MYZS_PG_FULLMESSAGE_LENGTH:-80}"
+export __MYZS__PG_MESSAGE_KEY_LENGTH="${MYZS_PG_MESSAGE_KEY_LENGTH:-25}"
+export __MYZS__PG_PROCESS_COUNT=1
 
 export ____MYZS__REVOLVER_CMD="${__MYZS__REVOLVER_CMD:-./revolver}"
 
@@ -57,7 +58,7 @@ _myzs:pg:private:message:format() {
   local title="$1"
   shift
   local message="$*"
-  printf "[ %-13s ] %s" "$title" "$message"
+  printf "[ %-${__MYZS__PG_MESSAGE_KEY_LENGTH}s ] %s" "$title" "$message"
 }
 
 # create full output message
@@ -80,7 +81,7 @@ _myzs:pg:private:message() {
     time_color=${MYZS_PG_TIME_CL}
   fi
 
-  printf "${color}[%s]${PG_RESET} %-${MESSAGE_LENGTH}s done in ${time_color}%s${PG_RESET}." "$symbol" "$message" "$dur"
+  printf "${color}[%s]${PG_RESET} %-${__MYZS__PG_FULLMESSAGE_LENGTH}s done in ${time_color}%s${PG_RESET}." "$symbol" "$message" "$dur"
 
 }
 
@@ -120,10 +121,8 @@ _myzs:pg:private:log() {
 }
 
 export PG_START_TIME
-PG_START_TIME="$(_myzs:pg:private:time:ms)"
 
 export PG_PREV_TIME
-PG_PREV_TIME="$(_myzs:pg:private:time:ms)"
 
 export PG_PREV_MSG
 PG_PREV_MSG=$(_myzs:pg:private:message:format "Start" "Initialization")
@@ -135,6 +134,9 @@ myzs:pg:start() {
   local message
   message="${1:-Initialization shell. Please Wait...}"
   "${____MYZS__REVOLVER_CMD}" -s "$__PG_STYLE" start "${MYZS_PG_LOADING_CL}${message}"
+
+  PG_START_TIME="$(_myzs:pg:private:time:ms)"
+  PG_PREV_TIME="$(_myzs:pg:private:time:ms)"
 }
 
 myzs:pg:mark() {
@@ -142,14 +144,14 @@ myzs:pg:mark() {
 
   "${____MYZS__REVOLVER_CMD}" -s "$__PG_STYLE" update "${MYZS_PG_LOADING_CL}$2.."
 
-  if [[ "$__MYZS_PG_SHOW_PERF" == "true" ]]; then
+  if [[ "$__MYZS__PG_SHOW_PERF" == "true" ]]; then
     _myzs:pg:private:log "$PG_PREV_STATE" "$TIME" "$PG_PREV_MSG"
   fi
 
   PG_PREV_TIME=$(_myzs:pg:private:time:ms)
   PG_PREV_MSG=$(_myzs:pg:private:message:format "$@")
   PG_PREV_STATE="C"
-  ((PG_PROCESS_COUNT++))
+  ((__MYZS__PG_PROCESS_COUNT++))
 }
 
 myzs:pg:mark-fail() {
@@ -167,7 +169,7 @@ myzs:pg:stop() {
 
   TIME=$(($(_myzs:pg:private:time:ms) - PG_PREV_TIME))
 
-  if "$__MYZS_PG_SHOW_PERF"; then
+  if "$__MYZS__PG_SHOW_PERF"; then
     _myzs:pg:private:log "$PG_PREV_STATE" "$TIME" "$PG_PREV_MSG"
   fi
 
@@ -176,11 +178,18 @@ myzs:pg:stop() {
   TIME=$(($(_myzs:pg:private:time:ms) - PG_START_TIME))
   load_time="$(_myzs:pg:private:time:convert "${TIME}")"
 
-  printf "${MYZS_PG_COMPLETE_CL}[+]${PG_RESET} %-${MESSAGE_LENGTH}s      in ${MYZS_PG_TIME_CL}%s${PG_RESET}." "$(_myzs:pg:private:message:format "Completed" "Initialization $PG_PROCESS_COUNT tasks")" "${load_time}"
+  printf "${MYZS_PG_COMPLETE_CL}[+]${PG_RESET} %-${__MYZS__PG_FULLMESSAGE_LENGTH}s      in ${MYZS_PG_TIME_CL}%s${PG_RESET}." "$(_myzs:pg:private:message:format "Completed" "Initialization $__MYZS__PG_PROCESS_COUNT tasks")" "${load_time}"
   echo
 
+  export PROGRESS_COUNT="${__MYZS__PG_PROCESS_COUNT}"
   export PROGRESS_LOADTIME="$load_time"
   export PROGRESS_LOADTIME_MS="$TIME"
 
   unset PG_PREV_TIME PG_PREV_MSG PG_PREV_STATE
+}
+
+myzs:pg:cleanup() {
+  unset TIME __MYZS__PG_PROCESS_COUNT PG_START_TIME
+
+  __MYZS__PG_PROCESS_COUNT=1
 }
