@@ -1,5 +1,15 @@
 # Release notes
 
+## Version 5.0.1 (15 Sep 2020)
+
+- fix disable progressbar should not disable loading time
+- update document on root and helper
+- update default $MYZS_SETTINGS_SETUP_FILES to only 1 file name ("myzs-setup")
+- reduce default $MYZS_LOG_LEVEL to log only "error" and "warn"
+- update default $MYZS_PG_SHOW_PERF to false
+- increase default $MYZS_PG_TIME_DANGER_THRESHOLD_MS from **500** to **600**
+- increase default $MYZS_PG_TIME_WARN_THRESHOLD_MS from **100** to **200**
+
 ## Version 5.0.0 (15 Sep 2020)
 
 - introduce new plugin system
