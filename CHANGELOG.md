@@ -1,5 +1,12 @@
 # Release notes
 
+## Version 5.0.2 (15 Sep 2020)
+
+- fix some typo in log message and return value
+- fix wrong module name in log message when use skip
+- fix unnecessary pass module path to module arguments
+- remove changelog of version 4.0.0 - 4.5.2
+
 ## Version 5.0.1 (15 Sep 2020)
 
 - fix disable progressbar should not disable loading time
@@ -83,55 +90,3 @@
 - remove exclude module variable
 - add prefix to modules name
 - improve around 1% load time
-
-## Version 4.5.2 (13 Jul 2020)
-
-- update alias of agoda and mac
-- update app of asdf and add new tmux app
-- add more helper in utils helper
-- update some minor config in init.sh
-
-## Version 4.5.1 (18 Jun 2020)
-
-- update some default variable
-- improve documents on zshrc file
-
-## Version 4.5.0 (18 Jun 2020)
-
-- Introduce new command 'myzs-info' for print myzs information
-- Introduce new command 'myzs-list-changelogs' for print myzs changelogs
-- Add filename to log message
-- Change log files location to /tmp/myzs/logs
-- Rename logfile variable from $MYZS_LOGFILE to $MYZS_LOGPATH
-- Update new changelog format
-
-## Version 4.4.0 (01 Jun 2020)
-
-- Add substring history search plugins
-- Add more alias and application
-
-## Version 4.3.0 (24 Apr 2020)
-
-- Add modules loaded
-- Add new myzs command myzs-list-modules
-- Add start command
-
-## Version 4.2.0 (15 Apr 2020)
-
-- Add skipping process
-- Add new customizable settings
-
-## Version 4.1.1 (04 Feb 2020)
-
-- Add documentation
-- Change some default value
-
-## Version 4.1.0 (31 Dec 2019)
-
-- Add more alias
-- Fix log detail missing
-- Fix duplicate $PATH variable
-
-## Version 4.0.0 (23 Sep 2019)
-
-- First v4.x.x released
