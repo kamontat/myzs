@@ -32,7 +32,7 @@ source "${__MYZS__HLP}/index.sh"
 _myzs:internal:module:initial
 
 # load progress bar
-if _myzs:internal:checker:fully-type && [[ "${MYZS_PG_DISABLED}" == "false" ]]; then
+if _myzs:internal:checker:fully-type; then
   source "${__MYZS__SRC}/utils/progress.sh"
 else
   source "${__MYZS__SRC}/utils/dump-progress.sh"

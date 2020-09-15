@@ -34,7 +34,11 @@ export __MYZS__PG_FULLMESSAGE_LENGTH="${MYZS_PG_FULLMESSAGE_LENGTH:-80}"
 export __MYZS__PG_MESSAGE_KEY_LENGTH="${MYZS_PG_MESSAGE_KEY_LENGTH:-25}"
 export __MYZS__PG_PROCESS_COUNT=1
 
-export ____MYZS__REVOLVER_CMD="${__MYZS__REVOLVER_CMD:-./revolver}"
+if [[ "${MYZS_PG_DISABLED}" == "false" ]]; then
+  export ____MYZS__REVOLVER_CMD="${__MYZS__REVOLVER_CMD:-${__MYZS__SRC}/utils/revolver}"
+else
+  export ____MYZS__REVOLVER_CMD="${__MYZS__SRC}/utils/revolver-mock"
+fi
 
 # get current time in millisecond
 _myzs:pg:private:time:ms() {
