@@ -3,7 +3,7 @@
 export _MYZS_ROOT="${MYZS_ROOT:-"$HOME/.myzs"}"
 export __MYZS__SRC="${_MYZS_ROOT}/src"
 export __MYZS__HLP="${_MYZS_ROOT}/src/utils/helper"
-export __MYZS__PGL="${_MYZS_ROOT}/plugins"
+export __MYZS__PLG="${_MYZS_ROOT}/plugins"
 export __MYZS__RES="${_MYZS_ROOT}/resources"
 
 export ZPLUG_HOME="${MYZS_ZPLUG:-${_MYZS_ROOT}/zplug}"
@@ -15,42 +15,6 @@ export __MYZS__SINCE="21 Apr 2018"
 export __MYZS__LAST_UPDATED="10 Sep 2020"
 export __MYZS__LICENSE="MIT"
 export __MYZS__MODULES=()
-export __MYZS__FULLY_MODULES=(
-  "app/android.sh"
-  "app/docker.sh"
-  "app/fzf.sh"
-  "app/kube.sh"
-  "app/myzs.sh"
-  "app/myzs-git.sh"
-  "app/tmux.sh"
-  "app/wireshark.sh"
-  "app/asdf.sh"
-  "app/flutter.sh"
-  "app/gcloud.sh"
-  "app/go.sh"
-  "app/iterm.sh"
-  "app/macgpg.sh"
-  "app/thefuck.sh"
-  "app/travis.sh"
-  "app/yarn.sh"
-  "alias/initial.sh"
-  "alias/myzs.sh"
-  "alias/agoda.sh"
-  "alias/docker.sh"
-  "alias/fuck.sh"
-  "alias/git.sh"
-  "alias/mac.sh"
-  "alias/shell.sh"
-  "alias/vim.sh"
-  "alias/coreutils.sh"
-  "alias/editor.sh"
-  "alias/generator.sh"
-  "alias/github.sh"
-  "alias/neofetch.sh"
-  "alias/short.sh"
-  "alias/yarn.sh"
-  "alias/project.sh"
-)
 
 # Accept values: FULLY | SMALL
 #   1. FULLY -> full command with advance support on zsh script
@@ -67,7 +31,8 @@ source "${__MYZS__HLP}/index.sh"
 
 _myzs:internal:module:initial
 
-if _myzs:internal:checker:fully-type; then
+# load progress bar
+if _myzs:internal:checker:fully-type && [[ "${MYZS_PG_DISABLED}" == "false" ]]; then
   source "${__MYZS__SRC}/utils/progress.sh"
 else
   source "${__MYZS__SRC}/utils/dump-progress.sh"
@@ -75,22 +40,26 @@ fi
 
 myzs:pg:start
 
+# initial system config
 myzs:pg:mark "Commandline" "Setup system settings"
-_myzs:internal:module:load "settings/system.sh" "${__MYZS__SRC}/settings/system.sh" || myzs:pg:mark-fail "Cannot load system variable"
+_myzs:internal:module:load "settings/system.sh" || myzs:pg:mark-fail "Cannot load system variable"
 
+# initial zsh config
 if _myzs:internal:checker:fully-type; then
   myzs:pg:mark "Commandline" "Setup commandline settings"
-  _myzs:internal:module:load "settings/zsh.sh" "${__MYZS__SRC}/settings/zsh.sh" || myzs:pg:mark-fail "Cannot load zsh settings"
+  _myzs:internal:module:load "settings/zsh.sh" || myzs:pg:mark-fail "Cannot load zsh settings"
 fi
 
+# initial zplug config
 if _myzs:internal:checker:fully-type && _myzs:internal:checker:shell:zsh; then
   myzs:pg:mark "ZPlugin" "Initial zplug configuration"
-  _myzs:internal:module:load "zplug/init.zsh" "${ZPLUG_HOME}/init.zsh" || myzs:pg:mark-fail "Cannot load zplug initial script"
+  _myzs:internal:module:load "zplug#init.zsh" || myzs:pg:mark-fail "Cannot load zplug initial script"
 fi
 
+# load zplug plugins
 if _myzs:internal:checker:fully-type && _myzs:internal:checker:shell:zsh; then
   myzs:pg:mark "ZPlugin" "Initial zplug plugin list"
-  _myzs:internal:module:load "settings/plugins.sh" "${__MYZS__SRC}/settings/plugins.sh" || myzs:pg:mark-fail "Cannot load zplug plugins list"
+  _myzs:internal:module:load "settings/plugins.sh" || myzs:pg:mark-fail "Cannot load zplug plugins list"
 
   myzs:zplug:initial-plugins # initial plugins
 
@@ -111,41 +80,43 @@ if _myzs:internal:checker:fully-type && _myzs:internal:checker:shell:zsh; then
   myzs:zplug:setup-plugins
 fi
 
-myzs:pg:mark "Helper" "Loading setup scripts"
-for __path in "${MYZS_LOADING_MODULES[@]}"; do
-  myzs:pg:mark "Scripts" "Loading $__path"
+# load myzs plugins
+myzs:pg:mark "Plugin" "Initial myzs plugin list"
+for plugin in "${MYZS_LOADING_PLUGINS[@]}"; do
+  myzs:pg:mark "Plugin" "Loading ${plugin} plugin"
+  if ! _myzs:internal:plugin:name-deserialize "$plugin" _myzs:internal:initial-plugins; then
+    myzs:pg:mark-fail "Cannot load plugin"
+  fi
+done
 
-  fullpath="${__MYZS__SRC}/${__path}"
+# apply all module
+myzs:pg:mark "Module" "Initial modules list"
+_myzs:private:core:load-module() {
+  local module_type="$1" module_name="$2" module_fullpath="$3"
+  local module_key
+  module_key="$(_myzs:internal:module:name-serialize "${module_type}" "${module_name}")"
 
-  # supported modules
-  if _myzs:internal:module:checker:validate "$__path"; then
-    if _myzs:internal:checker:fully-type || [[ $__path =~ "alias" ]]; then
-      _myzs:internal:module:load "${__path}" "$fullpath" || myzs:pg:mark-fail "Cannot load $__path"
+  if [[ "${MYZS_LOADING_MODULES[*]}" =~ $module_key ]]; then
+    myzs:pg:mark "${module_type}" "Loading ${module_name}"
+
+    if _myzs:internal:checker:fully-type || [[ $module_name =~ "alias" ]]; then
+      _myzs:internal:module:load "${module_key}" "$module_fullpath" || myzs:pg:mark-fail "Cannot load $module_fullpath"
     else
-      myzs:pg:mark-fail "non-alias modules cannot autoload in TYPE=$__MYZS__TYPE"
+      myzs:pg:mark-fail "cannot load ${module_key} when TYPE=$__MYZS__TYPE"
     fi
   else
-    myzs:pg:mark-fail "'$__path' not found in __MYZS__FULLY_MODULES"
+    _myzs:internal:log:warn "skipping module ${module_key}"
+    _myzs:internal:module:skip "${module_key}"
   fi
-done
-unset __path
 
-myzs:pg:mark "Helper" "Normalize all modules status"
-for __component in "${__MYZS__FULLY_MODULES[@]}"; do
-  if ! [[ "${MYZS_LOADING_MODULES[*]}" =~ $__component ]]; then
-    fullpath="${__MYZS__SRC}/${__component}"
-    _myzs:internal:module:skip "${__component}" "$fullpath"
-  fi
-done
-unset __component
+  _myzs:internal:completed
+}
+_myzs:internal:module:total-list _myzs:private:core:load-module
 
-myzs:pg:mark "Plugin" "Initial myzs plugin list"
-_myzs:internal:initial-plugins
-
+# load environment
 myzs:pg:mark "Helper" "Loading environment variable"
 env_list=()
 export __MYZS__ENVFILE="$_MYZS_ROOT/.env"
-
 _myzs:internal:module:initial "$__MYZS__ENVFILE"
 while IFS= read -r line; do
   key="${line%=*}"
@@ -160,6 +131,7 @@ done <"$__MYZS__ENVFILE"
 [[ ${#env_list[@]} -gt 0 ]] && _myzs:internal:log:info "exporting [ ${env_list[*]} ]"
 unset line env_list
 
+# load setup file
 myzs:pg:mark "Helper" "Loading setup file"
 $MYZS_SETTINGS_AUTOLOAD_SETUP_LOCAL && myzs-setup-local
 
