@@ -7,13 +7,17 @@ myzs:pg:start() {
 }
 
 myzs:pg:mark() {
-  _myzs:internal:log:debug "start mark progress bar task as COMPLETED"
+  _myzs:internal:log:debug "[PG-COMPLETED] $*"
 }
 
 myzs:pg:mark-fail() {
-  _myzs:internal:log:debug "start mark progress bar task as FAILURE"
+  _myzs:internal:log:debug "[PG-FAILURED] $*"
 }
 
 myzs:pg:stop() {
   _myzs:internal:log:debug "stop progress bar"
+}
+
+myzs:pg:cleanup() {
+  _myzs:internal:log:debug "cleanup progress bar"
 }
