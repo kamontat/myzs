@@ -106,7 +106,7 @@ _myzs:private:core:load-module() {
     fi
   else
     _myzs:internal:module:skip "${module_key}"
-    _myzs:internal:log:warn "skipping module ${module_key}"
+    _myzs:internal:log:warn "skipped module"
   fi
 
   _myzs:internal:completed
