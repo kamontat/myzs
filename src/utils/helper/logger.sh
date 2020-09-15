@@ -18,28 +18,30 @@ export MYZS_LOGPATH="${__MYZS__LOGDIR}/${__MYZS__LOGFILE}"
 export MYZS_ZPLUG_LOGPATH="${__MYZS__LOGDIR}/${__MYZS__ZPLUG_LOGFILE}"
 
 _myzs:private:log() {
-  if [[ "$__MYZS__LOGDIR" != "" ]] && [[ $__MYZS__LOGFILE != "" ]]; then
-    if ! test -d "$__MYZS__LOGDIR"; then
-      mkdir -p "$__MYZS__LOGDIR" >/dev/null
+  local logger_level="$1"
+  shift
+
+  if echo "${MYZS_LOG_LEVEL[*]}" | grep -iqF "$logger_level"; then
+    if [[ "$__MYZS__LOGDIR" != "" ]] && [[ $__MYZS__LOGFILE != "" ]]; then
+      if ! test -d "$__MYZS__LOGDIR"; then
+        mkdir -p "$__MYZS__LOGDIR" >/dev/null
+      fi
+
+      local filepath="${MYZS_LOGPATH}"
+      if ! test -f "$filepath"; then
+        touch "$filepath"
+      fi
+
+      local datetime module_key
+
+      datetime="$(date)"
+      if [[ "$__MYZS__LOGTYPE" == "auto" ]]; then
+        datetime="$(date +"%H:%M:%S")"
+      fi
+      module_key="${__MYZS__CURRENT_MODULE_KEY:-unknown}"
+
+      echo "$datetime [$logger_level] [$module_key]: $*" >>"$filepath"
     fi
-
-    local filepath="${MYZS_LOGPATH}"
-    if ! test -f "$filepath"; then
-      touch "$filepath"
-    fi
-
-    local type datetime filename
-
-    datetime="$(date)"
-    if [[ "$__MYZS__LOGTYPE" == "auto" ]]; then
-      datetime="$(date +"%H:%M:%S")"
-    fi
-    filename="${__MYZS__CURRENT_FILENAME:-unknown}"
-
-    type="$1"
-    shift
-
-    echo "$datetime [$type] [$filename]: $*" >>"$filepath"
   fi
 
   return 0
