@@ -2,162 +2,259 @@
 
 _myzs:internal:module:initial "$0"
 
+# NOTES: MUST NOT USE $module_path as variable name
+
+# Current, MODULE syntax is csv format
+#          module_type,module_name,module_status
+#          separate by newline
+
 _myzs:private:helper:remove-array-index() {
   eval "$1=( \"\${$1[@]:0:$2}\" \"\${$1[@]:$(($2 + 1))}\" )"
 }
 
-_myzs:internal:module:checker:validate() {
-  local input="$1"
+# convert module key to module name and type
+# $1 => input module key
+# $2 => function: cmd(module type, module name)
+_myzs:internal:module:name-deserialize() {
+  local input="$1" cmd="$2"
+  local module_type="${input%%#*}"
+  local module_name="${input##*#}"
 
-  ! _myzs:internal:checker:string-exist "${input}" && echo "Cannot found input string" && _myzs:internal:failed "2"
-  ! _myzs:internal:checker:string-exist "${__MYZS__FULLY_MODULES[*]}" && echo "Cannot find any modules exist" && _myzs:internal:failed "2"
+  shift 2
 
-  if [[ "${__MYZS__FULLY_MODULES[*]}" =~ $input ]]; then
+  # add prefix if not exist
+  ! [[ $module_name =~ \.sh$ ]] && module_name="${module_name}.sh"
+
+  [[ "$module_type" == "$module_name" ]] && module_type="builtin"
+
+  $cmd "$module_type" "$module_name" "$@"
+}
+
+# convert module name and type to module key
+# $1 => module type
+# $2 => module name
+# return module key string
+_myzs:internal:module:name-serialize() {
+  local module_type="$1"
+  local module_name="$2"
+
+  if _myzs:internal:checker:string-exist "${module_type}" && _myzs:internal:checker:string-exist "${module_name}"; then
+    echo "${module_type}#${module_name}"
+  elif _myzs:internal:checker:string-exist "${module_name}"; then
+    echo "builtin#${module_name}"
+  else
+    echo "unknown"
+  fi
+}
+
+_myzs:private:module:index() {
+  echo "$4" # current index
+}
+
+# get module index
+_myzs:internal:module:index() {
+  _myzs:internal:module:search "$1" _myzs:private:module:index
+}
+
+_myzs:private:module:search-internal() {
+  local _module_type="$1" _module_name="$2" _module_status="$3"
+  local _current_index="$4" _total_index="$5"
+  local _module_csv="$6"
+
+  local _search_module_type="$7" _search_module_name="$8" _searched_function="$9"
+
+  if [[ "$_search_module_type" == "$_module_type" ]] && [[ "$_search_module_name" == "$_module_name" ]]; then
+    $_searched_function "${_module_type}" "${_module_name}" "${_module_status}" "${_current_index}" "${_total_index}" "${_module_csv}"
+  else
+    _myzs:internal:completed
+  fi
+}
+
+_myzs:private:module:search() {
+  local _search_module_type="$1" _search_module_name="$2" _cmd="$3"
+
+  _myzs:internal:module:loaded-list _myzs:private:module:search-internal "${_search_module_type}" "${_search_module_name}" "${_cmd}"
+}
+
+# _myzs:internal:module:search "builtin#app/index.sh" existing_function
+# existing_function "module type" "module name" "module status" "current index" "total index" "module csv"
+_myzs:internal:module:search() {
+  local _input="$1"
+  local _cmd="$2"
+
+  _myzs:internal:module:name-deserialize "${_input}" _myzs:private:module:search "${_cmd}"
+}
+
+_myzs:private:module:checker:validate() {
+  local _module_type="$1" _module_name="$2"
+  local _fullpath
+
+  _fullpath="$(_myzs:private:module:fullpath "${_module_type}" "${_module_name}")"
+  if _myzs:internal:checker:file-exist "$_fullpath"; then
     _myzs:internal:completed
   else
     _myzs:internal:failed
   fi
 }
 
-_myzs:internal:module:index() {
+# validate module name
+_myzs:internal:module:checker:validate() {
   local input="$1"
-  local starter_index="${2:-1}"
-
-  ! _myzs:internal:checker:string-exist "${input}" && _myzs:internal:failed "2"
-  ! _myzs:internal:checker:string-exist "${__MYZS__MODULES[*]}" && _myzs:internal:failed "2"
-
-  local index
-  _myzs:internal:module:index__internal() {
-    local module_raw="$6"
-    local module_index="$4" # start with 1
-
-    if [[ "$module_raw" =~ $input ]]; then
-      index=$((module_index - (starter_index - 1)))
-      echo "$index"
-      return 1
-    fi
-  }
-
-  _myzs:internal:module:loop _myzs:internal:module:index__internal
-
-  if _myzs:internal:checker:string-exist "$index"; then
-    _myzs:internal:completed
-  else
-    echo "-1"
-    _myzs:internal:failed "3"
-  fi
+  shift 1
+  _myzs:internal:module:name-deserialize "$input" _myzs:private:module:checker:validate "$@"
 }
 
-_myzs:internal:module:status() {
-  local input="$1"
+_myzs:private:module:fullpath() {
+  local _module_type="$1" _module_name="$2"
+  local _result_path
 
-  ! _myzs:internal:checker:string-exist "${input}" && _myzs:internal:failed "2"
-  ! _myzs:internal:checker:string-exist "${__MYZS__MODULES[*]}" && _myzs:internal:failed "2"
-
-  local mod reg index result raw raw1
-
-  reg="\{3\{(pass|fail|skip)\}\}"
-
-  index="$(_myzs:internal:module:index "$input")"
-  mod="${__MYZS__MODULES[$index]}"
-  if [[ $mod =~ $input ]]; then
-    raw="$(echo "$mod" | grep -Eoi "${reg}")"
-    raw1="${raw//\{3\{/}"
-    result="${raw1//\}\}/}"
-
-    echo "$result"
+  if [[ "$_module_type" == "builtin" ]]; then
+    _result_path="${__MYZS__SRC}/${_module_name}"
+  elif [[ "$_module_type" == "zplug" ]]; then
+    _result_path="${ZPLUG_HOME}/${_module_name}"
   else
-    _myzs:internal:failed "3"
+    _result_path="${__MYZS__PLG}/${_module_type}/${_module_name}"
   fi
+
+  _myzs:internal:log:info "convert module name $_module_name (type = ${_module_type}) to path $_result_path"
+
+  echo "$_result_path"
 }
 
 _myzs:internal:module:fullpath() {
-  local input="$1"
-
-  ! _myzs:internal:checker:string-exist "${input}" && echo "Cannot found input string" && _myzs:internal:failed "2"
-
-  echo "${_MYZS_ROOT}/${input}"
+  local _input="$1"
+  shift 1
+  _myzs:internal:module:name-deserialize "$_input" _myzs:private:module:fullpath "$@"
 }
 
-# _myzs:internal:module:load(filename, filepath)
-_myzs:internal:module:load() {
-  export __MYZS__CURRENT_FILENAME="$1"
-  export __MYZS__CURRENT_FILEPATH="$2"
-  export __MYZS__CURRENT_STATUS="unknown"
+_myzs:private:module:saved() {
+  local module_type="$1"
+  local module_name="$2"
+  local module_status="$3"
+
+  export __MYZS__CURRENT_MODULE_TYPE="${module_type}"
+  export __MYZS__CURRENT_MODULE_NAME="${module_name}"
+  export __MYZS__CURRENT_MODULE_STATUS="${module_status}"
+  export __MYZS__CURRENT_MODULE_KEY
+  __MYZS__CURRENT_MODULE_KEY="$(_myzs:internal:module:name-serialize "${__MYZS__CURRENT_MODULE_TYPE}" "${__MYZS__CURRENT_MODULE_NAME}")"
+
+  __MYZS__MODULES+=("${module_type},${module_name},${module_status}")
+}
+
+# load module by name
+_myzs:private:module:load() {
+  local module_index module_key module_type module_name module_fullpath
+
+  module_type="$1"
+  module_name="$2"
+  module_key="$(_myzs:internal:module:name-serialize "${module_type}" "${module_name}")"
 
   shift 2
   local args=("$@")
-  local index
 
-  index="$(_myzs:internal:module:index "$__MYZS__CURRENT_FILENAME" "0")"
-  if [[ "${index}" != "-1" ]]; then
-    _myzs:internal:log:info "load exist module $__MYZS__CURRENT_FILENAME at $index"
-    _myzs:private:helper:remove-array-index "__MYZS__MODULES" "${index}"
+  module_key="$(_myzs:internal:module:name-serialize "${module_type}" "${module_name}")"
+  module_fullpath="$(_myzs:private:module:fullpath "${module_type}" "${module_name}")"
+  module_index="$(_myzs:internal:module:index "${module_key}")"
+
+  _myzs:internal:log:debug "module key = ${module_key}"
+  _myzs:internal:log:debug "module path = ${module_fullpath}"
+  _myzs:internal:log:debug "module index = ${module_index}"
+
+  if [[ "${module_index}" != "" ]] && [[ "${module_index}" != "-1" ]]; then
+    _myzs:internal:log:warn "load exist module $__MYZS__CURRENT_MODULE_TYPE at ${module_index}"
+    _myzs:private:helper:remove-array-index "__MYZS__MODULES" "${module_index}"
   fi
 
-  if _myzs:internal:load "$__MYZS__CURRENT_FILENAME" "$__MYZS__CURRENT_FILEPATH" "${args[@]}"; then
-    __MYZS__CURRENT_STATUS="pass"
-    __MYZS__MODULES+=("{1{${__MYZS__CURRENT_FILENAME}}}{2{${__MYZS__CURRENT_FILEPATH}}}{3{$__MYZS__CURRENT_STATUS}}")
+  _myzs:internal:log:debug "module argument = ${args[*]}"
+
+  if _myzs:internal:load "$module_key" "$module_fullpath" "${args[@]}"; then
+    _myzs:private:module:saved "$module_type" "$module_name" "pass"
     _myzs:internal:completed
   else
-    __MYZS__CURRENT_STATUS="fail"
-    __MYZS__MODULES+=("{1{${__MYZS__CURRENT_FILENAME}}}{2{${__MYZS__CURRENT_FILEPATH}}}{3{$__MYZS__CURRENT_STATUS}}")
+    _myzs:private:module:saved "$module_type" "$module_name" "fail"
     _myzs:internal:failed 2
   fi
 }
 
-# _myzs:internal:module:skip(filename, filepath)
-_myzs:internal:module:skip() {
-  export __MYZS__CURRENT_FILENAME="$1"
-  export __MYZS__CURRENT_FILEPATH="$2"
-  export __MYZS__CURRENT_STATUS="skip"
-
-  __MYZS__MODULES+=("{1{${__MYZS__CURRENT_FILENAME}}}{2{${__MYZS__CURRENT_FILEPATH}}}{3{$__MYZS__CURRENT_STATUS}}")
+# load module by name
+_myzs:internal:module:load() {
+  local input="$1"
+  shift 1
+  _myzs:internal:module:name-deserialize "$input" _myzs:private:module:load "$@"
 }
 
-# _myzs:internal:module:loop = looping all modules and get the information
-#     @param 1 (cmd)  = the bash function accept 6 parameters
-#                     = cmd "$module_name" "$module_path" "$module_status" "$module_index" "$total_module" "$module_raw"
-#     @example
-#                       cmd() {
-#                           local module_name="$1"
-#                           local module_path="$2"
-#                           local module_status="$3"
-#                           local module_index="$4"
-#                           local total_module="$5"
-#                           local module_raw="$6"
-#                       }
-_myzs:internal:module:loop() {
+# mark module name as skip
+_myzs:private:module:skip() {
+  _myzs:private:module:saved "$1" "$2" "skip"
+}
+
+# mark module name as skip
+_myzs:internal:module:skip() {
+  local input="$1"
+  shift 1
+  _myzs:internal:module:name-deserialize "$input" _myzs:private:module:skip "$@"
+}
+
+_myzs:internal:module:total-list() {
+  local folder filename dirname __builtin_component __plugin_component
+  local plugin plugin_name plugin_path
+  local supported_name_list=("app" "alias" "setting")
+
   local cmd="$1"
+
+  for folder in "${supported_name_list[@]}"; do
+    plugin_path="${__MYZS__SRC}/$folder"
+    if _myzs:internal:checker:folder-exist "$plugin_path"; then
+      for __builtin_component in "${plugin_path}"/*.sh; do
+        filename="$(basename "${__builtin_component}")"
+        dirname="$(basename "$(dirname "${__builtin_component}")")"
+
+        #cmd $type     $name                $path
+        $cmd "builtin" "$dirname/$filename" "$__builtin_component"
+      done
+    fi
+
+    for plugin in "${MYZS_LOADING_PLUGINS[@]}"; do
+      plugin_name="${plugin%%#*}"
+      plugin_path="${__MYZS__PLG}/${plugin_name}/$folder"
+
+      if _myzs:internal:checker:folder-exist "$plugin_path"; then
+        for __plugin_component in "$plugin_path"/*.sh; do
+          filename="$(basename "${__plugin_component}")"
+          dirname="$(basename "$(dirname "${__plugin_component}")")"
+
+          #cmd $type          $name                $path
+          $cmd "$plugin_name" "$dirname/$filename" "$__plugin_component"
+        done
+      fi
+    done
+  done
+
+  _myzs:internal:completed
+}
+
+# @param    $1 cmd "module type" "module name" "module status" "current index" "total index" "module csv"
+# @example
+#   cmd {
+#     local module_type="$1" module_name="$2" module_status="$3"
+#     local current_index="$4" total_index="$5"
+#     local module_csv="$6"
+#   }
+_myzs:internal:module:loaded-list() {
+  local cmd="$1"
+  shift 1
+  local args=("$@")
 
   ! _myzs:internal:checker:command-exist "${cmd}" && echo "Input command ${cmd} is not valid" && _myzs:internal:failed "2"
 
-  local mod reg1 reg2 reg3 filename filepath filestatus raw raw1
-
-  reg1="\{1\{([^\{\}]+)\}\}"
-  reg2="\{2\{([^\{\}]+)\}\}"
-  reg3="\{3\{(pass|fail|skip)\}\}"
-
   local size=0 current=0
-
   size="${#__MYZS__MODULES[@]}"
-  for mod in "${__MYZS__MODULES[@]}"; do
+  for module_csv in "${__MYZS__MODULES[@]}"; do
     ((current++))
-    raw="$(echo "$mod" | grep -Eoi "${reg1}")"
-    raw1="${raw//\{1\{/}"
-    filename="${raw1//\}\}/}"
+    # shellcheck disable=SC2116
+    IFS=',' read -r module_type module_name module_status <<<"$(echo "${module_csv}")"
 
-    raw="$(echo "$mod" | grep -Eo "${reg2}")"
-    raw1="${raw//\{2\{/}"
-    filepath="${raw1//\}\}/}"
-    # filepath="${filepath//$MYZS_ROOT/\$MYZS_ROOT}"
-
-    raw="$(echo "$mod" | grep -Eoi "${reg3}")"
-    raw1="${raw//\{3\{/}"
-    filestatus="${raw1//\}\}/}"
-
-    # if command return non-zero exit, break the loop
-    if ! $cmd "$filename" "$filepath" "$filestatus" "$current" "$size" "$mod"; then
+    if ! $cmd "$module_type" "$module_name" "$module_status" "$current" "$size" "$module_csv" "${args[@]}"; then
       return $?
     fi
   done
