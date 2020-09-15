@@ -39,17 +39,23 @@
 
 ## Module
 
-1. `_myzs:internal:module:checker:validate(name)` - check is input a valid module
-2. `_myzs:internal:module:index(name)` - get module index or -1 if not exist
-3. `_myzs:internal:module:status(name)` - get module status by name, otherwise exit non-zero
-4. `_myzs:internal:module:fullpath(name)` - get module path by name
-5. `_myzs:internal:module:load(filename, filepath)` - load file as module
-6. `_myzs:internal:module:skip(filename, filepath)` - mark file as skipped module
-7. `_myzs:internal:module:loaded-list(cmd)` - loop modules and execute input function
+1. `_myzs:internal:module:name-deserialize(key)` - convert module key to module type and name
+2. `_myzs:internal:module:name-serialize(type, name)` - convert module type and name back to key 
+3. `_myzs:internal:module:checker:validate(name)` - check is input a valid module
+4. `_myzs:internal:module:index(name)` - get module index or -1 if not exist
+5. `_myzs:internal:module:search(name)` - search module type or name or key and start callback
+6. `_myzs:internal:module:fullpath(name)` - get module path by name
+7. `_myzs:internal:module:load(filename, filepath)` - load file as module
+8. `_myzs:internal:module:skip(filename, filepath)` - mark file as skipped module
+9. `_myzs:internal:module:loaded-list(cmd)` - loop loaded modules with status
+10. `_myzs:internal:module:total-list(cmd)` - loop all exist modules and myzs builtin and plugins
 
 ## Plugin
 
-1. `_myzs:private:initial-plugins` - download plugin repository from github and initial to project
+1. `_myzs:internal:plugin:name-deserialize(key)` - convert plugin key (<repo>#<version>) to plugin name and version
+2. `_myzs:internal:plugin:name-serialize(name, version)` - convert plugin name and version back to plugin key
+3. `_myzs:internal:initial-plugins(name, version)` - download plugin repository from github and initial to repo
+4. `_myzs:internal:upgrade-plugin(name, version)` - upgrade plugin repository from github and reinitital repo
 
 ## Changelog
 
