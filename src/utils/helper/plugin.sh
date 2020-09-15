@@ -35,7 +35,9 @@ _myzs:internal:plugin:name-serialize() {
   fi
 }
 
-_myzs:internal:initial-plugins() {
+# $1 = plugin name
+# $2 = plugin version
+_myzs:internal:initial-plugin() {
   local plugin_name="$1" plugin_version="$2"
 
   local plugin_folder="${__MYZS__PLG}"
@@ -72,6 +74,8 @@ _myzs:internal:initial-plugins() {
   fi
 }
 
+# $1 = plugin name
+# $2 = plugin version
 _myzs:internal:upgrade-plugin() {
   local oldpath="$PWD" plugin_name="$1" plugin_version="$2"
 
