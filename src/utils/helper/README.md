@@ -45,7 +45,7 @@
 4. `_myzs:internal:module:fullpath(name)` - get module path by name
 5. `_myzs:internal:module:load(filename, filepath)` - load file as module
 6. `_myzs:internal:module:skip(filename, filepath)` - mark file as skipped module
-7. `_myzs:internal:module:loop(cmd)` - loop modules and execute input function
+7. `_myzs:internal:module:loaded-list(cmd)` - loop modules and execute input function
 
 ## Plugin
 

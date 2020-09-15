@@ -34,7 +34,7 @@ _myzs:internal:metric:saved() {
     fi
   }
 
-  _myzs:internal:module:loop _myzs:private:metric:counter
+  _myzs:internal:module:loaded-list _myzs:private:metric:counter
 
   echo "${__MYZS__FINISH_TIME},${passed},${failed},${skipped},${unknown},${total},${PROGRESS_LOADTIME_MS}" >>"$data_file"
 }
