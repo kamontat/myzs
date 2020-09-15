@@ -106,14 +106,12 @@ myzs-list-modules() {
 myzs-load() {
   _myzs:internal:module:initial "app/myzs.sh#myzs-load"
 
-  local name="$1" # fully_modules format
+  local name="$1" # module key
   shift 1
   local args=("$@")
 
-  fullpath="${__MYZS__SRC}/${name}"
-
   if _myzs:internal:module:checker:validate "$name"; then
-    if _myzs:internal:module:load "$name" "$fullpath" "${args[@]}"; then
+    if _myzs:internal:module:load "$name" "${args[@]}"; then
       _myzs:internal:completed
     else
       _myzs:internal:log:warn "loading module return error"
