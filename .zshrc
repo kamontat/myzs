@@ -20,7 +20,7 @@ export MYZS_SETTINGS_AUTOLOAD_SETUP_LOCAL=false
 
 # when checking auto setup file,
 # it will use this list to file the exist file and load to enviroment
-export MYZS_SETTINGS_SETUP_FILES=("myzs-setup" ".myzs-setup" ".myzs" "myzs")
+export MYZS_SETTINGS_SETUP_FILES=("myzs-setup")
 
 # start command; this will run after exit init.sh
 export MYZS_START_COMMAND=""
@@ -39,7 +39,8 @@ export MYZS_TYPE="FULLY"
 export MYZS_ROOT="$HOME/.myzs"
 
 # List of enabled log level, this is case insensitive
-export MYZS_LOG_LEVEL=("error" "warn" "info" "debug")
+# possible value: "error" "warn" "info" "debug"
+export MYZS_LOG_LEVEL=("error" "warn")
 
 # builtin#app/myzs.sh                              (builtin)
 # kamontat/myzs-plugin#app/hello.sh                (plugin)
@@ -81,12 +82,12 @@ MYZS_LOADING_MODULES+=(
 export MYZS_PG_DISABLED=false
 
 # If this is true, the application will trace each component in difference lines
-export MYZS_PG_SHOW_PERF=true
+export MYZS_PG_SHOW_PERF=false
 
 # minimum millisecond will be shown as danger color
-export MYZS_PG_TIME_DANGER_THRESHOLD_MS=500
+export MYZS_PG_TIME_DANGER_THRESHOLD_MS=600
 # minimum millisecond will be shown as warning color
-export MYZS_PG_TIME_WARN_THRESHOLD_MS=100
+export MYZS_PG_TIME_WARN_THRESHOLD_MS=200
 
 # loading message color
 export MYZS_PG_LOADING_CL=""
