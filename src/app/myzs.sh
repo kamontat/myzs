@@ -16,10 +16,28 @@ myzs-upload() {
 myzs-download() {
   test -z "$MYZS_ROOT" && echo "\$MYZS_ROOT is required" && exit 2
 
+  local logpath="${MYZS_LOGPATH}"
+  if ! test -f "$logpath"; then
+    touch "$logpath"
+  fi
+
+  myzs:pg:cleanup
+  myzs:pg:start
+
   cd "$MYZS_ROOT" || exit 1
-  echo "Start download the change from github"
-  git fetch
-  git pull
+
+  myzs:pg:mark "Core" "Fetching update from myzs"
+  git fetch >>"${logpath}" || myzs:pg:mark-fail "Cannot fetch data from myzs git"
+
+  myzs:pg:mark "Core" "Pulling update from myzs"
+  git pull >>"${logpath}" || myzs:pg:mark-fail "Cannot pull data from myzs git"
+
+  for plugin in "${MYZS_LOADING_PLUGINS[@]}"; do
+    myzs:pg:mark "Plugin" "Pulling update from $plugin"
+    _myzs:internal:plugin:name-deserialize "$plugin" _myzs:internal:upgrade-plugin
+  done
+
+  myzs:pg:stop
 }
 
 myzs-info() {
@@ -65,18 +83,18 @@ myzs-list-modules() {
 
   ! _myzs:internal:checker:string-exist "${__MYZS__MODULES[*]}" && echo "Cannot find any modules exist" && exit 2
 
-  printf '| %-7s | %-20s | %-35s | %-10s |\n' "[index]" "[name]" "[path]" "[status]"
+  printf '| %-3s | %-30s | %-30s | %-6s |\n' "[#]" "[module type]" "[module name]" "[stat]"
 
   __myzs_list_modules_internal() {
     local module_name="$1"
-    local module_path="${2//$MYZS_ROOT/\$MYZS_ROOT}" # replace path with ROOT variable if possible
+    local module_fullpath="${2//$MYZS_ROOT/\$MYZS_ROOT}" # replace path with ROOT variable if possible
     local module_status="$3"
     local module_index="$4"
 
-    printf '| %-7s | %-20s | %-35s | %-10s |\n' "${module_index}" "${module_name}" "${module_path}" "${module_status}"
+    printf '| %-3s | %-30s | %-30s | %-6s |\n' "${module_index}" "${module_name}" "${module_fullpath}" "${module_status}"
   }
 
-  _myzs:internal:module:loop __myzs_list_modules_internal
+  _myzs:internal:module:loaded-list __myzs_list_modules_internal
 
   echo
   printf 'Total %s modules\n' "${#__MYZS__MODULES[@]}"
@@ -120,4 +138,16 @@ myzs-setup-local() {
       _myzs:internal:load "local-setup" "$fullpath"
     fi
   done
+}
+
+myzs-measure() {
+  local cmd="$1"
+  shift 1
+
+  myzs:pg:cleanup
+  myzs:pg:start
+
+  "$cmd" "$@"
+
+  myzs:pg:stop
 }
