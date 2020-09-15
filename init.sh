@@ -100,13 +100,13 @@ _myzs:private:core:load-module() {
     myzs:pg:mark "${module_type}" "Loading ${module_name}"
 
     if _myzs:internal:checker:fully-type || [[ $module_name =~ "alias" ]]; then
-      _myzs:internal:module:load "${module_key}" "$module_fullpath" || myzs:pg:mark-fail "Cannot load $module_fullpath"
+      _myzs:internal:module:load "${module_key}" || myzs:pg:mark-fail "Cannot load $module_fullpath"
     else
       myzs:pg:mark-fail "cannot load ${module_key} when TYPE=$__MYZS__TYPE"
     fi
   else
-    _myzs:internal:log:warn "skipping module ${module_key}"
     _myzs:internal:module:skip "${module_key}"
+    _myzs:internal:log:warn "skipping module ${module_key}"
   fi
 
   _myzs:internal:completed
