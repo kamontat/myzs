@@ -38,16 +38,16 @@ _myzs:internal:module:initial() {
   local filename
   filename="$(basename "$1")"
   if [[ "$2" == "force" ]]; then
-    export __MYZS__CURRENT_FILENAME="$filename"
+    export __MYZS__CURRENT_MODULE_NAME="$filename"
   else
-    export __MYZS__CURRENT_FILENAME="${__MYZS__CURRENT_FILENAME:-$filename}"
+    export __MYZS__CURRENT_MODULE_NAME="${__MYZS__CURRENT_MODULE_NAME:-$filename}"
   fi
 
   # _myzs:internal:log:info "start new modules"
 }
 
 _myzs:internal:module:cleanup() {
-  unset __MYZS__CURRENT_FILENAME __MYZS__CURRENT_FILEPATH __MYZS__CURRENT_STATUS
+  unset __MYZS__CURRENT_MODULE_TYPE __MYZS__CURRENT_MODULE_NAME __MYZS__CURRENT_MODULE_STATUS
   unset MYZS_SETTINGS_WELCOME_MESSAGE MYZS_START_COMMAND MYZS_START_COMMAND_ARGUMENTS
 
   # _myzs:internal:log:info "cleanup application"
@@ -67,21 +67,24 @@ _myzs:internal:project:cleanup() {
 }
 
 _myzs:internal:load() {
-  local _name="$1" _path="$2" exitcode=1
+  local filename="$1" filepath="$2" exitcode=1
   shift 2
   local args=("$@")
-  if _myzs:internal:checker:file-exist "$_path"; then
-    source "${_path}" "${args[@]}"
+
+  if _myzs:internal:checker:file-exist "$filepath"; then
+
+    _myzs:internal:log:debug "source ${filepath} with '${args[*]}'"
+    source "${filepath}" "${args[@]}"
     exitcode=$?
     if [[ "$exitcode" != "0" ]]; then
-      _myzs:internal:log:error "Cannot load ${_name} (${_path}) because source return $exitcode"
+      _myzs:internal:log:error "Cannot load ${filename} (${filepath}) because source return $exitcode"
       _myzs:internal:failed "$exitcode"
     fi
 
-    _myzs:internal:log:info "Loaded ${_name} (${_path}) to the system"
+    _myzs:internal:log:info "Loaded ${filename} (${filepath}) to the system"
     _myzs:internal:completed
   else
-    _myzs:internal:log:warn "Cannot load ${_name} (${_path}) because file is missing"
+    _myzs:internal:log:warn "Cannot load ${filename} (${filepath}) because file is missing"
     _myzs:internal:failed 4
   fi
 }
