@@ -161,7 +161,7 @@ _myzs:private:module:load() {
   _myzs:internal:log:debug "module index = ${module_index}"
 
   if [[ "${module_index}" != "" ]] && [[ "${module_index}" != "-1" ]]; then
-    _myzs:internal:log:warn "load exist module $__MYZS__CURRENT_MODULE_TYPE at ${module_index}"
+    _myzs:internal:log:warn "module $__MYZS__CURRENT_MODULE_KEY is existed at #${module_index}; removing"
     _myzs:private:helper:remove-array-index "__MYZS__MODULES" "${module_index}"
   fi
 
