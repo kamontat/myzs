@@ -1,5 +1,16 @@
 # Release notes
 
+## Version 5.1.0 (16 Sep 2020)
+
+- [BREAK] change myzs-load to accept at least 2 parameters which is module type and name
+- add completion for `myzs-load` command to listed all skipping module
+- add new resource format (completion) which hosted completion files
+- load completion folder by default in `settings/zsh.sh`
+- fix adding new completion path to fpath didn't work and throw error
+- new 3 helper method and module helper along with rename search
+- remove docker module as it no needs
+- update typo in this file (changelog.md)
+
 ## Version 5.0.2 (15 Sep 2020)
 
 - fix some typo in the log message and return value
