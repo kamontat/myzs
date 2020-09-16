@@ -2,8 +2,8 @@
 
 ## Version 5.0.2 (15 Sep 2020)
 
-- fix some typo in log message and return value
-- fix wrong module name in log message when use skip
+- fix some typo in the log message and return value
+- fix wrong module name in the log message when using skip
 - fix unnecessary pass module path to module arguments
 - remove changelog of version 4.0.0 - 4.5.2
 
@@ -19,17 +19,17 @@
 
 ## Version 5.0.0 (15 Sep 2020)
 
-- introduce new plugin system
-- introduce new module system
-- refactor all method to support new syntax
-- progressbar will support 3 level or color. normal, warning and danger
-- support config progressbar message size via $MYZS_PG_FULLMESSAGE_LENGTH and $MYZS_PG_MESSAGE_KEY_LENGTH
+- introduce a new plugin system
+- introduce a new module system
+- refactor all method to support the new syntax
+- the progress bar will support 3 levels of color that is normal, warning, and danger
+- support config progress bar message size via $MYZS_PG_FULLMESSAGE_LENGTH and $MYZS_PG_MESSAGE_KEY_LENGTH
 - support disable some log level as $MYZS_LOG_LEVEL variable
-- support disabled progressbar via .zshrc config
+- support disabled progress bar via .zshrc config
 - improve log message for progress dump in small type
-- reduce builtin module, and use plugin instead
-- module resolve will check all builtin and plugin file. It might cause high load
-- `myzs-download` now support upgrade myzs and myzs-plugin
+- reduce builtin module, and use a plugin instead
+- module resolve will check all builtin and plugin files. It might cause a high load
+- `myzs-download` now support upgrade myzs and myzs-p
 
 ## Version 4.8.0 (10 Sep 2020)
 
