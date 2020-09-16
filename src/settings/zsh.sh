@@ -198,3 +198,9 @@ zstyle ':completion:*:(ssh|scp|rsync):*:hosts-ipaddr' ignored-patterns '^(<->.<-
 #
 
 setopt BASH_REMATCH
+
+# Load myzs completion
+
+if _myzs:internal:checker:folder-exist "${__MYZS__COM}"; then
+  _myzs:internal:fpath-push "${__MYZS__COM}"
+fi
