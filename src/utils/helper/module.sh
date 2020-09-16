@@ -53,10 +53,10 @@ _myzs:private:module:index() {
 
 # get module index
 _myzs:internal:module:index() {
-  _myzs:internal:module:search "$1" _myzs:private:module:index
+  _myzs:internal:module:search-name "$1" _myzs:private:module:index
 }
 
-_myzs:private:module:search-internal() {
+_myzs:private:module:search-name-internal() {
   local _module_type="$1" _module_name="$2" _module_status="$3"
   local _current_index="$4" _total_index="$5"
   local _module_csv="$6"
@@ -70,19 +70,64 @@ _myzs:private:module:search-internal() {
   fi
 }
 
-_myzs:private:module:search() {
+_myzs:private:module:search-name() {
   local _search_module_type="$1" _search_module_name="$2" _cmd="$3"
 
-  _myzs:internal:module:loaded-list _myzs:private:module:search-internal "${_search_module_type}" "${_search_module_name}" "${_cmd}"
+  _myzs:internal:module:loaded-list _myzs:private:module:search-name-internal "${_search_module_type}" "${_search_module_name}" "${_cmd}"
 }
 
-# _myzs:internal:module:search "builtin#app/index.sh" existing_function
+# _myzs:internal:module:search-name "builtin#app/index.sh" existing_function
 # existing_function "module type" "module name" "module status" "current index" "total index" "module csv"
-_myzs:internal:module:search() {
+_myzs:internal:module:search-name() {
   local _input="$1"
   local _cmd="$2"
 
-  _myzs:internal:module:name-deserialize "${_input}" _myzs:private:module:search "${_cmd}"
+  _myzs:internal:module:name-deserialize "${_input}" _myzs:private:module:search-name "${_cmd}"
+}
+
+_myzs:private:module:search-status() {
+  local _module_type="$1" _module_name="$2" _module_status="$3"
+  local _current_index="$4" _total_index="$5"
+  local _module_csv="$6"
+
+  local _search_module_status="$7" _searched_function="$8"
+
+  if [[ "$_search_module_status" == "$_module_status" ]]; then
+    $_searched_function "${_module_type}" "${_module_name}" "${_module_status}" "${_current_index}" "${_total_index}" "${_module_csv}"
+  else
+    _myzs:internal:completed
+  fi
+}
+
+# _myzs:internal:module:search-status "(pass|fail|skip)" existing_function
+# existing_function "module type" "module name" "module status" "current index" "total index" "module csv"
+_myzs:internal:module:search-status() {
+  local _module_status="$1"
+  local _cmd="$2"
+
+  _myzs:internal:module:loaded-list _myzs:private:module:search-status "${_module_status}" "${_cmd}"
+}
+
+_myzs:private:module:search-module-type() {
+  local _module_type="$1" _module_name="$2" _module_status="$3"
+  local _current_index="$4" _total_index="$5"
+  local _module_csv="$6"
+
+  local _search_module_type="$7" _searched_function="$8"
+
+  if [[ "$_search_module_type" == "$_module_type" ]]; then
+    $_searched_function "${_module_type}" "${_module_name}" "${_module_status}" "${_current_index}" "${_total_index}" "${_module_csv}"
+  else
+    _myzs:internal:completed
+  fi
+}
+
+_myzs:internal:module:search-module-type() {
+  local _module_type="$1"
+  local _cmd="$2"
+
+  _myzs:internal:module:loaded-list _myzs:private:module:search-module-type "${_module_type}" "${_cmd}"
+
 }
 
 _myzs:private:module:checker:validate() {
@@ -155,6 +200,7 @@ _myzs:private:module:load() {
   module_key="$(_myzs:internal:module:name-serialize "${module_type}" "${module_name}")"
   module_fullpath="$(_myzs:private:module:fullpath "${module_type}" "${module_name}")"
   module_index="$(_myzs:internal:module:index "${module_key}")"
+  ((module_index--)) # change array index start from 1 to start from 0
 
   _myzs:internal:log:debug "module key = ${module_key}"
   _myzs:internal:log:debug "module path = ${module_fullpath}"
@@ -195,6 +241,7 @@ _myzs:internal:module:skip() {
   _myzs:internal:module:name-deserialize "$input" _myzs:private:module:skip "$@"
 }
 
+# Input callback receive callback(type, name, path)
 _myzs:internal:module:total-list() {
   local folder filename dirname __builtin_component __plugin_component
   local plugin plugin_name plugin_path
