@@ -106,19 +106,23 @@ myzs-list-modules() {
 myzs-load() {
   _myzs:internal:module:initial "app/myzs.sh#myzs-load"
 
-  local name="$1" # module key
-  shift 1
+  local module_type="$1"
+  local module_name="$2"
+  local module_key
+  shift 2
   local args=("$@")
 
-  if _myzs:internal:module:checker:validate "$name"; then
-    if _myzs:internal:module:load "$name" "${args[@]}"; then
+  module_key="$(_myzs:internal:module:name-serialize "${module_type}" "${module_name}")"
+
+  if _myzs:internal:module:checker:validate "$module_key"; then
+    if _myzs:internal:module:load "$module_key" "${args[@]}"; then
       _myzs:internal:completed
     else
       _myzs:internal:log:warn "loading module return error"
       _myzs:internal:failed 2
     fi
   else
-    _myzs:internal:log:warn "invalid modules ($name)"
+    _myzs:internal:log:warn "invalid modules ($module_key)"
     _myzs:internal:failed 3
   fi
 }
