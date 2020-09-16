@@ -3,8 +3,8 @@
 ## Version 5.1.0 (16 Sep 2020)
 
 - [BREAK] change myzs-load to accept at least 2 parameters which is module type and name
-- add completion for `myzs-load` command to listed all skipping module
-- add new resource format (completion) which hosted completion files
+- add completion for `myzs-load` command to listed all skipping module (closed #3)
+- add new resource format (completion) which hosted completion files (closed #4)
 - load completion folder by default in `settings/zsh.sh`
 - fix adding new completion path to fpath didn't work and throw error
 - new 3 helper method and module helper along with rename search
