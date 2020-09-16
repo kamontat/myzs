@@ -109,7 +109,7 @@ _myzs:internal:fpath-push() {
   for i in "$@"; do
     if _myzs:internal:checker:folder-exist "$i" || _myzs:internal:checker:file-exist "$i"; then
       _myzs:internal:log:info "Add $i to fpath environment"
-      export fpath+=("$i")
+      fpath+=("$i")
     else
       _myzs:internal:log:warn "Cannot add $i to fpath environment because folder or file is missing"
     fi
