@@ -44,9 +44,6 @@ export MYZS_LOG_LEVEL=("error")
 
 export MYZS_METRIC_DISABLED=false
 
-# builtin#app/myzs.sh                              (builtin)
-# kamontat/myzs-plugin#app/hello.sh                (plugin)
-
 export MYZS_LOADING_PLUGINS=(
   "myzs-plugins/core#master"
   "myzs-plugins/git#master"
