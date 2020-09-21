@@ -79,7 +79,7 @@ _myzs:internal:project:cleanup() {
   __MYZS__FINISH_TIME="$(date +"%d/%m/%Y %H:%M:%S")"
 
   _myzs:internal:module:cleanup
-  _myzs:internal:metric:saved
+  _myzs:internal:metric:log-module
 
   if [[ "$MYZS_DEBUG" == "true" ]]; then
     set +x # disable DEBUG MODE

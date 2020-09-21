@@ -204,7 +204,7 @@ _myzs:private:module:load() {
 
   if [[ "${module_index}" != "" ]] && [[ "${module_index}" != "-1" ]]; then
     _myzs:internal:log:warn "module $__MYZS__CURRENT_MODULE_KEY is existed at #${module_index}; removing"
-    _myzs:private:helper:remove-array-index "__MYZS__MODULES" "${module_index}"
+    _myzs:internal:remove-array-index "__MYZS__MODULES" "${module_index}"
   fi
 
   _myzs:internal:log:debug "module argument = ${args[*]}"
