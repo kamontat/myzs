@@ -241,11 +241,13 @@ _myzs:internal:module:skip() {
 _myzs:internal:module:total-list() {
   local folder filename dirname __builtin_component __plugin_component
   local plugin plugin_name plugin_path
-  local supported_name_list=("app" "alias" "setting")
+
+  local builtin_supported_list=("app" "alias")
+  local plugin_supported_list=("app" "alias" "settings" "utils")
 
   local cmd="$1"
 
-  for folder in "${supported_name_list[@]}"; do
+  for folder in "${builtin_supported_list[@]}"; do
     plugin_path="${__MYZS__SRC}/$folder"
     if _myzs:internal:checker:folder-exist "$plugin_path"; then
       for __builtin_component in "${plugin_path}"/*.sh; do
@@ -256,7 +258,9 @@ _myzs:internal:module:total-list() {
         $cmd "builtin" "$dirname/$filename" "$__builtin_component"
       done
     fi
+  done
 
+  for folder in "${plugin_supported_list[@]}"; do
     for plugin in "${MYZS_LOADING_PLUGINS[@]}"; do
       plugin_name="${plugin%%#*}"
       plugin_path="${__MYZS__PLG}/${plugin_name}/$folder"
