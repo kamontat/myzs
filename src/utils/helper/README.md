@@ -65,7 +65,7 @@
 
 ## Metric
 
-1. `_myzs:internal:metric:saved` - saving information to metric file
+1. `_myzs:internal:metric:log-module` - saving information to metric file
 
 ## Zplug
 
