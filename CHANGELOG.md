@@ -1,5 +1,25 @@
 # Release notes
 
+## Version 5.2.0 (21 Sep 2020)
+
+- [BREAK] refactor plugin loader modules
+- [BREAK] migrate some code from private helper to internal helper
+- reduce builtin module to `myzs-plugins` plugin
+  - move docker and kube to docker plugin
+  - move yarn alias and app to nodejs plugin
+  - move editor and vim to editor plugin
+- remove tmux module from builtin
+- change `app/thefuck.sh` to `app/fuck.sh`
+- change **data.csv** to **modules.csv** for metric log
+- add new plugin metric as plugins.csv file
+- add `myzs:log:<silent|debug|info|warn|error>` for compack log settings
+- move metric helper to top
+- change progress helper loading from using file loader to module loader
+- reduce predefined modules and plugins
+- add support modules in `settings` and `utils` folder in plugins repository
+- change default value of auto-setup-local to true and add `.myzs-setup` as alias for setup local
+- update progress typo when start initial script
+
 ## Version 5.1.0 (16 Sep 2020)
 
 - [BREAK] change myzs-load to accept at least 2 parameters which is module type and name
