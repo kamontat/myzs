@@ -14,7 +14,9 @@ export __MYZS__VERSION="5.1.0"
 export __MYZS__SINCE="21 Apr 2018"
 export __MYZS__LAST_UPDATED="16 Sep 2020"
 export __MYZS__LICENSE="MIT"
+
 export __MYZS__MODULES=()
+export __MYZS__PLUGINS=()
 
 # Accept values: FULLY | SMALL
 #   1. FULLY -> full command with advance support on zsh script

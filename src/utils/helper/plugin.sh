@@ -35,10 +35,34 @@ _myzs:internal:plugin:name-serialize() {
   fi
 }
 
+# _myzs:private:plugin:saved $start_time (download|upgrade) $name $version (pass|fail|skip) (pass|fail)
+_myzs:private:plugin:saved() {
+  local plugin_start_time="$1"
+  local plugin_action="$2"
+  local plugin_name="$3"
+  local plugin_version="$4"
+  local plugin_step1_status="$5" # cloning repository step
+  local plugin_step2_status="$6" # initial myzs.init file step
+
+  local plugin_finish_time plugin_load_time
+  plugin_finish_time="$(_myzs:internal:timestamp-millisecond)"
+
+  export __MYZS__CURRENT_PLUGIN_KEY
+  __MYZS__CURRENT_PLUGIN_KEY="$(_myzs:internal:plugin:name-serialize "${__MYZS__CURRENT_PLUGIN_TYPE}" "${__MYZS__CURRENT_PLUGIN_NAME}")"
+
+  plugin_load_time="$((plugin_finish_time - plugin_start_time))"
+
+  __MYZS__PLUGINS+=(
+    "${plugin_action},${plugin_name},${plugin_version},${plugin_step1_status},${plugin_step2_status},${plugin_load_time}"
+  )
+}
+
 # $1 = plugin name
 # $2 = plugin version
-_myzs:internal:initial-plugin() {
+_myzs:internal:plugin:load() {
   local plugin_name="$1" plugin_version="$2"
+  local plugin_start_time plugin_action="download" plugin_status1="pass"
+  plugin_start_time="$(_myzs:internal:timestamp-millisecond)"
 
   local plugin_folder="${__MYZS__PLG}"
   local plugin_path="${plugin_folder}/$plugin_name"
@@ -57,27 +81,46 @@ _myzs:internal:initial-plugin() {
   if ! _myzs:internal:checker:folder-exist "$plugin_path"; then
     _myzs:internal:log:info "clone new plugin to ${plugin_path}"
     _myzs:internal:log:debug "git clone --branch '${plugin_version}' --single-branch '$repo' '$plugin_path'"
-    git clone --branch "${plugin_version}" --single-branch "$repo" "$plugin_path" &>>"${logpath}"
+
+    if ! git clone --branch "${plugin_version}" --single-branch "$repo" "$plugin_path" >>"${logpath}" 2>&1; then
+      plugin_status1="fail"
+    fi
   else
     _myzs:internal:log:info "plugin is exist at ${plugin_path}, skip update"
+    plugin_status1="skip"
   fi
 
-  plugin_init="${plugin_path}/myzs.init"
-  if _myzs:internal:checker:file-exist "${plugin_init}"; then
-    _myzs:internal:load "${plugin_name} initial file" "${plugin_init}"
-    _myzs:internal:completed
+  if [[ "$plugin_status1" != "fail" ]]; then
+    plugin_init="${plugin_path}/myzs.init"
+    if _myzs:internal:checker:file-exist "${plugin_init}"; then
+      if _myzs:internal:load "${plugin_name} initial file" "${plugin_init}"; then
+        _myzs:internal:metric:log-plugin "$plugin_start_time" "$plugin_action" "$plugin_name" "$plugin_version" "$plugin_status1" "pass"
+        _myzs:internal:completed
+      else
+        _myzs:internal:metric:log-plugin "$plugin_start_time" "$plugin_action" "$plugin_name" "$plugin_version" "$plugin_status1" "fail"
+        _myzs:internal:log:error "Cannot initial myzs.init file"
+        _myzs:internal:completed
+      fi
+    else
+      _myzs:internal:metric:log-plugin "$plugin_start_time" "$plugin_action" "$plugin_name" "$plugin_version" "$plugin_status1" "fail"
+      _myzs:internal:log:error "MYZS plugin must have myzs.init file on root (${plugin_name})"
+      rm -rf "${plugin_path}"
+      _myzs:internal:failed 5
+    fi
   else
-    _myzs:internal:log:error "you loading non myzs plugin module ${plugin_name}"
-    _myzs:internal:log:error "immediately deleted repository"
-    rm -rf "${plugin_path}"
+    _myzs:internal:metric:log-plugin "$plugin_start_time" "$plugin_action" "$plugin_name" "$plugin_version" "$plugin_status1" "$plugin_status1"
+    _myzs:internal:log:error "cloning repository failed"
+    rm -rf "${plugin_path}" >/dev/null
     _myzs:internal:failed 5
   fi
 }
 
 # $1 = plugin name
 # $2 = plugin version
-_myzs:internal:upgrade-plugin() {
+_myzs:internal:plugin:upgrade() {
   local oldpath="$PWD" plugin_name="$1" plugin_version="$2"
+  local plugin_start_time plugin_action="upgrade" plugin_status1="pass" plugin_status2="pass"
+  plugin_start_time="$(_myzs:internal:timestamp-millisecond)"
 
   local plugin_folder="${__MYZS__PLG}"
   local plugin_path="${plugin_folder}/$plugin_name"
@@ -90,16 +133,23 @@ _myzs:internal:upgrade-plugin() {
   fi
 
   if ! _myzs:internal:checker:folder-exist "$plugin_folder"; then
+    _myzs:internal:metric:log-plugin "$plugin_start_time" "$plugin_action" "$plugin_name" "$plugin_version" "fail" "fail"
     _myzs:internal:failed 1
   else
     _myzs:internal:log:info "upgrading plugin ${plugin_name} version ${plugin_version} at ${plugin_path}"
 
     cd "${plugin_path}" || exit 1
-    git pull origin "${plugin_version}" &>>"${logpath}"
+
+    if ! git pull origin "${plugin_version}" >>"${logpath}" 2>&1; then
+      plugin_status1="fail"
+    fi
 
     plugin_init="${plugin_path}/myzs.init"
-    _myzs:internal:load "${plugin_name} initial file" "${plugin_init}"
+    if ! _myzs:internal:load "${plugin_name} initial file" "${plugin_init}"; then
+      plugin_status2="fail"
+    fi
 
+    _myzs:internal:metric:log-plugin "$plugin_start_time" "$plugin_action" "$plugin_name" "$plugin_version" "$plugin_status1" "$plugin_status2"
     cd "${oldpath}" || exit 1
   fi
 }

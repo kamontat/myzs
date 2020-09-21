@@ -56,8 +56,8 @@
 
 1. `_myzs:internal:plugin:name-deserialize(key)` - convert plugin key (<repo>#<version>) to plugin name and version
 2. `_myzs:internal:plugin:name-serialize(name, version)` - convert plugin name and version back to plugin key
-3. `_myzs:internal:initial-plugins(name, version)` - download plugin repository from github and initial to repo
-4. `_myzs:internal:upgrade-plugin(name, version)` - upgrade plugin repository from github and reinitital repo
+3. `_myzs:internal:plugin:loads(name, version)` - download plugin repository from github and initial to repo
+4. `_myzs:internal:plugin:upgrade(name, version)` - upgrade plugin repository from github and reinitital repo
 
 ## Changelog
 

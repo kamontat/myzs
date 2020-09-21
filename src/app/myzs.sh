@@ -34,7 +34,7 @@ myzs-download() {
 
   for plugin in "${MYZS_LOADING_PLUGINS[@]}"; do
     myzs:pg:mark "Plugin" "Pulling update from $plugin"
-    _myzs:internal:plugin:name-deserialize "$plugin" _myzs:internal:upgrade-plugin
+    _myzs:internal:plugin:name-deserialize "$plugin" _myzs:internal:plugin:upgrade
   done
 
   myzs:pg:stop
