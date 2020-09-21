@@ -42,11 +42,7 @@ fi
 
 # get current time in millisecond
 _myzs:pg:private:time:ms() {
-  if command -v "gdate" &>/dev/null; then
-    gdate +%s%3N
-  else
-    date +%s000
-  fi
+  _myzs:internal:timestamp-millisecond
 }
 
 # convert millisecond to string

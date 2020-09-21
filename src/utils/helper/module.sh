@@ -8,10 +8,6 @@ _myzs:internal:module:initial "$0"
 #          module_type,module_name,module_status
 #          separate by newline
 
-_myzs:private:helper:remove-array-index() {
-  eval "$1=( \"\${$1[@]:0:$2}\" \"\${$1[@]:$(($2 + 1))}\" )"
-}
-
 # convert module key to module name and type
 # $1 => input module key
 # $2 => function: cmd(module type, module name)

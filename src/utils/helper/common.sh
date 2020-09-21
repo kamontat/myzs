@@ -30,6 +30,26 @@ _myzs:internal:shell() {
   fi
 }
 
+# Get timestamp in millisecond
+_myzs:internal:timestamp-millisecond() {
+  if command -v "gdate" &>/dev/null; then
+    gdate +%s%3N
+  else
+    date +%s000
+  fi
+}
+
+# $1 = array variable name
+# $2 = index (start with 0)
+_myzs:internal:remove-array-index() {
+  eval "$1=( \"\${$1[@]:0:$2}\" \"\${$1[@]:$(($2 + 1))}\" )"
+}
+
+# Get timestamp in second
+_myzs:internal:timestamp-second() {
+  date +%s
+}
+
 _myzs:internal:module:initial() {
   if [[ "$MYZS_DEBUG" == "true" ]]; then
     set -x # enable DEBUG MODE
