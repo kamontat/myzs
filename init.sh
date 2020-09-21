@@ -83,8 +83,8 @@ fi
 # load myzs plugins
 myzs:pg:mark "Plugin" "Initial myzs plugin list"
 for plugin in "${MYZS_LOADING_PLUGINS[@]}"; do
-  myzs:pg:mark "Plugin" "Loading ${plugin} plugin"
-  if ! _myzs:internal:plugin:name-deserialize "$plugin" _myzs:internal:initial-plugin; then
+  myzs:pg:mark "Plugin" "Downloading ${plugin} plugin"
+  if ! _myzs:internal:plugin:name-deserialize "$plugin" _myzs:internal:plugin:load; then
     myzs:pg:mark-fail "Cannot load plugin"
   fi
 done
