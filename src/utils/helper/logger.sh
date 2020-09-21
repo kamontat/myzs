@@ -62,3 +62,41 @@ _myzs:internal:log:warn() {
 _myzs:internal:log:error() {
   _myzs:private:log "ERROR" "$@"
 }
+
+_myzs:internal:log:set-level() {
+  _myzs:internal:log:info "update log level to $*"
+
+  export MYZS_PREVIOUS_LOG_LEVEL=("${MYZS_LOG_LEVEL[@]}")
+
+  unset MYZS_LOG_LEVEL
+  export MYZS_LOG_LEVEL=("$@")
+}
+
+_myzs:log:silent() {
+  _myzs:internal:log:info "update log level to silent mode"
+
+  export MYZS_PREVIOUS_LOG_LEVEL=("${MYZS_LOG_LEVEL[@]}")
+
+  unset MYZS_LOG_LEVEL
+  export MYZS_LOG_LEVEL=()
+}
+
+_myzs:log:debug() {
+  _myzs:internal:log:set-level "error" "warn" "info" "debug"
+}
+
+_myzs:log:info() {
+  _myzs:internal:log:set-level "error" "warn" "info"
+}
+
+_myzs:log:warn() {
+  _myzs:internal:log:set-level "error" "warn"
+}
+
+_myzs:log:error() {
+  _myzs:internal:log:set-level "error"
+}
+
+_myzs:log:revert() {
+  _myzs:internal:log:set-level "${MYZS_PREVIOUS_LOG_LEVEL[@]}"
+}
