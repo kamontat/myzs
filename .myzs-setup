@@ -1,0 +1,2 @@
+mload "myzs-plugins/git" "app/git.sh"
+mload "myzs-plugins/git" "alias/git.sh"
