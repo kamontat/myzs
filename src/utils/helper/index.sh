@@ -5,8 +5,8 @@ source "${__MYZS__HLP}/logger.sh"  # load logger helper
 
 source "${__MYZS__HLP}/common.sh" # load all common function
 
+_myzs:internal:load "helper/metric" "${__MYZS__HLP}/metric.sh"       # [extra] load metric
 _myzs:internal:load "helper/module" "${__MYZS__HLP}/module.sh"       # [extra] load module
 _myzs:internal:load "helper/plugin" "${__MYZS__HLP}/plugin.sh"       # [extra] load plugin
 _myzs:internal:load "helper/changelog" "${__MYZS__HLP}/changelog.sh" # [extra] load changelog
-_myzs:internal:load "helper/metric" "${__MYZS__HLP}/metric.sh"       # [extra] load metric
 _myzs:internal:load "helper/zplug" "${__MYZS__HLP}/zplug.sh"         # [extra] load zplug
