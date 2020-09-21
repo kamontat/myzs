@@ -33,9 +33,9 @@ _myzs:internal:module:initial
 
 # load progress bar
 if _myzs:internal:checker:fully-type; then
-  source "${__MYZS__SRC}/utils/progress.sh"
+  _myzs:internal:module:load "builtin#utils/progress.sh"
 else
-  source "${__MYZS__SRC}/utils/dump-progress.sh"
+  _myzs:internal:module:load "builtin#utils/dump-progress.sh"
 fi
 
 myzs:pg:start
