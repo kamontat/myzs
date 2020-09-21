@@ -39,8 +39,10 @@ export MYZS_TYPE="FULLY"
 export MYZS_ROOT="$HOME/.myzs"
 
 # List of enabled log level, this is case insensitive
-# possible value: "error" "warn" "info" "debug"
-export MYZS_LOG_LEVEL=("error" "warn")
+# export MYZS_LOG_LEVEL=("error" "warn" "info" "debug")
+export MYZS_LOG_LEVEL=("error")
+
+export MYZS_METRIC_DISABLED=false
 
 # builtin#app/myzs.sh                              (builtin)
 # kamontat/myzs-plugin#app/hello.sh                (plugin)
@@ -48,6 +50,8 @@ export MYZS_LOG_LEVEL=("error" "warn")
 export MYZS_LOADING_PLUGINS=(
   "myzs-plugins/core#master"
   "myzs-plugins/git#master"
+  "myzs-plugins/editor#master"
+  "myzs-plugins/macos#master"
   "kamontat/mplugin-agoda#master"
 )
 
@@ -55,8 +59,6 @@ export MYZS_LOADING_MODULES=(
   "builtin#app/myzs.sh"
   "builtin#alias/myzs.sh"
   "builtin#alias/initial.sh"
-
-  # "builtin#alias/editor.sh"
 )
 
 MYZS_LOADING_MODULES+=(
@@ -64,15 +66,20 @@ MYZS_LOADING_MODULES+=(
   "myzs-plugins/core#alias/shell.sh"
 )
 
-MYZS_LOADING_MODULES+=(
-  "myzs-plugins/git#app/git.sh"
-  "myzs-plugins/git#alias/git.sh"
-)
+# MYZS_LOADING_MODULES+=(
+#   "myzs-plugins/editor#alias/vscode.sh"
+# )
 
-MYZS_LOADING_MODULES+=(
-  "kamontat/mplugin-agoda#app/agoda.sh"
-  "kamontat/mplugin-agoda#app/agoda-git.sh"
-)
+# MYZS_LOADING_MODULES+=(
+#   "myzs-plugins/git#app/git.sh"
+#   "myzs-plugins/git#alias/git.sh"
+# )
+
+# import on the fly
+# MYZS_LOADING_MODULES+=(
+#   "kamontat/mplugin-agoda#app/agoda.sh"
+#   "kamontat/mplugin-agoda#app/agoda-git.sh"
+# )
 
 ################################
 # Dependenies settings         #
