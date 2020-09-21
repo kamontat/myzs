@@ -97,7 +97,7 @@ _myzs:private:core:load-module() {
   module_key="$(_myzs:internal:module:name-serialize "${module_type}" "${module_name}")"
 
   if [[ "${MYZS_LOADING_MODULES[*]}" =~ $module_key ]]; then
-    myzs:pg:mark "${module_type}" "Loading ${module_name}"
+    myzs:pg:mark "Module" "Loading ${module_name} (${module_type})"
 
     if _myzs:internal:checker:fully-type || [[ $module_name =~ "alias" ]]; then
       _myzs:internal:module:load "${module_key}" || myzs:pg:mark-fail "Cannot load $module_fullpath"
