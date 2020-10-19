@@ -55,22 +55,13 @@ _myzs:internal:module:initial() {
     set -x # enable DEBUG MODE
   fi
 
-  local filename
-  filename="$(basename "$1")"
-  if [[ "$2" == "force" ]]; then
-    export __MYZS__CURRENT_MODULE_NAME="$filename"
-  else
-    export __MYZS__CURRENT_MODULE_NAME="${__MYZS__CURRENT_MODULE_NAME:-$filename}"
-  fi
-
-  # _myzs:internal:log:info "start new modules"
+  _myzs:internal:log:info "initial module ${__MYZS__CURRENT_MODULE_KEY}"
+  _myzs:internal:log:debug "at $1"
 }
 
 _myzs:internal:module:cleanup() {
-  unset __MYZS__CURRENT_MODULE_TYPE __MYZS__CURRENT_MODULE_NAME __MYZS__CURRENT_MODULE_STATUS
-  unset MYZS_SETTINGS_WELCOME_MESSAGE MYZS_START_COMMAND MYZS_START_COMMAND_ARGUMENTS
-
-  # _myzs:internal:log:info "cleanup application"
+  unset __MYZS__CURRENT_MODULE_TYPE __MYZS__CURRENT_MODULE_NAME __MYZS__CURRENT_MODULE_STATUS __MYZS__CURRENT_MODULE_KEY
+  _myzs:internal:log:info "cleanup current module settings"
 }
 
 # call only in end line of .zshrc file
@@ -81,6 +72,7 @@ _myzs:internal:project:cleanup() {
   _myzs:internal:module:cleanup
   _myzs:internal:metric:log-module
 
+  unset MYZS_SETTINGS_WELCOME_MESSAGE MYZS_START_COMMAND MYZS_START_COMMAND_ARGUMENTS
   if [[ "$MYZS_DEBUG" == "true" ]]; then
     set +x # disable DEBUG MODE
   fi
