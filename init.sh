@@ -114,6 +114,7 @@ _myzs:private:core:load-module() {
   _myzs:internal:completed
 }
 _myzs:internal:module:total-list _myzs:private:core:load-module
+_myzs:internal:module:cleanup
 
 # load environment
 myzs:pg:mark "Helper" "Loading environment variable"
