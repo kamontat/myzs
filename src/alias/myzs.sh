@@ -10,4 +10,5 @@ _myzs:internal:alias "mlc" "myzs-list-changelogs"
 _myzs:internal:alias "mlm" "myzs-list-modules"
 
 _myzs:internal:alias "mload" "myzs-load"
+_myzs:internal:alias "mz" "myzs-load"
 _myzs:internal:alias "mlocal" "myzs-setup-local"
