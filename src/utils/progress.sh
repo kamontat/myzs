@@ -1,6 +1,6 @@
 # shellcheck disable=SC1090,SC2148
 
-_myzs:internal:module:initial "$0" "force"
+_myzs:internal:module:initial "$0"
 
 # Theme setting
 export PG_RED="\033[1;31m"
