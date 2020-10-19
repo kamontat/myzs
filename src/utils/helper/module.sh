@@ -189,6 +189,7 @@ _myzs:private:module:load() {
   module_type="$1"
   module_name="$2"
   module_key="$(_myzs:internal:module:name-serialize "${module_type}" "${module_name}")"
+  export __MYZS__CURRENT_MODULE_KEY="${module_key}" # This move module key update before it will log to file
 
   shift 2
   local args=("$@")
