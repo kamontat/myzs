@@ -4,6 +4,7 @@ _myzs:internal:module:initial "$0"
 
 myzs-upload() {
   test -z "$MYZS_ROOT" && echo "\$MYZS_ROOT is required" && exit 2
+  local tmp_directory="$PWD"
 
   cd "$MYZS_ROOT" || exit 1
   echo "Start upload current change to github"
@@ -11,6 +12,9 @@ myzs-upload() {
   echo
 
   ./deploy.sh
+  ./deploy-plugins.sh
+
+  cd "${tmp_directory}" || exit 1
 }
 
 myzs-download() {
