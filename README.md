@@ -1,6 +1,11 @@
 # MYZS (My Z Shell)
 
-This is a configable rc file (shell initial file) support both `bash` and `zshrc`.
+This is a configable rc file (shell initial file) mainly support `zshrc`, with possible to support bash.
+
+## Table of Content
+
+1. [Dependencies](#dependencies)
+2. [Usage](#usage)
 
 ## Dependencies
 
@@ -9,17 +14,36 @@ This is a configable rc file (shell initial file) support both `bash` and `zshrc
 
 ## Usage
 
-Clone this project to `$HOME/.myzs` and run `ln -s "$HOME/.myzs/.zshrc" "$HOME/.zshrc"`
+This project wroted all with shell script. 
+No installation require and support MacOS and Linux and Window (with `Windows Subsystem for Linux` installed).
+You need to copy the application place to correct location and every work fine.
+
+### Automatic
+
+1. Open terminal / iTerm 2
+2. Run command `source <(curl -sNL https://github.com/kamontat/myzs/raw/master/scripts/global.sh)`
+3. Answer all question and all set
+
+### Manually
+
+1. Fork the project
+2. Clone project via `git clone $HOME/.myzs` or download by Github UI
+3. Link `.zshrc` from myzs to root $HOME via `ln -s "$HOME/.myzs/.zshrc" "$HOME/.zshrc"`.
 
 ## Configuration
 
 All configuration already listed in `.zshrc` file.
 
-> Tip: Default setup is my personal setup
-> Speed up by setting below, it improve around 50% or start time
->             set MYZS_LOG_LEVEL=("error")
->             set MYZS_PG_DISABLED=true
->             set MYZS_PG_SHOW_PERF=false
+### Tips
+
+1. Improve start time: below setup will improve start time up to 50%
+
+```bash
+export MYZS_LOG_LEVEL=("error")   # log only error message
+export MYZS_PG_DISABLED=true      # disable progress bar
+export MYZS_METRIC_DISABLED=true  # disable metric log message
+exprot MYZS_PG_SHOW_PERF=false    # disable performance message
+```
 
 ## Plugin
 
