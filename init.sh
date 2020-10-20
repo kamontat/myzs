@@ -46,6 +46,10 @@ myzs:pg:start
 myzs:pg:mark "Commandline" "Setup system settings"
 _myzs:internal:module:load "settings/system.sh" || myzs:pg:mark-fail "Cannot load system variable"
 
+# initial path config
+myzs:pg:mark "Commandline" "Setup path settings"
+_myzs:internal:module:load "settings/path.sh" || myzs:pg:mark-fail "Cannot load path variable"
+
 # initial zsh config
 if _myzs:internal:checker:fully-type; then
   myzs:pg:mark "Commandline" "Setup commandline settings"
