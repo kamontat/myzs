@@ -122,7 +122,7 @@ if test -f "$RC_PATH"; then
   steps "Backup existing .zshrc file"
   ((curr_step++))
 
-  start_cmd mv -r "$RC_PATH" "${RC_PATH}${BACKUP_SUFFIX}"
+  start_cmd mv "$RC_PATH" "${RC_PATH}${BACKUP_SUFFIX}"
 fi
 
 steps "Links zshrc file with root"
