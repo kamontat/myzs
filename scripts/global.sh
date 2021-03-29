@@ -108,7 +108,7 @@ if test -d "$MZ_LOCATION"; then
   steps "Backup existing myzs directory"
   ((curr_step++))
 
-  start_cmd mv -r "$MZ_LOCATION" "${MZ_LOCATION}${BACKUP_SUFFIX}"
+  start_cmd mv "$MZ_LOCATION" "${MZ_LOCATION}${BACKUP_SUFFIX}"
 fi
 
 steps "Cloning myzs project to local machine"
