@@ -1,5 +1,20 @@
 # Release notes
 
+## Version 5.3.0-beta.1 (15 Apr 2021)
+
+- move settings to single array `${MYZS_LOADING_SETTINGS}`
+- add new modules **helper/setting.sh** to manage about all settings
+- make all debug log from checker to be lower case
+- remove log from `_myzs:internal:checker:string-exist`
+- update myzs type to use setting api
+- add quote to all data in checker api debug log
+- change all warning log from checker api to debug
+- remove start command and start command arguments
+- remove welcome message
+- reduce log when initial modules from 2 to 1 line
+- format log level to print on the same column
+- remove `$MYZS_USER`, `$__MYZS__USER` and `$DEFAULT_USER`
+
 ## Version 5.2.1 (15 Apr 2021)
 
 - regular update version

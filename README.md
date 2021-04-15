@@ -40,9 +40,11 @@ All configuration already listed in `.zshrc` file.
 
 ```bash
 export MYZS_LOG_LEVEL=("error")   # log only error message
-export MYZS_PG_DISABLED=true      # disable progress bar
-export MYZS_METRIC_DISABLED=true  # disable metric log message
-exprot MYZS_PG_SHOW_PERF=false    # disable performance message
+export MYZS_LOADING_SETTINGS=(
+  "$" disabled pb              # disable progress bar
+  "$" disabled pb/performance  # disable progress bar
+  "$" disabled metric          # disable progress bar
+)
 ```
 
 ## Plugin

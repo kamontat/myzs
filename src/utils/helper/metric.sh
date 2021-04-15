@@ -6,8 +6,6 @@ export __MYZS__DATADIR="${MYZS_DATADIR:-/tmp/myzs/data}"
 export MYZS_MODULE_METRICPATH="$__MYZS__DATADIR/modules.csv"
 export MYZS_PLUGIN_METRICPATH="$__MYZS__DATADIR/plugins.csv"
 
-export MYZS_METRIC_DISABLED="${MYZS_METRIC_DISABLED:-false}"
-
 _myzs:private:metric:initial() {
   # update cache directory if not exist
   if _myzs:internal:checker:string-exist "$__MYZS__DATADIR" && ! _myzs:internal:checker:folder-exist "$__MYZS__DATADIR"; then
@@ -16,7 +14,7 @@ _myzs:private:metric:initial() {
 }
 
 _myzs:internal:metric:log-module() {
-  if [[ "${MYZS_METRIC_DISABLED}" != "true" ]]; then
+  if myzs:setting:is-enabled "metrics"; then
     local data_file="${MYZS_MODULE_METRICPATH}"
     if ! _myzs:internal:checker:file-exist "$data_file"; then
       echo "date time,passed modules,failed modules,skipped modules,unknown modules,total modules,load time" >"$data_file"
@@ -45,7 +43,7 @@ _myzs:internal:metric:log-module() {
 }
 
 _myzs:internal:metric:log-plugin() {
-  if [[ "${MYZS_METRIC_DISABLED}" != "true" ]]; then
+  if myzs:setting:is-enabled "metrics"; then
     local data_file="${MYZS_PLUGIN_METRICPATH}"
     if ! _myzs:internal:checker:file-exist "$data_file"; then
       echo "plugin action,plugin name,plugin version,plugin status1,plugin status2,plugin loadtime" >"$data_file"

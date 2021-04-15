@@ -9,9 +9,6 @@
 # Enable debug mode;
 # export MYZS_DEBUG=true
 
-# Your username. This will fallback to $USER with not specify
-# export MYZS_USER="$USER"
-
 # add trigger event to cd command to check .myzs-setup file
 export MYZS_SETTINGS_AUTOLOAD_SETUP_LOCAL=true
 
@@ -19,22 +16,12 @@ export MYZS_SETTINGS_AUTOLOAD_SETUP_LOCAL=true
 # it will use this list to file the exist file and load to enviroment
 export MYZS_SETTINGS_SETUP_FILES=("myzs-setup" ".myzs-setup")
 
-# start command; this will run after exit init.sh
-export MYZS_START_COMMAND=""
-# start command arguments
-export MYZS_START_COMMAND_ARGUMENTS=()
-
-# Add welcome message everytime you open shell
-export MYZS_SETTINGS_WELCOME_MESSAGE=""
-
 # This shouldn't be changes, except you install the application to difference
 export MYZS_ROOT="$HOME/.myzs"
 
 # List of enabled log level, this is case insensitive
 # export MYZS_LOG_LEVEL=("error" "warn" "info" "debug")
 export MYZS_LOG_LEVEL=("error" "warn")
-
-export MYZS_METRIC_DISABLED=false
 
 export MYZS_LOADING_PLUGINS=(
   "myzs-plugins/core#master"
@@ -57,48 +44,54 @@ MYZS_LOADING_MODULES+=(
   "myzs-plugins/git#alias/git.sh"
 )
 
+# Format
+# first element must be '$'
+# second element is command type
+#   1. setup    => setup "$1" "$2"  (run $1=$2)
+#   2. enabled  => enabled "$1"     (run $1=true)
+#   3. disabled => disabled "$1"    (run $1=false)
 export MYZS_LOADING_SETTINGS=(
   # This is settings for myzs behavior.
   # Accept values: FULLY | SMALL
   #   1. FULLY -> full command with advance support on zsh script
   #   2. SMALL -> small utils with alias for bash and server bash
-  "myzs/type#FULLY"
+  "$" setup myzs/type "FULLY"
 
   # Copy path you would like to go, the start shell will try to cd to that path automatically
-  "myzs/path/auto-open#true"
+  "$" enabled path/auto-open
+
+  # Disable progress bar
+  "$" enabled pb
+  # If this is true, the application will trace each component in difference lines
+  "$" disabled pb/performance
+  # progress bar style (listed at src/utils/revolver)
+  "$" setup pb/style "bouncingBall"
+  # full message shift when print progress bar
+  "$" setup pb/message/length "68"
+  # title shift when price progress bar
+  "$" setup pb/title/length "15"
+  # minimum millisecond will be shown as danger color
+  "$" setup pb/timer/danger-color "600"
+  # minimum millisecond will be shown as warning color
+  "$" setup pb/timer/warn-color "200"
+  # loading message color
+  "$" setup pb/color/loading "$(tput setaf 6)"
+  # complete status indicator
+  "$" setup pb/color/completed "$(tput setaf 10)"
+  # skip status indicator
+  "$" setup pb/color/skipped "$(tput setaf 11)"
+  # fail status indicator
+  "$" setup pb/color/failed "$(tput setaf 9)"
+  # time danger color
+  "$" setup pb/color/time-danger "$(tput setaf 1)"
+  # time warning color
+  "$" setup pb/color/time-warn "$(tput setaf 3)"
+  # normal time color
+  "$" setup pb/color/time "$(tput setaf 14)"
+
+  # enabled data metric
+  "$" enabled metrics
 )
-
-################################
-# Dependenies settings         #
-################################
-
-# Disable progress bar
-export MYZS_PG_DISABLED=false
-
-# If this is true, the application will trace each component in difference lines
-export MYZS_PG_SHOW_PERF=true
-
-# minimum millisecond will be shown as danger color
-export MYZS_PG_TIME_DANGER_THRESHOLD_MS=600
-# minimum millisecond will be shown as warning color
-export MYZS_PG_TIME_WARN_THRESHOLD_MS=200
-
-# loading message color
-export MYZS_PG_LOADING_CL=""
-
-# complete status indicator
-export MYZS_PG_COMPLETE_CL=""
-# skip status indicator
-export MYZS_PG_SKIP_CL=""
-# fail status indicator
-export MYZS_PG_FAIL_CL=""
-
-# time danger color
-export MYZS_PG_DANGER_CL=""
-# time warning color
-export MYZS_PG_WARN_CL=""
-# normal time color
-export MYZS_PG_TIME_CL=""
 
 ################################
 # Zsh dependencies plugins     #

@@ -8,9 +8,8 @@ export __MYZS__COM="${_MYZS_ROOT}/resources/completion"
 
 export ZPLUG_HOME="${MYZS_ZPLUG:-${_MYZS_ROOT}/zplug}"
 
-export __MYZS__USER="${MYZS_USER:-$USER}"
 export __MYZS__OWNER="Kamontat Chantrachirathumrong"
-export __MYZS__VERSION="5.2.1"
+export __MYZS__VERSION="5.3.0-beta.1"
 export __MYZS__SINCE="21 Apr 2018"
 export __MYZS__LAST_UPDATED="15 Apr 2021"
 export __MYZS__LICENSE="MIT"
@@ -26,7 +25,8 @@ export __MYZS__REVOLVER_CMD="${__MYZS__SRC}/utils/revolver"
 
 source "${__MYZS__HLP}/index.sh"
 
-_myzs:internal:module:initial
+_myzs:internal:setting:initial
+_myzs:internal:module:initial "$0"
 
 # load progress bar
 if _myzs:internal:checker:fully-type; then
@@ -145,23 +145,12 @@ myzs:pg:stop
 _myzs:internal:module:initial "$0"
 if _myzs:internal:checker:fully-type; then
   # auto open path from clipboard
-  if myzs:setting:is "myzs/path/auto-open" "true"; then
+  if myzs:setting:is-enabled "myzs/path/auto-open"; then
     __clipboard="$(pbpaste)"
     if _myzs:internal:checker:folder-exist "$__clipboard"; then
       cd "$__clipboard" || echo "$__clipboard not exist!"
     fi
 
     unset __clipboard
-  fi
-
-  # print open welcome message
-  if _myzs:internal:checker:string-exist "$MYZS_SETTINGS_WELCOME_MESSAGE"; then
-    echo
-    echo "$MYZS_SETTINGS_WELCOME_MESSAGE"
-  fi
-
-  # exec start command
-  if _myzs:internal:checker:command-exist "$MYZS_START_COMMAND"; then
-    $MYZS_START_COMMAND "${MYZS_START_COMMAND_ARGUMENTS[@]}"
   fi
 fi

@@ -40,7 +40,7 @@ _myzs:private:log() {
       fi
       module_key="${__MYZS__CURRENT_MODULE_KEY:-unknown}"
 
-      echo "$datetime [$logger_level] [$module_key]: $*" >>"$filepath"
+      printf '%s %-5s [%s]: %s\n' "$datetime" "$logger_level" "$module_key" "$*" >>"$filepath"
     fi
   fi
 

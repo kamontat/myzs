@@ -26,20 +26,20 @@ _myzs:internal:checker:shell:fish() {
 
 _myzs:internal:checker:command-exist() {
   if command -v "$1" &>/dev/null; then
-    _myzs:internal:log:debug "Checking command $1: EXIST"
+    _myzs:internal:log:debug "checking command '$1': EXIST"
     return 0
   else
-    _myzs:internal:log:warn "Checking command $1: MISSING"
+    _myzs:internal:log:debug "checking command '$1': NOT_FOUND"
     return 1
   fi
 }
 
 _myzs:internal:checker:file-exist() {
   if test -f "$1"; then
-    _myzs:internal:log:debug "Checking file $1: EXIST"
+    _myzs:internal:log:debug "checking file '$1': EXIST"
     return 0
   else
-    _myzs:internal:log:warn "Checking file $1: NOT_FOUND"
+    _myzs:internal:log:debug "checking file '$1': NOT_FOUND"
     return 1
   fi
 }
@@ -47,40 +47,40 @@ _myzs:internal:checker:file-exist() {
 _myzs:internal:checker:file-contains() {
   local filename="$1" searching="$2"
   if grep "$searching" "$filename" >/dev/null; then
-    _myzs:internal:log:debug "Found $searching in $filename file content"
+    _myzs:internal:log:debug "found $searching in $filename file content"
     return 0
   else
-    _myzs:internal:log:debug "Cannot found $searching in $filename file content"
+    _myzs:internal:log:debug "cannot found $searching in $filename file content"
     return 1
   fi
 }
 
 _myzs:internal:checker:folder-exist() {
   if test -d "$1"; then
-    _myzs:internal:log:debug "Checking folder $1: EXIST"
+    _myzs:internal:log:debug "checking folder '$1': EXIST"
     return 0
   else
-    _myzs:internal:log:warn "Checking folder $1: NOT_FOUND"
+    _myzs:internal:log:debug "checking folder '$1': NOT_FOUND"
     return 1
   fi
 }
 
 _myzs:internal:checker:string-exist() {
   if test -n "$1"; then
-    _myzs:internal:log:debug "Checking string '${1:0:10}': EXIST"
+    # _myzs:internal:log:debug "Checking string '${1:0:10}': EXIST"
     return 0
   else
-    _myzs:internal:log:warn "Checking string '$1': EMPTY"
+    # _myzs:internal:log:warn "Checking string '$1': EMPTY"
     return 1
   fi
 }
 
 _myzs:internal:checker:small-type() {
-  [[ "${__MYZS_SETTINGS__MYZS_TYPE}" == "SMALL" ]]
+  myzs:setting:is "myzs/type" "SMALL"
 }
 
 _myzs:internal:checker:fully-type() {
-  [[ "${__MYZS_SETTINGS__MYZS_TYPE}" == "FULLY" ]]
+  myzs:setting:is "myzs/type" "FULLY"
 }
 
 _myzs:internal:checker:mac() {

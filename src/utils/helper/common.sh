@@ -55,8 +55,7 @@ _myzs:internal:module:initial() {
     set -x # enable DEBUG MODE
   fi
 
-  _myzs:internal:log:info "initial module ${__MYZS__CURRENT_MODULE_KEY}"
-  _myzs:internal:log:debug "at $1"
+  _myzs:internal:log:info "initial module '${__MYZS__CURRENT_MODULE_KEY}' at '$1'"
 }
 
 _myzs:internal:module:cleanup() {
@@ -72,7 +71,7 @@ _myzs:internal:project:cleanup() {
   _myzs:internal:module:cleanup
   _myzs:internal:metric:log-module
 
-  unset MYZS_SETTINGS_WELCOME_MESSAGE MYZS_START_COMMAND MYZS_START_COMMAND_ARGUMENTS
+  unset __MYZS__HLP __MYZS__COM
   if [[ "$MYZS_DEBUG" == "true" ]]; then
     set +x # disable DEBUG MODE
   fi
