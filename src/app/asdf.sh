@@ -4,7 +4,7 @@ _myzs:internal:module:initial "$0"
 
 if _myzs:internal:checker:command-exist "asdf"; then
   __myzs_asdf_is_set() {
-    asdf current "$1" >/dev/null
+    asdf current "$1" >/dev/null 2>&1
   }
 
   ASDF_HOME="$(brew --prefix asdf)"

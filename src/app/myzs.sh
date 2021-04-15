@@ -57,7 +57,7 @@ You can upgrade version by run 'myzs-download' to fetch latest version.
 1. Current user:         ${USER}
 2. Application location: ${_MYZS_ROOT}
 3. Application version:  ${__MYZS__VERSION}
-4. Application type:     ${__MYZS__TYPE}
+4. Application type:     ${__MYZS_SETTINGS__MYZS_TYPE}
 5. Log location:         ${MYZS_LOGPATH}
 6. Loading time:         ${PROGRESS_LOADTIME}
 7. Loaded time:          ${__MYZS__FINISH_TIME}

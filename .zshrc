@@ -12,9 +12,6 @@
 # Your username. This will fallback to $USER with not specify
 # export MYZS_USER="$USER"
 
-# Copy path you would like to go, the start shell will try to cd to that path automatically
-export MYZS_SETTINGS_AUTO_OPEN_PATH=true
-
 # add trigger event to cd command to check .myzs-setup file
 export MYZS_SETTINGS_AUTOLOAD_SETUP_LOCAL=true
 
@@ -30,17 +27,12 @@ export MYZS_START_COMMAND_ARGUMENTS=()
 # Add welcome message everytime you open shell
 export MYZS_SETTINGS_WELCOME_MESSAGE=""
 
-# This is settings for myzs behavior.
-# Accept only two value, either FULLY | SMALL.
-# If you pass another value rather that two value above, the application may crash
-export MYZS_TYPE="FULLY"
-
 # This shouldn't be changes, except you install the application to difference
 export MYZS_ROOT="$HOME/.myzs"
 
 # List of enabled log level, this is case insensitive
 # export MYZS_LOG_LEVEL=("error" "warn" "info" "debug")
-export MYZS_LOG_LEVEL=("error")
+export MYZS_LOG_LEVEL=("error" "warn")
 
 export MYZS_METRIC_DISABLED=false
 
@@ -59,24 +51,22 @@ export MYZS_LOADING_MODULES=(
 )
 
 MYZS_LOADING_MODULES+=(
+  "myzs-plugins/editor#app/vscode.sh"
   "myzs-plugins/core#alias/short.sh"
   "myzs-plugins/core#alias/shell.sh"
+  "myzs-plugins/git#alias/git.sh"
 )
 
-# MYZS_LOADING_MODULES+=(
-#   "myzs-plugins/editor#alias/vscode.sh"
-# )
+export MYZS_LOADING_SETTINGS=(
+  # This is settings for myzs behavior.
+  # Accept values: FULLY | SMALL
+  #   1. FULLY -> full command with advance support on zsh script
+  #   2. SMALL -> small utils with alias for bash and server bash
+  "myzs/type#FULLY"
 
-# MYZS_LOADING_MODULES+=(
-#   "myzs-plugins/git#app/git.sh"
-#   "myzs-plugins/git#alias/git.sh"
-# )
-
-# import on the fly
-# MYZS_LOADING_MODULES+=(
-#   "kamontat/mplugin-agoda#app/agoda.sh"
-#   "kamontat/mplugin-agoda#app/agoda-git.sh"
-# )
+  # Copy path you would like to go, the start shell will try to cd to that path automatically
+  "myzs/path/auto-open#true"
+)
 
 ################################
 # Dependenies settings         #
@@ -86,7 +76,7 @@ MYZS_LOADING_MODULES+=(
 export MYZS_PG_DISABLED=false
 
 # If this is true, the application will trace each component in difference lines
-export MYZS_PG_SHOW_PERF=false
+export MYZS_PG_SHOW_PERF=true
 
 # minimum millisecond will be shown as danger color
 export MYZS_PG_TIME_DANGER_THRESHOLD_MS=600

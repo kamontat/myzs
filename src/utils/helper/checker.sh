@@ -76,11 +76,11 @@ _myzs:internal:checker:string-exist() {
 }
 
 _myzs:internal:checker:small-type() {
-  [[ "${__MYZS__TYPE}" == "SMALL" ]]
+  [[ "${__MYZS_SETTINGS__MYZS_TYPE}" == "SMALL" ]]
 }
 
 _myzs:internal:checker:fully-type() {
-  [[ "${__MYZS__TYPE}" == "FULLY" ]]
+  [[ "${__MYZS_SETTINGS__MYZS_TYPE}" == "FULLY" ]]
 }
 
 _myzs:internal:checker:mac() {

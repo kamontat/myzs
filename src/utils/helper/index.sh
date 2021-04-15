@@ -5,6 +5,7 @@ source "${__MYZS__HLP}/logger.sh"  # load logger helper
 
 source "${__MYZS__HLP}/common.sh" # load all common function
 
+_myzs:internal:load "helper/setting" "${__MYZS__HLP}/setting.sh"     # [extra] load setting
 _myzs:internal:load "helper/metric" "${__MYZS__HLP}/metric.sh"       # [extra] load metric
 _myzs:internal:load "helper/module" "${__MYZS__HLP}/module.sh"       # [extra] load module
 _myzs:internal:load "helper/plugin" "${__MYZS__HLP}/plugin.sh"       # [extra] load plugin

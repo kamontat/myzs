@@ -1,5 +1,9 @@
 # Release notes
 
+## Version 5.2.1 (15 Apr 2021)
+
+- regular update version
+
 ## Version 5.2.0 (21 Sep 2020)
 
 - [BREAK] refactor plugin loader modules

@@ -10,18 +10,13 @@ export ZPLUG_HOME="${MYZS_ZPLUG:-${_MYZS_ROOT}/zplug}"
 
 export __MYZS__USER="${MYZS_USER:-$USER}"
 export __MYZS__OWNER="Kamontat Chantrachirathumrong"
-export __MYZS__VERSION="5.2.0"
+export __MYZS__VERSION="5.2.1"
 export __MYZS__SINCE="21 Apr 2018"
-export __MYZS__LAST_UPDATED="21 Sep 2020"
+export __MYZS__LAST_UPDATED="15 Apr 2021"
 export __MYZS__LICENSE="MIT"
 
 export __MYZS__MODULES=()
 export __MYZS__PLUGINS=()
-
-# Accept values: FULLY | SMALL
-#   1. FULLY -> full command with advance support on zsh script
-#   2. SMALL -> small utils with alias for bash and server bash
-export __MYZS__TYPE="${MYZS_TYPE:-FULLY}"
 
 export __MYZS__REVOLVER_CMD="${__MYZS__SRC}/utils/revolver"
 
@@ -108,7 +103,7 @@ _myzs:private:core:load-module() {
     if _myzs:internal:checker:fully-type || [[ $module_name =~ "alias" ]]; then
       _myzs:internal:module:load "${module_key}" || myzs:pg:mark-fail "Cannot load $module_fullpath"
     else
-      myzs:pg:mark-fail "cannot load ${module_key} when TYPE=$__MYZS__TYPE"
+      myzs:pg:mark-fail "cannot load ${module_key} when TYPE=$__MYZS_SETTINGS__MYZS_TYPE"
     fi
   else
     _myzs:internal:module:skip "${module_key}"
@@ -122,21 +117,24 @@ _myzs:internal:module:cleanup
 
 # load environment
 myzs:pg:mark "Helper" "Loading environment variable"
-env_list=()
 export __MYZS__ENVFILE="$_MYZS_ROOT/.env"
-_myzs:internal:module:initial "$__MYZS__ENVFILE"
-while IFS= read -r line; do
-  key="${line%=*}"
-  value="${line##*=}"
+if _myzs:internal:checker:file-exist "$__MYZS__ENVFILE"; then
+  _myzs:internal:module:initial "$__MYZS__ENVFILE"
 
-  if _myzs:internal:checker:string-exist "$key" && _myzs:internal:checker:string-exist "$value"; then
-    env_list+=("$key")
-    # shellcheck disable=SC2163
-    export "${key}"="${value}"
-  fi
-done <"$__MYZS__ENVFILE"
-[[ ${#env_list[@]} -gt 0 ]] && _myzs:internal:log:info "exporting [ ${env_list[*]} ]"
-unset line env_list
+  env_list=()
+  while IFS= read -r line; do
+    key="${line%=*}"
+    value="${line##*=}"
+
+    if _myzs:internal:checker:string-exist "$key" && _myzs:internal:checker:string-exist "$value"; then
+      env_list+=("$key")
+      # shellcheck disable=SC2163
+      export "${key}"="${value}"
+    fi
+  done <"$__MYZS__ENVFILE"
+  [[ ${#env_list[@]} -gt 0 ]] && _myzs:internal:log:info "exporting [ ${env_list[*]} ]"
+  unset line env_list
+fi
 
 # load setup file
 myzs:pg:mark "Helper" "Loading setup file"
@@ -147,7 +145,7 @@ myzs:pg:stop
 _myzs:internal:module:initial "$0"
 if _myzs:internal:checker:fully-type; then
   # auto open path from clipboard
-  if [[ "$MYZS_SETTINGS_AUTO_OPEN_PATH" == "true" ]]; then
+  if myzs:setting:is "myzs/path/auto-open" "true"; then
     __clipboard="$(pbpaste)"
     if _myzs:internal:checker:folder-exist "$__clipboard"; then
       cd "$__clipboard" || echo "$__clipboard not exist!"
