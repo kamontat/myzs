@@ -1,5 +1,9 @@
 # Release notes
 
+## Version 5.3.0-beta.2 (15 Apr 2021)
+
+- re-release 5.3.0-beta.1 due to push failed
+
 ## Version 5.3.0-beta.1 (15 Apr 2021)
 
 - move settings to single array `${MYZS_LOADING_SETTINGS}`
