@@ -2,6 +2,8 @@
 
 _myzs:internal:module:initial "$0"
 
+# myzs-upload - upload only myzs
+# myzs-upload all - upload myzs and currently loaded plugins
 myzs-upload() {
   test -z "$MYZS_ROOT" && echo "\$MYZS_ROOT is required" && exit 2
   local tmp_directory="$PWD"
@@ -12,7 +14,10 @@ myzs-upload() {
   echo
 
   ./deploy.sh
-  source "./deploy-plugins.sh"
+
+  if test -n "$1"; then
+    source "./deploy-plugins.sh"
+  fi
 
   cd "${tmp_directory}" || exit 1
 }
