@@ -1,5 +1,9 @@
 # Release notes
 
+## Version 5.3.1 (16 Apr 2021)
+
+- fix deploy-plugins scripts
+
 ## Version 5.3.0 (16 Apr 2021)
 
 - [BREAK] module will not reload if last load is passed

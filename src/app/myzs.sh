@@ -1,4 +1,4 @@
-# shellcheck disable=SC1090,SC2148
+# shellcheck disable=SC1091,SC2148
 
 _myzs:internal:module:initial "$0"
 
@@ -12,7 +12,7 @@ myzs-upload() {
   echo
 
   ./deploy.sh
-  ./deploy-plugins.sh
+  source "./deploy-plugins.sh"
 
   cd "${tmp_directory}" || exit 1
 }
