@@ -19,24 +19,23 @@ myzs:zplug:initial-plugins() {
 
     zplug "mfaerevaag/wd", as:command, use:"wd.sh", hook-load: "wd() { . $ZPLUG_REPOS/mfaerevaag/wd/wd.sh }"
 
-    # zplug "b4b4r07/enhancd", use:init.sh       # enhance cd command
-    # zplug "changyuheng/zsh-interactive-cd"     # enhance cd command with fzf search
-    zplug "unixorn/tumult.plugin.zsh", lazy:true # enhance functionality for macos; https://github.com/unixorn/tumult.plugin.zsh#included-scripts
-    zplug "peterhurford/up.zsh"                  # no more cd ../../../;  just up <number>
-    zplug "djui/alias-tips"                      # add alias tips when run full command
-    zplug "supercrabtree/k"                      # enhance ls command
-    zplug "hlissner/zsh-autopair"                # add pair symbol (), {}, [] etc.
-    zplug "MichaelAquilina/zsh-auto-notify"      # auto send notification with long process completed
-    zplug "ael-code/zsh-colored-man-pages"       # add color to man page
-    zplug "rawkode/zsh-docker-run"               # for run any language without install them
-    zplug "unixorn/docker-helpers.zshplugin"     # useful command script for execute docker
-    zplug "arzzen/calc.plugin.zsh"               # calculator
+    # zplug "b4b4r07/enhancd", use:init.sh         # enhance cd command
+    # zplug "changyuheng/zsh-interactive-cd"       # enhance cd command with fzf search
+    # zplug "unixorn/tumult.plugin.zsh", lazy:true # enhance functionality for macos; https://github.com/unixorn/tumult.plugin.zsh#included-scripts
+    # zplug "peterhurford/up.zsh"                  # no more cd ../../../;  just up <number>
+    zplug "djui/alias-tips"                        # add alias tips when run full command
+    # zplug "supercrabtree/k"                      # enhance ls command
+    zplug "hlissner/zsh-autopair"                  # add pair symbol (), {}, [] etc.
+    zplug "MichaelAquilina/zsh-auto-notify"        # auto send notification with long process completed
+    zplug "ael-code/zsh-colored-man-pages"         # add color to man page
+    # zplug "rawkode/zsh-docker-run"               # for run any language without install them
+    # zplug "unixorn/docker-helpers.zshplugin"     # useful command script for execute docker
+    # zplug "arzzen/calc.plugin.zsh"               # calculator
 
-    # zplug "wfxr/forgit"                        # Interactive git command
-    # zplug "unixorn/git-extra-commands"         # add extra script command for git
-    # zplug "laggardkernel/git-ignore"           # offline git ignore generator
-
-    zplug "laggardkernel/zsh-thefuck"
+    # zplug "wfxr/forgit"                          # Interactive git command
+    # zplug "unixorn/git-extra-commands"           # add extra script command for git
+    # zplug "laggardkernel/git-ignore"             # offline git ignore generator
+    # zplug "laggardkernel/zsh-thefuck"
 
     # load after compinit
     zplug "zdharma/fast-syntax-highlighting", defer:2

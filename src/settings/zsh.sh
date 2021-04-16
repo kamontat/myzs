@@ -23,8 +23,8 @@ fi
 #
 
 HISTFILE="${HISTFILE:-${ZDOTDIR:-$HOME}/.zhistory}"  # The path to the history file.
-HISTSIZE=${HISTSIZE:-50000}                          # The maximum number of events to save in the internal history.
-SAVEHIST=${SAVEHIST:-10000}                          # The maximum number of events to save in the history file.
+HISTSIZE=${HISTSIZE:-1000000}                        # The maximum number of events to save in the internal history.
+SAVEHIST=${SAVEHIST:-1000000}                        # The maximum number of events to save in the history file.
 
 #
 # History

@@ -18,7 +18,7 @@ git tag --column
 
 # shellcheck disable=SC2034
 printf "[3/7] Enter release version: (current=%s)" "${__MYZS__VERSION}"
-if ! git tag | grep -q "${__MYZS__VERSION}"; then
+if ! git tag | grep -q "^${__MYZS__VERSION}$"; then
   VERSION="$__MYZS__VERSION"
   echo
 else

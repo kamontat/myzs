@@ -9,15 +9,13 @@ export __MYZS__COM="${_MYZS_ROOT}/resources/completion"
 export ZPLUG_HOME="${MYZS_ZPLUG:-${_MYZS_ROOT}/zplug}"
 
 export __MYZS__OWNER="Kamontat Chantrachirathumrong"
-export __MYZS__VERSION="5.3.0-beta.2"
+export __MYZS__VERSION="5.3.0"
 export __MYZS__SINCE="21 Apr 2018"
-export __MYZS__LAST_UPDATED="15 Apr 2021"
+export __MYZS__LAST_UPDATED="16 Apr 2021"
 export __MYZS__LICENSE="MIT"
 
 export __MYZS__MODULES=()
 export __MYZS__PLUGINS=()
-
-export __MYZS__REVOLVER_CMD="${__MYZS__SRC}/utils/revolver"
 
 # ########################## #
 # Start loading dependencies #
@@ -46,19 +44,19 @@ myzs:pg:mark "Commandline" "Setup path settings"
 _myzs:internal:module:load "settings/path.sh" || myzs:pg:mark-fail "Cannot load path variable"
 
 # initial zsh config
-if _myzs:internal:checker:fully-type; then
+if _myzs:internal:checker:fully-type && _myzs:internal:checker:shell:zsh; then
   myzs:pg:mark "Commandline" "Setup commandline settings"
   _myzs:internal:module:load "settings/zsh.sh" || myzs:pg:mark-fail "Cannot load zsh settings"
 fi
 
 # initial zplug config
-if _myzs:internal:checker:fully-type && _myzs:internal:checker:shell:zsh; then
+if _myzs:internal:checker:fully-type && _myzs:internal:checker:shell:zsh && _myzs:internal:setting:is-enabled "myzs/zplug"; then
   myzs:pg:mark "ZPlugin" "Initial zplug configuration"
   _myzs:internal:module:load "zplug#init.zsh" || myzs:pg:mark-fail "Cannot load zplug initial script"
 fi
 
 # load zplug plugins
-if _myzs:internal:checker:fully-type && _myzs:internal:checker:shell:zsh; then
+if _myzs:internal:checker:fully-type && _myzs:internal:checker:shell:zsh && _myzs:internal:setting:is-enabled "myzs/zplug"; then
   myzs:pg:mark "ZPlugin" "Initial zplug plugin list"
   _myzs:internal:module:load "settings/plugins.sh" || myzs:pg:mark-fail "Cannot load zplug plugins list"
 
@@ -138,14 +136,15 @@ fi
 
 # load setup file
 myzs:pg:mark "Helper" "Loading setup file"
-$MYZS_SETTINGS_AUTOLOAD_SETUP_LOCAL && myzs-setup-local
+if _myzs:internal:setting:is-enabled "setup-file/automatic"; then
+  myzs-setup-local
+fi
 
 myzs:pg:stop
 
-_myzs:internal:module:initial "$0"
 if _myzs:internal:checker:fully-type; then
   # auto open path from clipboard
-  if myzs:setting:is-enabled "myzs/path/auto-open"; then
+  if _myzs:internal:setting:is-enabled "automatic/open-path"; then
     __clipboard="$(pbpaste)"
     if _myzs:internal:checker:folder-exist "$__clipboard"; then
       cd "$__clipboard" || echo "$__clipboard not exist!"

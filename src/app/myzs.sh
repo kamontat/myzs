@@ -136,7 +136,8 @@ myzs-setup-local() {
   _myzs:internal:module:initial "app/myzs.sh#myzs-setup-local"
 
   local fullpath="" current="${1:-$PWD}"
-  local filenames=("${MYZS_SETTINGS_SETUP_FILES[@]}")
+  local filenames=()
+  myzs:setting:get-array "setup-file/list" filenames
 
   for name in "${filenames[@]}"; do
     fullpath="${current}/${name}"

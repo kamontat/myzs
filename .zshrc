@@ -3,32 +3,30 @@
 # set -x # enable DEBUG MODE
 
 ################################
-# Application settings         #
+# Core setup                   #
 ################################
 
 # Enable debug mode;
 # export MYZS_DEBUG=true
 
-# add trigger event to cd command to check .myzs-setup file
-export MYZS_SETTINGS_AUTOLOAD_SETUP_LOCAL=true
-
-# when checking auto setup file,
-# it will use this list to file the exist file and load to enviroment
-export MYZS_SETTINGS_SETUP_FILES=("myzs-setup" ".myzs-setup")
-
 # This shouldn't be changes, except you install the application to difference
 export MYZS_ROOT="$HOME/.myzs"
 
-# List of enabled log level, this is case insensitive
-# export MYZS_LOG_LEVEL=("error" "warn" "info" "debug")
-export MYZS_LOG_LEVEL=("error" "warn")
+################################
+# Plugins and Modules          #
+################################
 
 export MYZS_LOADING_PLUGINS=(
   "myzs-plugins/core#master"
-  "myzs-plugins/git#master"
   "myzs-plugins/editor#master"
-  "myzs-plugins/macos#master"
-  "kamontat/mplugin-agoda#master"
+  "myzs-plugins/git#master"
+  # "myzs-plugins/macos#master"
+
+  # "myzs-plugins/thefuck#master"
+  # "myzs-plugins/nodejs#master"
+  # "myzs-plugins/docker#master"
+  # "kamontat/mplugin-kamontat#master"
+  # "kamontat/mplugin-agoda#master"
 )
 
 export MYZS_LOADING_MODULES=(
@@ -38,16 +36,27 @@ export MYZS_LOADING_MODULES=(
 )
 
 MYZS_LOADING_MODULES+=(
-  "myzs-plugins/editor#app/vscode.sh"
   "myzs-plugins/core#alias/short.sh"
   "myzs-plugins/core#alias/shell.sh"
+  "myzs-plugins/editor#app/vscode.sh"
   "myzs-plugins/git#alias/git.sh"
 )
+
+MYZS_LOADING_MODULES+=(
+  # "myzs-plugins/macos#app/coreutils.sh"
+  # "myzs-plugins/macos#app/macgpg.sh"
+  # "myzs-plugins/macos#app/macos.sh"
+)
+
+################################
+# Application settings         #
+################################
 
 # Format
 # first element must be '$'
 # second element is command type
 #   1. setup    => setup "$1" "$2"  (run $1=$2)
+#   2. array    => array "$1" "$@"  (run $1=($2 $3 $@))
 #   2. enabled  => enabled "$1"     (run $1=true)
 #   3. disabled => disabled "$1"    (run $1=false)
 export MYZS_LOADING_SETTINGS=(
@@ -55,12 +64,26 @@ export MYZS_LOADING_SETTINGS=(
   # Accept values: FULLY | SMALL
   #   1. FULLY -> full command with advance support on zsh script
   #   2. SMALL -> small utils with alias for bash and server bash
-  "$" setup myzs/type "FULLY"
+  "$" setup myzs/type "${_MYZS_TYPE:-FULLY}"
 
-  # Copy path you would like to go, the start shell will try to cd to that path automatically
-  "$" enabled path/auto-open
+  # enabled or disabled zplug modules and plugins
+  # for custom plugins look to `Zsh dependencies plugins` section
+  "$" enabled myzs/zplug
 
-  # Disable progress bar
+  # List of enabled log level, this is case insensitive
+  # "error" "warn" "info" "debug"
+  "$" array logger/level "error"
+
+  # checking copy data. if it path go to that path automatically
+  "$" enabled automatic/open-path
+
+  # add trigger event to cd command to check .myzs-setup file
+  "$" disabled setup-file/automatic
+  # when checking auto setup file,
+  # it will use this list to file the exist file and load to enviroment
+  "$" array setup-file/list "myzs-setup" ".myzs-setup"
+
+  # enabled or disabled progress bar
   "$" enabled pb
   # If this is true, the application will trace each component in difference lines
   "$" disabled pb/performance
@@ -90,12 +113,15 @@ export MYZS_LOADING_SETTINGS=(
   "$" setup pb/color/time "$(tput setaf 14)"
 
   # enabled data metric
-  "$" enabled metrics
+  "$" disabled metrics
 )
 
 ################################
 # Zsh dependencies plugins     #
 ################################
+
+# Uncommand this, to use custom zplug application.
+# export MYZS_ZPLUG=""
 
 ## Override zplug plugins list.
 ## NOTES: This will remove all plugins from src/settings/plugins.sh except 'zplug/zplug'
@@ -104,16 +130,6 @@ export MYZS_LOADING_SETTINGS=(
 # myzs:zplug:plugin-list() {
 #   zplug "zsh-users/zsh-autosuggestions"
 # }
-
-# Uncommand this, to use custom zplug application.
-# export MYZS_ZPLUG=""
-
-################################
-# Zsh settings                 #
-################################
-
-export HISTSIZE=1000000000
-export SAVEHIST=$HISTSIZE
 
 ################################
 # Shell environment variable   #

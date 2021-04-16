@@ -14,7 +14,7 @@ _myzs:private:metric:initial() {
 }
 
 _myzs:internal:metric:log-module() {
-  if myzs:setting:is-enabled "metrics"; then
+  if _myzs:internal:setting:is-enabled "metrics"; then
     local data_file="${MYZS_MODULE_METRICPATH}"
     if ! _myzs:internal:checker:file-exist "$data_file"; then
       echo "date time,passed modules,failed modules,skipped modules,unknown modules,total modules,load time" >"$data_file"
@@ -43,7 +43,7 @@ _myzs:internal:metric:log-module() {
 }
 
 _myzs:internal:metric:log-plugin() {
-  if myzs:setting:is-enabled "metrics"; then
+  if _myzs:internal:setting:is-enabled "metrics"; then
     local data_file="${MYZS_PLUGIN_METRICPATH}"
     if ! _myzs:internal:checker:file-exist "$data_file"; then
       echo "plugin action,plugin name,plugin version,plugin status1,plugin status2,plugin loadtime" >"$data_file"

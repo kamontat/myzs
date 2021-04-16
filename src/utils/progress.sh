@@ -5,7 +5,7 @@ _myzs:internal:module:initial "$0"
 export PG_RESET="\033[0m"
 
 export __MYZS__PG_PROCESS_COUNT=1
-if myzs:setting:is-disabled "pb"; then
+if _myzs:internal:setting:is-disabled "pb"; then
   export ____MYZS__REVOLVER_CMD="${__MYZS__SRC}/utils/revolver-mock"
 else
   export ____MYZS__REVOLVER_CMD="${__MYZS__REVOLVER_CMD:-${__MYZS__SRC}/utils/revolver}"
@@ -44,9 +44,9 @@ _myzs:pg:private:message() {
   dur="$(_myzs:pg:private:time:convert "${raw_time}")"
   message="$*"
 
-  if myzs:setting:less-than "pb/timer/danger-color" "$raw_time"; then
+  if _myzs:internal:setting:less-than "pb/timer/danger-color" "$raw_time"; then
     time_color="$(myzs:setting:get "pb/color/time-danger")"
-  elif myzs:setting:less-than "pb/timer/warn-color" "$raw_time"; then
+  elif _myzs:internal:setting:less-than "pb/timer/warn-color" "$raw_time"; then
     time_color="$(myzs:setting:get "pb/color/time-warn")"
   else
     time_color="$(myzs:setting:get "pb/color/time")"
@@ -115,7 +115,7 @@ myzs:pg:mark() {
 
   "${____MYZS__REVOLVER_CMD}" -s "$(myzs:setting:get "pb/style")" update "$(myzs:setting:get "pb/color/loading")$2.."
 
-  if myzs:setting:is-enabled "pb/performance"; then
+  if _myzs:internal:setting:is-enabled "pb/performance"; then
     _myzs:pg:private:log "$PG_PREV_STATE" "$TIME" "$PG_PREV_MSG"
   fi
 
@@ -140,7 +140,7 @@ myzs:pg:stop() {
 
   TIME=$(($(_myzs:pg:private:time:ms) - PG_PREV_TIME))
 
-  if myzs:setting:is-enabled "pb/performance"; then
+  if _myzs:internal:setting:is-enabled "pb/performance"; then
     _myzs:pg:private:log "$PG_PREV_STATE" "$TIME" "$PG_PREV_MSG"
   fi
 

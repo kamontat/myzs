@@ -39,11 +39,10 @@ All configuration already listed in `.zshrc` file.
 1. Improve start time: below setup will improve start time up to 50%
 
 ```bash
-export MYZS_LOG_LEVEL=("error")   # log only error message
 export MYZS_LOADING_SETTINGS=(
-  "$" disabled pb              # disable progress bar
-  "$" disabled pb/performance  # disable progress bar
-  "$" disabled metric          # disable progress bar
+  "$" disabled pb                # disable progress bar
+  "$" disabled metric            # disable metrics collection
+  "$" array logger/level "error" # disable only error log
 )
 ```
 

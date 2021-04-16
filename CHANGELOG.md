@@ -1,5 +1,27 @@
 # Release notes
 
+## Version 5.3.0 (16 Apr 2021)
+
+- [BREAK] module will not reload if last load is passed
+- move `$MYZS_SETTINGS_AUTOLOAD_SETUP_LOCAL`, `$MYZS_SETTINGS_SETUP_FILES` and `$MYZS_LOG_LEVEL` to new settings format
+- add new settings `myzs/zplug` for enabled / disabled zplug completely
+- change settings `path/auto-open` to `automatic/open-path`
+- change default metrics to disabled
+- add **alias/git.sh** by default
+- remove **src/alias/fuck.sh** use `myzs-plugins/thefuck#master` plugins instead
+- remove **src/app/generator.sh** and **src/app/github.sh** use `kamontat/mplugin-kamontat#master` plugins instead
+- remove **src/app/fuck.sh**
+- remove **src/app/fzf.sh**
+- remove **src/app/trivis.sh**
+- support settings value as array
+- comment a lot of unused zplug plugins
+- remove all `_myzs:internal:log:set-level` function
+- add new array support apis in settings.sh module
+- update helpers apis list
+- remove project myzs-setup since git is loaded by default
+- remove `$MYZS_TYPE` on plugin template [plugin]
+- fix deploy script throw error when beta/alpha version is preset
+
 ## Version 5.3.0-beta.2 (15 Apr 2021)
 
 - re-release 5.3.0-beta.1 due to push failed

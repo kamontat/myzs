@@ -37,6 +37,18 @@
 12. `_myzs:internal:path-push(...path)` - push all input path to the end of path variable
 13. `_myzs:internal:path-append(...path)` - append all input path to a first of path variable
 
+## Setting
+
+1. `_myzs:internal:setting:initial` - build settings data from `${MYZS_LOADING_SETTINGS}` array
+2. `_myzs:internal:setting:is-enabled(name)` - checking is **setting name** is enabled or not (return non-zero)
+3. `_myzs:internal:setting:is-disabled(name)` - checking is **setting name** is disabled or not (return non-zero)
+4. `_myzs:internal:setting:is(name, ...value)` - check is **setting name** equals to values or not (return non-zero)
+5. `_myzs:internal:setting:greater-than(name, ...value)` - check is **setting name** greater than values or not (return non-zero)
+6. `_myzs:internal:setting:less-than(name, ...value)` - check is **setting name** less than values or not (return non-zero)
+7. `_myzs:internal:setting:contains(name, ...value)` - check is **setting name** contains in value or not (return non-zero)
+8. `myzs:setting:get(name, fallback)` - return value of **setting name** or fallback if data not exist
+9. `myzs:setting:get-array(name, varname)` - set array value to input `varname`
+
 ## Module
 
 1. `_myzs:internal:module:name-deserialize(key)` - convert module key to module type and name

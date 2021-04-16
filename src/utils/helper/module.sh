@@ -52,6 +52,14 @@ _myzs:internal:module:index() {
   _myzs:internal:module:search-name "$1" _myzs:private:module:index
 }
 
+_myzs:private:module:index-status() {
+  echo "$4" "$3" # index, status
+}
+
+_myzs:internal:module:index-status() {
+  _myzs:internal:module:search-name "$1" _myzs:private:module:index-status
+}
+
 _myzs:private:module:search-name-internal() {
   local _module_type="$1" _module_name="$2" _module_status="$3"
   local _current_index="$4" _total_index="$5"
@@ -59,6 +67,8 @@ _myzs:private:module:search-name-internal() {
 
   local _search_module_type="$7" _search_module_name="$8" _searched_function="$9"
 
+  # echo "$_search_module_type = $_module_type" >&2
+  # echo "$_search_module_name = $_module_name" >&2
   if [[ "$_search_module_type" == "$_module_type" ]] && [[ "$_search_module_name" == "$_module_name" ]]; then
     $_searched_function "${_module_type}" "${_module_name}" "${_module_status}" "${_current_index}" "${_total_index}" "${_module_csv}"
   else
@@ -123,7 +133,6 @@ _myzs:internal:module:search-module-type() {
   local _cmd="$2"
 
   _myzs:internal:module:loaded-list _myzs:private:module:search-module-type "${_module_type}" "${_cmd}"
-
 }
 
 _myzs:private:module:checker:validate() {
@@ -184,7 +193,7 @@ _myzs:private:module:saved() {
 
 # load module by name
 _myzs:private:module:load() {
-  local module_index module_key module_type module_name module_fullpath
+  local module_index_status module_index module_status module_key module_type module_name module_fullpath
 
   module_type="$1"
   module_name="$2"
@@ -196,26 +205,35 @@ _myzs:private:module:load() {
 
   module_key="$(_myzs:internal:module:name-serialize "${module_type}" "${module_name}")"
   module_fullpath="$(_myzs:private:module:fullpath "${module_type}" "${module_name}")"
-  module_index="$(_myzs:internal:module:index "${module_key}")"
+
+  # shellcheck disable=SC2207
+  module_index_status=($(_myzs:internal:module:index-status "${module_key}"))
+  module_index="${module_index_status[1]}"
+  module_status="${module_index_status[2]}"
+
   ((module_index--)) # change array index start from 1 to start from 0
 
-  _myzs:internal:log:debug "module key = ${module_key}"
-  _myzs:internal:log:debug "module path = ${module_fullpath}"
-  _myzs:internal:log:debug "module index = ${module_index}"
-
-  if [[ "${module_index}" != "" ]] && [[ "${module_index}" != "-1" ]]; then
-    _myzs:internal:log:warn "module $__MYZS__CURRENT_MODULE_KEY is existed at #${module_index}; removing"
-    _myzs:internal:remove-array-index "__MYZS__MODULES" "${module_index}"
-  fi
-
-  _myzs:internal:log:debug "module argument = ${args[*]}"
-
-  if _myzs:internal:load "$module_key" "$module_fullpath" "${args[@]}"; then
-    _myzs:private:module:saved "$module_type" "$module_name" "pass"
+  # skip modules that already passed
+  if [[ "${module_status}" == "pass" ]]; then
+    _myzs:internal:log:debug "skip module '${module_key}' because this module has been loaded successfully"
     _myzs:internal:completed
   else
-    _myzs:private:module:saved "$module_type" "$module_name" "fail"
-    _myzs:internal:failed 2
+    _myzs:internal:log:debug "module = index:'${module_index}' status:'${module_status}' key:'${module_key}'"
+    _myzs:internal:log:debug "module path = ${module_fullpath}"
+    _myzs:internal:log:debug "module argument = ${args[*]}"
+
+    if [[ "${module_index}" != "" ]] && [[ "${module_index}" != "-1" ]]; then
+      _myzs:internal:log:warn "module $__MYZS__CURRENT_MODULE_KEY is existed at #${module_index}; removing"
+      _myzs:internal:remove-array-index "__MYZS__MODULES" "${module_index}"
+    fi
+
+    if _myzs:internal:load "$module_key" "$module_fullpath" "${args[@]}"; then
+      _myzs:private:module:saved "$module_type" "$module_name" "pass"
+      _myzs:internal:completed
+    else
+      _myzs:private:module:saved "$module_type" "$module_name" "fail"
+      _myzs:internal:failed 2
+    fi
   fi
 }
 
