@@ -9,9 +9,9 @@ export __MYZS__COM="${_MYZS_ROOT}/resources/completion"
 export ZPLUG_HOME="${MYZS_ZPLUG:-${_MYZS_ROOT}/zplug}"
 
 export __MYZS__OWNER="Kamontat Chantrachirathumrong"
-export __MYZS__VERSION="5.3.1"
+export __MYZS__VERSION="5.3.2"
 export __MYZS__SINCE="21 Apr 2018"
-export __MYZS__LAST_UPDATED="16 Apr 2021"
+export __MYZS__LAST_UPDATED="21 Apr 2021"
 export __MYZS__LICENSE="MIT"
 
 export __MYZS__MODULES=()
@@ -21,6 +21,7 @@ export __MYZS__PLUGINS=()
 # Start loading dependencies #
 # ########################## #
 
+# shellcheck disable=SC1091
 source "${__MYZS__HLP}/index.sh"
 
 _myzs:internal:setting:initial
@@ -114,9 +115,10 @@ _myzs:internal:module:total-list _myzs:private:core:load-module
 _myzs:internal:module:cleanup
 
 # load environment
-myzs:pg:mark "Helper" "Loading environment variable"
 export __MYZS__ENVFILE="$_MYZS_ROOT/.env"
 if _myzs:internal:checker:file-exist "$__MYZS__ENVFILE"; then
+  myzs:pg:mark "Helper" "Loading environment variable"
+
   _myzs:internal:module:initial "$__MYZS__ENVFILE"
 
   env_list=()
@@ -135,16 +137,15 @@ if _myzs:internal:checker:file-exist "$__MYZS__ENVFILE"; then
 fi
 
 # load setup file
-myzs:pg:mark "Helper" "Loading setup file"
 if _myzs:internal:setting:is-enabled "setup-file/automatic"; then
+  myzs:pg:mark "Helper" "Loading setup file"
   myzs-setup-local
 fi
 
-myzs:pg:stop
-
+# loading path if auto open is enabled
 if _myzs:internal:checker:fully-type; then
-  # auto open path from clipboard
   if _myzs:internal:setting:is-enabled "automatic/open-path"; then
+    myzs:pg:mark "Helper" "Loading setup file"
     __clipboard="$(pbpaste)"
     if _myzs:internal:checker:folder-exist "$__clipboard"; then
       cd "$__clipboard" || echo "$__clipboard not exist!"
@@ -153,3 +154,5 @@ if _myzs:internal:checker:fully-type; then
     unset __clipboard
   fi
 fi
+
+myzs:pg:stop

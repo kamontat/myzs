@@ -9,7 +9,7 @@ export MYZS_PLUGIN_METRICPATH="$__MYZS__DATADIR/plugins.csv"
 _myzs:private:metric:initial() {
   # update cache directory if not exist
   if _myzs:internal:checker:string-exist "$__MYZS__DATADIR" && ! _myzs:internal:checker:folder-exist "$__MYZS__DATADIR"; then
-    mkdir "$__MYZS__DATADIR"
+    mkdir -p "$__MYZS__DATADIR" >/dev/null
   fi
 }
 

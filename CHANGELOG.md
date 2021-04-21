@@ -1,5 +1,10 @@
 # Release notes
 
+## Version 5.3.2 (21 Apr 2021)
+
+- fix `/tmp/myzs` didn't create for data and log path
+- log file will create even never write any log to file
+
 ## Version 5.3.1 (16 Apr 2021)
 
 - fix deploy-plugins scripts

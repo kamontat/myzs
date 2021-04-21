@@ -21,27 +21,28 @@ _myzs:private:log() {
   local logger_level="$1"
   shift
 
-  if _myzs:internal:setting:contains "logger/level" "$logger_level"; then
-    if [[ "$__MYZS__LOGDIR" != "" ]] && [[ $__MYZS__LOGFILE != "" ]]; then
-      if ! test -d "$__MYZS__LOGDIR"; then
-        mkdir -p "$__MYZS__LOGDIR" >/dev/null
-      fi
-
-      local filepath="${MYZS_LOGPATH}"
-      if ! test -f "$filepath"; then
-        touch "$filepath"
-      fi
-
-      local datetime module_key
-
-      datetime="$(date)"
-      if [[ "$__MYZS__LOGTYPE" == "auto" ]]; then
-        datetime="$(date +"%H:%M:%S")"
-      fi
-      module_key="${__MYZS__CURRENT_MODULE_KEY:-unknown}"
-
-      printf '%s %-5s [%s]: %s\n' "$datetime" "$logger_level" "$module_key" "$*" >>"$filepath"
+  if [[ "$__MYZS__LOGDIR" != "" ]] && [[ $__MYZS__LOGFILE != "" ]]; then
+    if ! test -d "$__MYZS__LOGDIR"; then
+      mkdir -p "$__MYZS__LOGDIR" >/dev/null
     fi
+  fi
+
+  if _myzs:internal:setting:contains "logger/level" "$logger_level"; then
+    local datetime module_key
+
+    datetime="$(date)"
+    if [[ "$__MYZS__LOGTYPE" == "auto" ]]; then
+      datetime="$(date +"%H:%M:%S")"
+    fi
+    module_key="${__MYZS__CURRENT_MODULE_KEY:-unknown}"
+
+    # make sure that log-file always exist every log event
+    local filepath="${MYZS_LOGPATH}"
+    if ! test -f "$filepath"; then
+      touch "$filepath"
+    fi
+
+    printf '%s %-5s [%s]: %s\n' "$datetime" "$logger_level" "$module_key" "$*" >>"$filepath"
   fi
 
   return 0
