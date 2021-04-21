@@ -1,5 +1,14 @@
 # Release notes
 
+## Version 5.3.3 (21 Apr 2021)
+
+- add error progress when zplug load failed
+- add error progress when configured zplug failed
+- add error when loading module with error and `pb/performance` is enabled
+- change custom zplug plugins list name from `myzs:zplug:plugin-list` to `myzs:zplug:custom:plugin-list`
+- fix not color final message from progressbar
+- fix `source "$file"` return zero even error occurred
+
 ## Version 5.3.2 (21 Apr 2021)
 
 - fix `/tmp/myzs` didn't create for data and log path

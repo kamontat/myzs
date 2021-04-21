@@ -5,8 +5,8 @@ _myzs:internal:module:initial "$0"
 myzs:zplug:initial-plugins() {
   zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
-  if _myzs:internal:checker:command-exist "myzs:zplug:plugin-list"; then
-    myzs:zplug:plugin-list
+  if _myzs:internal:checker:command-exist "myzs:zplug:custom:plugin-list"; then
+    myzs:zplug:custom:plugin-list
   else
     # Require libraries
     zplug "mafredri/zsh-async", from:github, use:"async.zsh"

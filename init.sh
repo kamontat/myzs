@@ -9,7 +9,7 @@ export __MYZS__COM="${_MYZS_ROOT}/resources/completion"
 export ZPLUG_HOME="${MYZS_ZPLUG:-${_MYZS_ROOT}/zplug}"
 
 export __MYZS__OWNER="Kamontat Chantrachirathumrong"
-export __MYZS__VERSION="5.3.2"
+export __MYZS__VERSION="5.3.3"
 export __MYZS__SINCE="21 Apr 2018"
 export __MYZS__LAST_UPDATED="21 Apr 2021"
 export __MYZS__LICENSE="MIT"
@@ -74,10 +74,14 @@ if _myzs:internal:checker:fully-type && _myzs:internal:checker:shell:zsh && _myz
 
   myzs:pg:mark "ZPlugin" "Loading zplug plugin list"
   # load new plugins to system
-  zplug load --verbose >>"$MYZS_ZPLUG_LOGPATH"
+  if ! zplug load --verbose >>"$MYZS_ZPLUG_LOGPATH"; then
+    myzs:pg:mark-fail "Cannot load zplug plugin"
+  fi
 
   myzs:pg:mark "ZPlugin" "Setup zplug plugin config"
-  myzs:zplug:setup-plugins
+  if ! myzs:zplug:setup-plugins; then
+    myzs:pg:mark-fail "Cannot configure zplug plugin"
+  fi
 fi
 
 # load myzs plugins
@@ -85,7 +89,7 @@ myzs:pg:mark "Plugin" "Initial myzs plugin list"
 for plugin in "${MYZS_LOADING_PLUGINS[@]}"; do
   myzs:pg:mark "Plugin" "Downloading ${plugin} plugin"
   if ! _myzs:internal:plugin:name-deserialize "$plugin" _myzs:internal:plugin:load; then
-    myzs:pg:mark-fail "Cannot load plugin"
+    myzs:pg:mark-fail "Cannot load myzs plugin"
   fi
 done
 

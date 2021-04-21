@@ -53,7 +53,6 @@ _myzs:pg:private:message() {
   fi
 
   printf "${color}[%s]${PG_RESET} %-$(myzs:setting:get "pb/message/length")s done in ${time_color}%s${PG_RESET}." "$symbol" "$message" "$dur"
-
 }
 
 _myzs:pg:private:log:completed() {
@@ -128,6 +127,10 @@ myzs:pg:mark() {
 myzs:pg:mark-fail() {
   PG_PREV_STATE="F"
   PG_PREV_MSG=$(_myzs:pg:private:message:format "Error" "$1")
+
+  if ! _myzs:internal:setting:is-enabled "pb/performance"; then
+    _myzs:pg:private:log "$PG_PREV_STATE" "$TIME" "$PG_PREV_MSG"
+  fi
 }
 
 myzs:pg:mark-skip() {
@@ -149,7 +152,7 @@ myzs:pg:stop() {
   TIME=$(($(_myzs:pg:private:time:ms) - PG_START_TIME))
   load_time="$(_myzs:pg:private:time:convert "${TIME}")"
 
-  printf "${MYZS_PG_COMPLETE_CL}[+]${PG_RESET} %-$(myzs:setting:get "pb/message/length")s      in ${MYZS_PG_TIME_CL}%s${PG_RESET}." "$(_myzs:pg:private:message:format "Completed" "Initialization $__MYZS__PG_PROCESS_COUNT tasks")" "${load_time}"
+  printf "$(myzs:setting:get "pb/color/completed")[+]${PG_RESET} %-$(myzs:setting:get "pb/message/length")s      in $(myzs:setting:get "pb/color/time")%s${PG_RESET}." "$(_myzs:pg:private:message:format "Completed" "Initialization $__MYZS__PG_PROCESS_COUNT tasks")" "${load_time}"
   echo
 
   export PROGRESS_COUNT="${__MYZS__PG_PROCESS_COUNT}"
