@@ -1,5 +1,12 @@
 # Release notes
 
+## Version 5.4.0 (10 May 2021)
+
+- remove MYZS_DEBUG since it useless on debugging (too many log)
+- do cleanup on each module loaded instead
+- `_myzs:internal:module:cleanup` is accept optional module_key
+- notice that `__MYZS__CURRENT_MODULE_*` will exist until end of loading only (not carry over)
+
 ## Version 5.3.5 (10 May 2021)
 
 - Wrong License type on `myzs-info` command (it should be **AGPL-3.0**, not **MIT**)

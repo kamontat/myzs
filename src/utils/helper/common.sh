@@ -1,8 +1,6 @@
 # shellcheck disable=SC1090,SC2148
 
-if [[ "$MYZS_DEBUG" == "true" ]]; then
-  set -x # enable DEBUG MODE
-fi
+# set -x # enable DEBUG MODE
 
 _myzs:private:return() {
   return "$1"
@@ -51,16 +49,17 @@ _myzs:internal:timestamp-second() {
 }
 
 _myzs:internal:module:initial() {
-  if [[ "$MYZS_DEBUG" == "true" ]]; then
-    set -x # enable DEBUG MODE
-  fi
-
   _myzs:internal:log:info "initial module '${__MYZS__CURRENT_MODULE_KEY}' at '$1'"
 }
 
 _myzs:internal:module:cleanup() {
+  local key="$1"
+
+  _myzs:internal:log:info "cleanup current module settings (${key:-$__MYZS__CURRENT_MODULE_KEY})"
   unset __MYZS__CURRENT_MODULE_TYPE __MYZS__CURRENT_MODULE_NAME __MYZS__CURRENT_MODULE_STATUS __MYZS__CURRENT_MODULE_KEY
-  _myzs:internal:log:info "cleanup current module settings"
+
+  # Always disable DEBUG MODE
+  set +x # disable DEBUG MODE
 }
 
 # call only in end line of .zshrc file
@@ -72,9 +71,6 @@ _myzs:internal:project:cleanup() {
   _myzs:internal:metric:log-module
 
   unset __MYZS__HLP __MYZS__COM
-  if [[ "$MYZS_DEBUG" == "true" ]]; then
-    set +x # disable DEBUG MODE
-  fi
 }
 
 _myzs:internal:load() {

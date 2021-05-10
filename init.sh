@@ -9,7 +9,7 @@ export __MYZS__COM="${_MYZS_ROOT}/resources/completion"
 export ZPLUG_HOME="${MYZS_ZPLUG:-${_MYZS_ROOT}/zplug}"
 
 export __MYZS__OWNER="Kamontat Chantrachirathumrong"
-export __MYZS__VERSION="5.3.5"
+export __MYZS__VERSION="5.4.0"
 export __MYZS__SINCE="21 Apr 2018"
 export __MYZS__LAST_UPDATED="10 May 2021"
 export __MYZS__LICENSE="AGPL-3.0 License"
@@ -113,10 +113,10 @@ _myzs:private:core:load-module() {
     _myzs:internal:log:warn "skipped module"
   fi
 
+  _myzs:internal:module:cleanup
   _myzs:internal:completed
 }
 _myzs:internal:module:total-list _myzs:private:core:load-module
-_myzs:internal:module:cleanup
 
 # load environment
 export __MYZS__ENVFILE="$_MYZS_ROOT/.env"

@@ -27,7 +27,7 @@
 2. `_myzs:internal:failed(number)` - return non-zero exit code
 3. `_myzs:internal:shell([zsh], [bash], [fish])` - return input start base on current shell
 4. `_myzs:internal:module:initial($0)` - initial module, should add to first line of code
-5. `_myzs:internal:module:cleanup` - cleanup all initial setup
+5. `_myzs:internal:module:cleanup(key)` - cleanup module data with optional module_key
 6. `_myzs:internal:project:cleanup` - cleaning .zshrc, must add to end of code in .zshrc file
 7. `_myzs:internal:load(name, path)` - load path via source "path" and log result to log file
 8. `_myzs:internal:alias(key, value)` - alias key to value (ignore is key is existed)

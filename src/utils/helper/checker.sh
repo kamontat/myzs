@@ -1,8 +1,6 @@
 # shellcheck disable=SC1090,SC2148
 
-if [[ "$MYZS_DEBUG" == "true" ]]; then
-  set -x # enable DEBUG MODE
-fi
+# set -x # enable DEBUG MODE
 
 _myzs:private:checker:shell() {
   if grep -q "$1" <<<"$SHELL"; then

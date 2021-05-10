@@ -6,9 +6,6 @@
 # Core setup                   #
 ################################
 
-# Enable debug mode;
-# export MYZS_DEBUG=true
-
 # This shouldn't be changes, except you install the application to difference
 export MYZS_ROOT="$HOME/.myzs"
 

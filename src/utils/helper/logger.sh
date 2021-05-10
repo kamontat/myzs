@@ -1,8 +1,6 @@
 # shellcheck disable=SC1090,SC2148
 
-if [[ "$MYZS_DEBUG" == "true" ]]; then
-  set -x # enable DEBUG MODE
-fi
+# set -x # enable DEBUG MODE
 
 export __MYZS__LOGTYPE="${MYZS_LOGTYPE:-auto}"
 export __MYZS__LOGDIR="${MYZS_LOGDIR:-/tmp/myzs/logs}"
