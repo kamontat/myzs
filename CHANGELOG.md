@@ -1,5 +1,9 @@
 # Release notes
 
+## Version 5.3.5 (10 May 2021)
+
+- Wrong License type on `myzs-info` command (it should be **AGPL-3.0**, not **MIT**)
+
 ## Version 5.3.4 (10 May 2021)
 
 - add logging when checking os and shell
