@@ -1,5 +1,12 @@
 # Release notes
 
+## Version 5.3.4 (10 May 2021)
+
+- add logging when checking os and shell
+- upgrade app/gcloud.sh to support latest version
+- add new plugin `myzs-plugins/python` for conda support
+- now plugin default branch will be **main** instead of **master**
+
 ## Version 5.3.3 (21 Apr 2021)
 
 - add error progress when zplug load failed

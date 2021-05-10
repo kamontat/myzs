@@ -23,6 +23,7 @@ export MYZS_LOADING_PLUGINS=(
   # "myzs-plugins/macos#master"
 
   # "myzs-plugins/thefuck#master"
+  "myzs-plugins/python#main"
   # "myzs-plugins/nodejs#master"
   # "myzs-plugins/docker#master"
   # "kamontat/mplugin-kamontat#master"

@@ -6,6 +6,7 @@ fi
 
 _myzs:private:checker:shell() {
   if grep -q "$1" <<<"$SHELL"; then
+    _myzs:internal:log:debug "You loading on $SHELL"
     return 0
   else
     return 1
@@ -87,6 +88,7 @@ _myzs:internal:checker:mac() {
   local name
   name="$(uname -s)"
   if [[ "$name" = "Darwin" ]]; then
+    _myzs:internal:log:debug "You loading on MacOS"
     return 0
   else
     return 1
