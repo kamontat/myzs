@@ -1,4 +1,4 @@
-# shellcheck disable=SC1090,SC2148
+# shellcheck disable=SC2148
 
 export _MYZS_ROOT="${MYZS_ROOT:-"$HOME/.myzs"}"
 export __MYZS__SRC="${_MYZS_ROOT}/src"
@@ -104,10 +104,11 @@ _myzs:private:core:load-module() {
   if [[ "${MYZS_LOADING_MODULES[*]}" =~ $module_key ]]; then
     myzs:pg:mark "Module" "Loading ${module_name} (${module_type})"
 
-    if _myzs:internal:checker:fully-type || [[ $module_name =~ "alias" ]]; then
-      _myzs:internal:module:load "${module_key}" || myzs:pg:mark-fail "Cannot load $module_fullpath"
+    # if myzs is small type, not load anything except alias
+    if _myzs:internal:checker:small-type && ! [[ $module_name =~ "alias" ]]; then
+      myzs:pg:mark-fail "cannot load ${module_key} when TYPE is small"
     else
-      myzs:pg:mark-fail "cannot load ${module_key} when TYPE=$__MYZS_SETTINGS__MYZS_TYPE"
+      _myzs:internal:module:load "${module_key}" || myzs:pg:mark-fail "Cannot load $module_fullpath"
     fi
   else
     _myzs:internal:module:skip "${module_key}"
