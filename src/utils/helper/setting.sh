@@ -1,18 +1,22 @@
 # shellcheck disable=SC1090,SC2148
 
-# 1. String | Number
-#    - Data storage: "${__MYZS__SETTING_PREFIX}${NAME}=${VALUE}"
-#                    e.g. __MYZS_SETTINGS__MODULE_NAME="setting"
-#    - Data access:  using `_myzs:internal:setting:is "${NAME}" "${VALUE}"`
-#                    e.g. _myzs:internal:setting:is "module/name" "setting"
-# 2. Boolean
-#    - Data storage: using myzs:settings:loading(loader enabled disabled) enabled and disabled method
-#                    e.g. enabled "module-loader"
+# We using `MYZS_LOADING_SETTINGS` as data storage and compile 
+# from data array to data variable via method `_myzs:internal:setting:initial`
+# with several settings checker method as internal command
+
+# We expose 2 publish commands
+#   1. myzs:setting:get "<setting/name>" "<default_value>" - this will return data to stdout
+#   2. myzs:setting:get-array "<setting/name>" "<varname>" - this will assign data to input variable name
 
 export __MYZS__SETTING_PREFIX="__MYZS_SETTINGS__"
 
-# All boolean settings will prefix with _ENABLED / _DISABLED and value will always be true
-# e.g. _myzs:internal:setting:is-enabled "analytics" will try to query from $__MYZS_SETTINGS__ANALYTICS_ENABLED must be 'true'
+# will log only logger method is loaded to memory
+_myzs:private:setting:debug() {
+  # cannot use myzs command since it might not initial
+  if command -v "_myzs:internal:log:debug" >/dev/null; then
+    _myzs:internal:log:debug "$@"
+  fi
+}
 
 _myzs:private:setting:variable() {
   local name="$1"
@@ -20,25 +24,30 @@ _myzs:private:setting:variable() {
   echo "$name" | tr "/" "_" | tr "-" "_" | tr "[:lower:]" "[:upper:]"
 }
 
-_myzs:private:setting:setup() {
+# Add data as primitive type
+_myzs:private:setting:set:setup() {
   local variable key value
 
   key="$(_myzs:private:setting:variable "$1")"
   value="$2"
 
+  _myzs:private:setting:debug "settings $1='$2'"
   variable="${__MYZS__SETTING_PREFIX}${key}"
   eval "$variable=$value"
 }
 
-_myzs:private:setting:enabled() {
-  _myzs:private:setting:setup "$1" "true"
+# Add data as true $1 setting name
+_myzs:private:setting:set:enabled() {
+  _myzs:private:setting:set:setup "$1" "true"
 }
 
-_myzs:private:setting:disabled() {
-  _myzs:private:setting:setup "$1" "false"
+# Add data as false $1 setting name
+_myzs:private:setting:set:disabled() {
+  _myzs:private:setting:set:setup "$1" "false"
 }
 
-_myzs:private:setting:array() {
+# Add data as array
+_myzs:private:setting:set:array() {
   local key value="" variable
 
   key="$(_myzs:private:setting:variable "$1")"
@@ -52,6 +61,7 @@ _myzs:private:setting:array() {
     fi
   done
 
+  _myzs:private:setting:debug "initial settings array ($1)"
   variable="${__MYZS__SETTING_PREFIX}${key}"
   eval "$variable=($value)"
 }
@@ -74,14 +84,14 @@ _myzs:private:setting:checker() {
 # by change abc/def to ABC_DEF and add prefix as __MYZS_SETTINGS__
 # final abc/def=value will transform to __MYZS_SETTINGS__ABC_DEF="value"
 _myzs:internal:setting:initial() {
-  local args=()
+  local command_prefix="_myzs:private:setting:set" args=()
   local key value variable setting
 
   for setting in "${MYZS_LOADING_SETTINGS[@]}"; do
     if [[ "${setting}" == "$" ]]; then
       if [[ "${#args[@]}" -gt 0 ]]; then
         # shellcheck disable=SC2145
-        "_myzs:private:setting:${args[@]}"
+        "${command_prefix}:${args[@]}"
         args=()
       fi
     else
@@ -92,7 +102,7 @@ _myzs:internal:setting:initial() {
   # for final command
   if [[ "${#args[@]}" -gt 0 ]]; then
     # shellcheck disable=SC2145
-    "_myzs:private:setting:${args[@]}"
+    "${command_prefix}:${args[@]}"
   fi
 }
 
