@@ -296,7 +296,7 @@ function _revolver() {
   fi
 
   if [[ -z $_revolver_spinners[$style] ]]; then
-    echo $(color red "Spinner '$style' is not recognised")
+    echo "Spinner '$style' is not recognised"
     exit 1
   fi
 
