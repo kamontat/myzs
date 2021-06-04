@@ -103,7 +103,7 @@ PG_PREV_STATE="C" # C = completed, F = failured, S = skipped
 myzs:pg:start() {
   local message
   message="${1:-Initialization shell. Please Wait...}"
-  "${____MYZS__REVOLVER_CMD}" -s "$(myzs:setting:get "pb/style")" start "$(myzs:setting:get "pb/color/loading")${message}"
+  "${____MYZS__REVOLVER_CMD}" -s "$(myzs:setting:get "pb/style" "dots")" start "$(myzs:setting:get "pb/color/loading")${message}"
 
   PG_START_TIME="$(_myzs:pg:private:time:ms)"
   PG_PREV_TIME="$(_myzs:pg:private:time:ms)"
@@ -112,7 +112,7 @@ myzs:pg:start() {
 myzs:pg:mark() {
   TIME=$(($(_myzs:pg:private:time:ms) - PG_PREV_TIME))
 
-  "${____MYZS__REVOLVER_CMD}" -s "$(myzs:setting:get "pb/style")" update "$(myzs:setting:get "pb/color/loading")$2.."
+  "${____MYZS__REVOLVER_CMD}" -s "$(myzs:setting:get "pb/style" "dots")" update "$(myzs:setting:get "pb/color/loading")$2.."
 
   if _myzs:internal:setting:is-enabled "pb/performance"; then
     _myzs:pg:private:log "$PG_PREV_STATE" "$TIME" "$PG_PREV_MSG"
@@ -139,7 +139,7 @@ myzs:pg:mark-skip() {
 }
 
 myzs:pg:stop() {
-  local load_time
+  local load_time count_varname="${1:-STARTUP_COUNT}" loadtime_varname="${2:-STARTUP_LOADTIME}"
 
   TIME=$(($(_myzs:pg:private:time:ms) - PG_PREV_TIME))
 
@@ -155,9 +155,10 @@ myzs:pg:stop() {
   printf "$(myzs:setting:get "pb/color/completed")[+]${PG_RESET} %-$(myzs:setting:get "pb/message/length")s      in $(myzs:setting:get "pb/color/time")%s${PG_RESET}." "$(_myzs:pg:private:message:format "Completed" "Initialization $__MYZS__PG_PROCESS_COUNT tasks")" "${load_time}"
   echo
 
-  export PROGRESS_COUNT="${__MYZS__PG_PROCESS_COUNT}"
-  export PROGRESS_LOADTIME="$load_time"
-  export PROGRESS_LOADTIME_MS="$TIME"
+  export "$count_varname"="${__MYZS__PG_PROCESS_COUNT}"
+  export "$loadtime_varname"="$load_time"
+  # shellcheck disable=SC2140
+  export "${loadtime_varname}_MS"="$TIME"
 
   unset PG_PREV_TIME PG_PREV_MSG PG_PREV_STATE
 }

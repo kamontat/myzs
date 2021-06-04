@@ -38,7 +38,7 @@ _myzs:internal:metric:log-module() {
 
     _myzs:internal:module:loaded-list _myzs:private:metric:counter
 
-    echo "${__MYZS__FINISH_TIME},${passed},${failed},${skipped},${unknown},${total},${PROGRESS_LOADTIME_MS}" >>"$data_file"
+    echo "${__MYZS__FINISH_TIME},${passed},${failed},${skipped},${unknown},${total},${STARTUP_LOADTIME_MS}" >>"$data_file"
   fi
 }
 
