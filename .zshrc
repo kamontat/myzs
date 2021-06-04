@@ -32,6 +32,7 @@ export MYZS_LOADING_MODULES=(
   "builtin#alias/myzs.sh"
   "builtin#alias/initial.sh"
   "builtin#app/env.sh"
+  "builtin#app/group.sh"
 )
 
 MYZS_LOADING_MODULES+=(
@@ -54,7 +55,7 @@ MYZS_LOADING_MODULES+=(
 # Format action command will listed via `_myzs:private:setting:<name>`
 # first element must be '$'
 # second element is command type
-#   1. setup    => setup "$1" "$2"  (run $1=$2)
+#   1. string   => string "$1" "$2"  (run $1=$2)
 #   2. array    => array "$1" "$@"  (run $1=($2 $3 $@))
 #   2. enabled  => enabled "$1"     (run $1=true)
 #   3. disabled => disabled "$1"    (run $1=false)
@@ -63,7 +64,7 @@ export MYZS_LOADING_SETTINGS=(
   # Accept values: FULLY | SMALL
   #   1. FULLY -> full command with advance support on zsh script
   #   2. SMALL -> small utils with alias for bash and server bash
-  "$" setup myzs/type "${_MYZS_TYPE:-FULLY}"
+  "$" string myzs/type "${_MYZS_TYPE:-FULLY}"
 
   # enabled or disabled zplug modules and plugins
   # for custom plugins look to `Zsh dependencies plugins` section
@@ -87,32 +88,32 @@ export MYZS_LOADING_SETTINGS=(
   # If this is true, the application will trace each component in difference lines
   "$" disabled pb/performance
   # progress bar style (listed at src/utils/revolver)
-  "$" setup pb/style "bouncingBall"
+  "$" string pb/style "bouncingBall"
   # full message shift when print progress bar
-  "$" setup pb/message/length "68"
+  "$" string pb/message/length "68"
   # title shift when price progress bar
-  "$" setup pb/title/length "15"
+  "$" string pb/title/length "15"
   # minimum millisecond will be shown as danger color
-  "$" setup pb/timer/danger-color "600"
+  "$" string pb/timer/danger-color "600"
   # minimum millisecond will be shown as warning color
-  "$" setup pb/timer/warn-color "200"
+  "$" string pb/timer/warn-color "200"
   # loading message color
-  "$" setup pb/color/loading "$(tput setaf 6)"
+  "$" string pb/color/loading "$(tput setaf 6)"
   # complete status indicator
-  "$" setup pb/color/completed "$(tput setaf 10)"
+  "$" string pb/color/completed "$(tput setaf 10)"
   # skip status indicator
-  "$" setup pb/color/skipped "$(tput setaf 11)"
+  "$" string pb/color/skipped "$(tput setaf 11)"
   # fail status indicator
-  "$" setup pb/color/failed "$(tput setaf 9)"
+  "$" string pb/color/failed "$(tput setaf 9)"
   # time danger color
-  "$" setup pb/color/time-danger "$(tput setaf 1)"
+  "$" string pb/color/time-danger "$(tput setaf 1)"
   # time warning color
-  "$" setup pb/color/time-warn "$(tput setaf 3)"
+  "$" string pb/color/time-warn "$(tput setaf 3)"
   # normal time color
-  "$" setup pb/color/time "$(tput setaf 14)"
+  "$" string pb/color/time "$(tput setaf 14)"
 
-  # enabled data metric
-  "$" disabled metrics
+  # enabled data metric (beta)
+  "$" enabled metrics
 )
 
 ################################
