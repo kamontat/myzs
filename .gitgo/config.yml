@@ -36,7 +36,7 @@ settings:
             text: Module files (app, alias, and settings folder in src)
           - key: dep
             text: Libraries and dependencies
-          - key: dep
+          - key: util
             text: Utilities and Helper (helper folder in src)
           - key: config
             text: Configuration
