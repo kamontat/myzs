@@ -2,7 +2,8 @@
 
 _myzs:internal:module:initial "$0"
 
-export GOPATH="${__GOPATH:-$HOME/Desktop/Personal/go}"
+# $HOME/go is default go path in macos
+export GOPATH="${__GOPATH:-$HOME/go}"
 
 if _myzs:internal:checker:command-exist "go"; then
   _myzs:internal:path-append "$GOPATH/bin"
