@@ -1,3 +1,4 @@
+version: 5
 settings:
   hack: true
   config:
@@ -13,15 +14,14 @@ settings:
           page: 5
           suggestion: false
           values:
-          - key: feat
-            text: Introducing new features
-          - key: perf
-            text: Improving user experience / usability / reliablity
-          - key: fix
-            text: Fixing a bug
-          - key: chore
-            text: Other changes unrelated to user/client
-        input: null
+            - key: feat
+              text: Introducing new features
+            - key: perf
+              text: Improving user experience / usability / reliablity
+            - key: fix
+              text: Fixing a bug
+            - key: chore
+              text: Other changes unrelated to user/client
     scope:
       enabled: true
       required: false
@@ -30,22 +30,22 @@ settings:
           page: 5
           suggestion: false
           values:
-          - key: core
-            text: Core application
-          - key: module
-            text: Module files (app, alias, and settings folder in src)
-          - key: dep
-            text: Libraries and dependencies
-          - key: util
-            text: Utilities and Helper (helper folder in src)
-          - key: config
-            text: Configuration
-        input: null
+            - key: core
+              text: Core application
+            - key: module
+              text: Module files (alias, app, and settings folder in src)
+            - key: util
+              text: Utilities and Helper (utils folder in src)
+            - key: dep
+              text: Dependencies or Libraries
+            - key: config
+              text: Configuration in .zshrc or init.sh
+            - key: script
+              text: Other helper script for private use
     title:
       enabled: true
       required: true
       prompt:
-        select: null
         input:
           max: 75
           multiline: false
@@ -53,8 +53,6 @@ settings:
       enabled: false
       required: false
       prompt:
-        select: null
         input:
           max: 200
           multiline: true
-version: 5
