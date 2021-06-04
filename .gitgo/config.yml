@@ -1,5 +1,5 @@
 settings:
-  hack: false
+  hack: true
   config:
     disabled: false
   log:
