@@ -32,7 +32,7 @@ export MYZS_LOADING_MODULES=(
   "builtin#alias/myzs.sh"
   "builtin#alias/initial.sh"
   "builtin#app/env.sh"
-  "builtin#app/group.sh"
+  # "builtin#app/group.sh"
 )
 
 MYZS_LOADING_MODULES+=(
