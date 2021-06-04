@@ -1,6 +1,6 @@
 # shellcheck disable=SC1090,SC2148
 
-# We using `MYZS_LOADING_SETTINGS` as data storage and compile 
+# We using `MYZS_LOADING_SETTINGS` as data storage and compile
 # from data array to data variable via method `_myzs:internal:setting:initial`
 # with several settings checker method as internal command
 
@@ -21,7 +21,14 @@ _myzs:private:setting:debug() {
 _myzs:private:setting:variable() {
   local name="$1"
 
-  echo "$name" | tr "/" "_" | tr "-" "_" | tr "[:lower:]" "[:upper:]"
+  echo "$name" |
+    tr "/" "_" |
+    tr "-" "_" |
+    tr "[:lower:]" "[:upper:]" |
+    tr -d "$" |
+    tr -d "&" |
+    tr -d "|" |
+    tr -d ";" # remove $ & | ; <- to avoid injection
 }
 
 # Add data as primitive type
@@ -31,9 +38,13 @@ _myzs:private:setting:set:setup() {
   key="$(_myzs:private:setting:variable "$1")"
   value="$2"
 
-  _myzs:private:setting:debug "settings $1='$2'"
+  # _myzs:private:setting:debug "settings $1='$2'"
   variable="${__MYZS__SETTING_PREFIX}${key}"
   eval "$variable=$value"
+}
+
+_myzs:private:setting:set:string() {
+  _myzs:private:setting:set:setup "$1" "$2"
 }
 
 # Add data as true $1 setting name
