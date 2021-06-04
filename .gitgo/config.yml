@@ -1,0 +1,60 @@
+settings:
+  hack: false
+  config:
+    disabled: false
+  log:
+    level: info
+  commit:
+    key:
+      enabled: true
+      required: true
+      prompt:
+        select:
+          page: 5
+          suggestion: false
+          values:
+          - key: feat
+            text: Introducing new features
+          - key: perf
+            text: Improving user experience / usability / reliablity
+          - key: fix
+            text: Fixing a bug
+          - key: chore
+            text: Other changes unrelated to user/client
+        input: null
+    scope:
+      enabled: true
+      required: false
+      prompt:
+        select:
+          page: 5
+          suggestion: false
+          values:
+          - key: core
+            text: Core application
+          - key: module
+            text: Module files (app, alias, and settings folder in src)
+          - key: dep
+            text: Libraries and dependencies
+          - key: dep
+            text: Utilities and Helper (helper folder in src)
+          - key: config
+            text: Configuration
+        input: null
+    title:
+      enabled: true
+      required: true
+      prompt:
+        select: null
+        input:
+          max: 75
+          multiline: false
+    message:
+      enabled: false
+      required: false
+      prompt:
+        select: null
+        input:
+          max: 200
+          multiline: true
+version: 5
