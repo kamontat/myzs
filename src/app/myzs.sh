@@ -64,7 +64,7 @@ You can upgrade version by run 'myzs-download' to fetch latest version.
 3. Application version:  ${__MYZS__VERSION}
 4. Application type:     ${__MYZS_SETTINGS__MYZS_TYPE}
 5. Log location:         ${MYZS_LOGPATH}
-6. Loading time:         ${PROGRESS_LOADTIME}
+6. Loading time:         ${STARTUP_LOADTIME}
 7. Loaded time:          ${__MYZS__FINISH_TIME}
 
 ## Credit
@@ -161,5 +161,18 @@ myzs-measure() {
 
   "$cmd" "$@"
 
-  myzs:pg:stop
+  myzs:pg:stop "MEASURE_COUNT" "MEASURE_LOADTIME"
+}
+
+myzs-loadtest() {
+  local size="$1" ms=0 avg_10k
+  shift 1
+  for ((i = 0; i < size; i++)); do
+    myzs-measure "$@" >/dev/null
+    ((ms += MEASURE_LOADTIME_MS)) # sum loadtime
+  done
+
+  avg_10k="$(((ms * 10000) / size))"
+  avg="$((ms / size))"
+  printf '%s.%04d (%s)\n' "$avg" "$((avg_10k - (avg * 10000)))" "$ms"
 }
