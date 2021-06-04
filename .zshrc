@@ -31,6 +31,7 @@ export MYZS_LOADING_MODULES=(
   "builtin#app/myzs.sh"
   "builtin#alias/myzs.sh"
   "builtin#alias/initial.sh"
+  "builtin#app/env.sh"
 )
 
 MYZS_LOADING_MODULES+=(
@@ -50,7 +51,7 @@ MYZS_LOADING_MODULES+=(
 # Application settings         #
 ################################
 
-# Format
+# Format action command will listed via `_myzs:private:setting:<name>`
 # first element must be '$'
 # second element is command type
 #   1. setup    => setup "$1" "$2"  (run $1=$2)

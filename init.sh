@@ -100,6 +100,7 @@ _myzs:private:core:load-module() {
   local module_key
   module_key="$(_myzs:internal:module:name-serialize "${module_type}" "${module_name}")"
 
+  # TODO: improve throw error if loading module is not exist in existing module
   if [[ "${MYZS_LOADING_MODULES[*]}" =~ $module_key ]]; then
     myzs:pg:mark "Module" "Loading ${module_name} (${module_type})"
 
@@ -117,28 +118,6 @@ _myzs:private:core:load-module() {
   _myzs:internal:completed
 }
 _myzs:internal:module:total-list _myzs:private:core:load-module
-
-# load environment
-export __MYZS__ENVFILE="$_MYZS_ROOT/.env"
-if _myzs:internal:checker:file-exist "$__MYZS__ENVFILE"; then
-  myzs:pg:mark "Helper" "Loading environment variable"
-
-  _myzs:internal:module:initial "$__MYZS__ENVFILE"
-
-  env_list=()
-  while IFS= read -r line; do
-    key="${line%=*}"
-    value="${line##*=}"
-
-    if _myzs:internal:checker:string-exist "$key" && _myzs:internal:checker:string-exist "$value"; then
-      env_list+=("$key")
-      # shellcheck disable=SC2163
-      export "${key}"="${value}"
-    fi
-  done <"$__MYZS__ENVFILE"
-  [[ ${#env_list[@]} -gt 0 ]] && _myzs:internal:log:info "exporting [ ${env_list[*]} ]"
-  unset line env_list
-fi
 
 # load setup file
 if _myzs:internal:setting:is-enabled "setup-file/automatic"; then
