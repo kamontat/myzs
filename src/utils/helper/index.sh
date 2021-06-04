@@ -1,4 +1,4 @@
-# shellcheck disable=SC1090,SC2148
+# shellcheck disable=SC1090,SC1091,SC2148
 
 source "${__MYZS__HLP}/setting.sh" # load setting checker
 source "${__MYZS__HLP}/checker.sh" # load checker helper
