@@ -1,5 +1,19 @@
 # Release notes
 
+## Version 5.5.0 (05 Jun 2021)
+
+- add new database apis in utils for create, update data using in myzs
+- move env support as builtin module (you can disable via remove from loading module)
+- add new command `myzs-loadtest <n> <cmd...>` for measure and calculate average timing (ms)
+- if you didn't provide myzs type, by default it will loading every specify modules
+- migrated new settings apis to database apis and deprecate old setting version (will remove soon)
+- change golang default path to `$HOME/go`
+- avoid calling unknown method when setup setting command type
+- fix myzs-info report wrong loading duration when running myzs-measure
+- fix revolver throw wrong exception when pg/style is invalid
+- upgrade gitgo from v4 to v5 to support new features
+- create poc module group (not working)
+
 ## Version 5.4.0 (10 May 2021)
 
 - remove MYZS_DEBUG since it useless on debugging (too many log)
@@ -9,7 +23,7 @@
 
 ## Version 5.3.5 (10 May 2021)
 
-- Wrong License type on `myzs-info` command (it should be **AGPL-3.0**, not **MIT**)
+- wrong License type on `myzs-info` command (it should be **AGPL-3.0**, not **MIT**)
 
 ## Version 5.3.4 (10 May 2021)
 
