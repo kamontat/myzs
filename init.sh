@@ -16,6 +16,7 @@ export __MYZS__LICENSE="AGPL-3.0 License"
 
 export __MYZS__MODULES=()
 export __MYZS__PLUGINS=()
+export __MYZS__GROUPS=()
 
 # ########################## #
 # Start loading dependencies #
@@ -38,16 +39,16 @@ myzs:pg:start
 
 # initial system config
 myzs:pg:mark "Commandline" "Setup system settings"
-_myzs:internal:module:load "settings/system.sh" || myzs:pg:mark-fail "Cannot load system variable"
+_myzs:internal:module:load "builtin#settings/system.sh" || myzs:pg:mark-fail "Cannot load system variable"
 
 # initial path config
 myzs:pg:mark "Commandline" "Setup path settings"
-_myzs:internal:module:load "settings/path.sh" || myzs:pg:mark-fail "Cannot load path variable"
+_myzs:internal:module:load "builtin#settings/path.sh" || myzs:pg:mark-fail "Cannot load path variable"
 
 # initial zsh config
 if _myzs:internal:checker:fully-type && _myzs:internal:checker:shell:zsh; then
   myzs:pg:mark "Commandline" "Setup commandline settings"
-  _myzs:internal:module:load "settings/zsh.sh" || myzs:pg:mark-fail "Cannot load zsh settings"
+  _myzs:internal:module:load "builtin#settings/zsh.sh" || myzs:pg:mark-fail "Cannot load zsh settings"
 fi
 
 # initial zplug config
@@ -59,7 +60,7 @@ fi
 # load zplug plugins
 if _myzs:internal:checker:fully-type && _myzs:internal:checker:shell:zsh && _myzs:internal:setting:is-enabled "myzs/zplug"; then
   myzs:pg:mark "ZPlugin" "Initial zplug plugin list"
-  _myzs:internal:module:load "settings/plugins.sh" || myzs:pg:mark-fail "Cannot load zplug plugins list"
+  _myzs:internal:module:load "builtin#settings/plugins.sh" || myzs:pg:mark-fail "Cannot load zplug plugins list"
 
   myzs:zplug:initial-plugins # initial plugins
 
