@@ -20,7 +20,11 @@ export MYZS_LOADING_PLUGINS=(
   # "myzs-plugins/macos#master"
 
   # "myzs-plugins/thefuck#master"
-  "myzs-plugins/python#main"
+  # "myzs-plugins/mobile#main"
+  # "myzs-plugins/asdf#main"
+  # "myzs-plugins/google#main"
+  # "myzs-plugins/python#main"
+  # "myzs-plugins/golang#main"
   # "myzs-plugins/nodejs#master"
   # "myzs-plugins/docker#master"
   # "kamontat/mplugin-kamontat#master"
@@ -28,18 +32,19 @@ export MYZS_LOADING_PLUGINS=(
 )
 
 export MYZS_LOADING_MODULES=(
-  "builtin#app/myzs.sh"
-  "builtin#alias/myzs.sh"
-  "builtin#alias/initial.sh"
-  "builtin#app/env.sh"
-  # "builtin#app/group.sh"
+  "builtin#app/myzs.sh"   # requires
+  "builtin#alias/myzs.sh" # requires
+
+  # "builtin#app/autocd.sh" # add trigger event to cd command to check .myzs-setup file
+  "builtin#app/env.sh" # loading .env file in .myzs directory
+  # "builtin#app/group.sh" # generator module groups support (not works)
 )
 
 MYZS_LOADING_MODULES+=(
   "myzs-plugins/core#alias/short.sh"
   "myzs-plugins/core#alias/shell.sh"
-  "myzs-plugins/editor#app/vscode.sh"
-  "myzs-plugins/git#alias/git.sh"
+  # "myzs-plugins/editor#app/vscode.sh"
+  # "myzs-plugins/git#alias/git.sh"
 )
 
 MYZS_LOADING_MODULES+=(
@@ -77,8 +82,6 @@ export MYZS_LOADING_SETTINGS=(
   # checking copy data. if it path go to that path automatically
   "$" enabled automatic/open-path
 
-  # add trigger event to cd command to check .myzs-setup file
-  "$" disabled setup-file/automatic
   # when checking auto setup file,
   # it will use this list to file the exist file and load to enviroment
   "$" array setup-file/list "myzs-setup" ".myzs-setup"
