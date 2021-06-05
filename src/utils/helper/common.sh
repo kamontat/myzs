@@ -96,17 +96,15 @@ _myzs:internal:load() {
 }
 
 _myzs:internal:alias() {
-  if _myzs:internal:checker:command-exist "$1"; then
-    _myzs:internal:log:warn "Cannot Add $1 alias because [command exist]"
-  else
-    _myzs:internal:log:info "Add $1 as alias of $2"
+  if ! _myzs:internal:checker:command-exist "$1"; then
+    # _myzs:internal:log:info "Add $1 as alias of $2"
     # shellcheck disable=SC2139
     alias "$1"="$2"
   fi
 }
 
 _myzs:internal:alias-force() {
-  _myzs:internal:log:info "Add $1 as alias of $2 (force)"
+  # _myzs:internal:log:info "Add $1 as alias of $2 (force)"
   # shellcheck disable=SC2139
   alias "$1"="$2"
 }
@@ -114,10 +112,8 @@ _myzs:internal:alias-force() {
 _myzs:internal:fpath-push() {
   for i in "$@"; do
     if _myzs:internal:checker:folder-exist "$i" || _myzs:internal:checker:file-exist "$i"; then
-      _myzs:internal:log:info "Add $i to fpath environment"
+      # _myzs:internal:log:info "Add $i to fpath environment"
       fpath+=("$i")
-    else
-      _myzs:internal:log:warn "Cannot add $i to fpath environment because folder or file is missing"
     fi
   done
 }
@@ -125,10 +121,16 @@ _myzs:internal:fpath-push() {
 _myzs:internal:manpath-push() {
   for i in "$@"; do
     if _myzs:internal:checker:folder-exist "$i" || _myzs:internal:checker:file-exist "$i"; then
-      _myzs:internal:log:info "Add $i to MANPATH environment"
+      # create default manpath if manpath is empty string
+      if ! _myzs:internal:checker:string-exist "$MANPATH"; then
+        if _myzs:internal:checker:mac; then
+          MANPATH="$(manpath -w):$i"
+        else
+          MANPATH="$(manpath -g):$i"
+        fi
+      fi
+
       export MANPATH="$MANPATH:$i"
-    else
-      _myzs:internal:log:warn "Cannot add $i to MANPATH environment because folder or file is missing"
     fi
   done
 }
@@ -136,14 +138,10 @@ _myzs:internal:manpath-push() {
 _myzs:internal:path-push() {
   for i in "$@"; do
     if _myzs:internal:checker:folder-exist "$i"; then
-      if [[ "$PATH" == *"$i"* ]]; then
-        _myzs:internal:log:warn "$i path is already exist to \$PATH"
-      else
-        _myzs:internal:log:info "Push $i to PATH environment"
+      if ! [[ "$PATH" == *"$i"* ]]; then
+        # _myzs:internal:log:info "Push $i to PATH environment"
         export PATH="$PATH:$i"
       fi
-    else
-      _myzs:internal:log:warn "Cannot add $i to PATH environment because folder is missing"
     fi
   done
 }
@@ -151,14 +149,10 @@ _myzs:internal:path-push() {
 _myzs:internal:path-append() {
   for i in "$@"; do
     if _myzs:internal:checker:folder-exist "$i"; then
-      if [[ "$PATH" == *"$i"* ]]; then
-        _myzs:internal:log:warn "$i path is already exist to \$PATH"
-      else
-        _myzs:internal:log:info "Append $i to PATH environment"
+      if ! [[ "$PATH" == *"$i"* ]]; then
+        # _myzs:internal:log:info "Append $i to PATH environment"
         export PATH="$i:$PATH"
       fi
-    else
-      _myzs:internal:log:warn "Cannot add $i to PATH environment because folder is missing"
     fi
   done
 }

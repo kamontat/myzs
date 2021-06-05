@@ -18,13 +18,6 @@ export LANG="${LANG:-en_US.UTF-8}"
 export LC_CTYPE="${LC_CTYPE:-en_US.UTF-8}"
 export LC_ALL="${LC_ALL:-en_US.UTF-8}"
 
-export MANPATH
-if _myzs:internal:checker:mac; then
-  MANPATH="$(manpath -w)"
-else
-  MANPATH="$(manpath -g)"
-fi
-
 if _myzs:internal:checker:file-exist "$SHELL_FILE"; then
   if ! _myzs:internal:checker:file-contains "$SHELL_FILE" "$MYZS_DEFAULT_SHELL"; then
     _myzs:internal:log:info "adding $MYZS_DEFAULT_SHELL to shell file ($SHELL_FILE)"
