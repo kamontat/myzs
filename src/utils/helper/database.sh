@@ -79,7 +79,16 @@ _myzs:private:db:exec() {
   local cmd="$1" key="$2"
   shift 2
 
-  "${__MYZS__DATABASE_SETTER_PREFIX}:${cmd}" "$key" "$@"
+  # "${__MYZS__DATABASE_SETTER_PREFIX}:${cmd}" "$key" "$@"
+
+  # first try database setter, then $key setter
+  if "${__MYZS__DATABASE_SETTER_PREFIX}:${cmd}" "$key" "$@"; then
+    return 0
+  elif "_myzs:internal:$key:setter:$cmd" "$key" "$@"; then
+    return 0
+  else
+    return 1
+  fi
 }
 
 # store data in variable by input key
