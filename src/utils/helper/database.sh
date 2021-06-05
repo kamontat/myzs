@@ -5,14 +5,6 @@
 export __MYZS__DATABASE_PREFIX="__MYZS_DATABASE__"
 export __MYZS__DATABASE_SETTER_PREFIX="_myzs:internal:db:setter"
 
-# will log only logger method is loaded to memory
-_myzs:private:db:debug() {
-  # cannot use myzs command since it might not initial
-  if command -v "_myzs:internal:log:debug" >/dev/null; then
-    _myzs:internal:log:debug "$@"
-  fi
-}
-
 _myzs:internal:db:name() {
   local name="$1"
   echo "$name" |
@@ -33,7 +25,7 @@ _myzs:internal:db:setter:string() {
   local key="$1" name="$2" value="$3"
   local varname
 
-  # _myzs:private:db:debug "set $key $name='$value'"
+  _myzs:internal:call log:debug "set $key $name='$value'"
   varname="$(_myzs:internal:db:varname "$key" "$name")"
   export "$varname=$value"
 }
@@ -49,7 +41,7 @@ _myzs:internal:db:setter:array() {
     fi
   done
 
-  _myzs:private:db:debug "set $key $name (array)"
+  _myzs:internal:call log:debug "set $key $name (array)"
   varname="$(_myzs:internal:db:varname "$key" "$name")"
   export "$varname=($value)"
 }

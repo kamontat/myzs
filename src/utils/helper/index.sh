@@ -1,5 +1,6 @@
 # shellcheck disable=SC1090,SC1091,SC2148
 
+source "${__MYZS__HLP}/preload.sh"  # internal call
 source "${__MYZS__HLP}/database.sh" # load database apis
 # source "${__MYZS__HLP}/setting.sh"  # load setting checker
 source "${__MYZS__HLP}/setting-v2.sh" # load setting checker v2
