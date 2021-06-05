@@ -21,7 +21,10 @@ _myzs:pg:private:time:convert() {
   ! $PG_FORMAT_TIME && echo "$1" && return 0
 
   local ms="$1"
-  printf '%0dm:%0ds:%0dms' $((ms / 60000)) $((ms % 60000 / 1000)) $((ms % 1000))
+
+  # TODO: support configable %m:%s:%ms | %s:%ms
+  printf '%0ds:%0dms' $((ms % 60000 / 1000)) $((ms % 1000)) # disable minutes
+  # printf '%0dm:%0ds:%0dms' $((ms / 60000)) $((ms % 60000 / 1000)) $((ms % 1000))
 }
 
 # convert input to log message format
