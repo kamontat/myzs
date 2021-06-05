@@ -1,5 +1,14 @@
 # Release notes
 
+## Version 5.5.1 (05 Jun 2021)
+
+- reduce 5 builtin modules and create separate plugins instead
+- add `app/autocd` module for autoload myzs-setup file if exist when cd to directory
+- remove all low-level log, this reduce loadtime up to 35%
+- update default values in **.zshrc** file
+- not enabled **app/vscode** and **app/git** modules by default
+- document database apis and settings apis
+
 ## Version 5.5.0 (05 Jun 2021)
 
 - add new database apis in utils for create, update data using in myzs
@@ -7,7 +16,7 @@
 - add new command `myzs-loadtest <n> <cmd...>` for measure and calculate average timing (ms)
 - if you didn't provide myzs type, by default it will loading every specify modules
 - migrated new settings apis to database apis and deprecate old setting version (will remove soon)
-- change golang default path to `$HOME/go`
+- change golang default path to **$HOME/go**
 - avoid calling unknown method when setup setting command type
 - fix myzs-info report wrong loading duration when running myzs-measure
 - fix revolver throw wrong exception when pg/style is invalid

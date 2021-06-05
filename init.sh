@@ -9,7 +9,7 @@ export __MYZS__COM="${_MYZS_ROOT}/resources/completion"
 export ZPLUG_HOME="${MYZS_ZPLUG:-${_MYZS_ROOT}/zplug}"
 
 export __MYZS__OWNER="Kamontat Chantrachirathumrong"
-export __MYZS__VERSION="5.5.0"
+export __MYZS__VERSION="5.5.1"
 export __MYZS__SINCE="21 Apr 2018"
 export __MYZS__LAST_UPDATED="05 Jun 2021"
 export __MYZS__LICENSE="AGPL-3.0 License"
