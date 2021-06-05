@@ -10,7 +10,7 @@
 #   1. myzs:setting:get "<setting/name>" "<default_value>" - this will return data to stdout
 #   2. myzs:setting:get-array "<setting/name>" "<varname>" - this will assign data to input variable name
 
-export __MYZS__SETTING_PREFIX="SETTINGS"
+export __MYZS__SETTING_PREFIX="setting"
 
 _myzs:internal:setting:initial() {
   _myzs:internal:db:loader "$__MYZS__SETTING_PREFIX" "${MYZS_LOADING_SETTINGS[@]}"
