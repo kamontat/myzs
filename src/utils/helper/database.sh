@@ -5,7 +5,7 @@
 export __MYZS__DATABASE_PREFIX="__MYZS_DATABASE__"
 export __MYZS__DATABASE_SETTER_PREFIX="_myzs:internal:db:setter"
 
-_myzs:internal:db:name() {
+_myzs:private:db:name() {
   local name="$1"
   echo "$name" |
     tr "/" "_" |
@@ -18,7 +18,7 @@ _myzs:internal:db:name() {
 }
 
 _myzs:internal:db:varname() {
-  _myzs:internal:db:name "${__MYZS__DATABASE_PREFIX}${1}-${2}"
+  _myzs:private:db:name "${__MYZS__DATABASE_PREFIX}${1}-${2}"
 }
 
 _myzs:internal:db:setter:string() {
