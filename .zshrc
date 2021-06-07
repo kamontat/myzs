@@ -92,10 +92,10 @@ export MYZS_LOADING_SETTINGS=(
   "$" disabled pb/performance
   # progress bar style (listed at src/utils/revolver)
   "$" string pb/style "bouncingBall"
+  # title shift when price progress bar
+  "$" string pb/title/length "8"
   # full message shift when print progress bar
   "$" string pb/message/length "68"
-  # title shift when price progress bar
-  "$" string pb/title/length "15"
   # minimum millisecond will be shown as danger color
   "$" string pb/timer/danger-color "600"
   # minimum millisecond will be shown as warning color
