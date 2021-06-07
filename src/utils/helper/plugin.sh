@@ -92,15 +92,18 @@ _myzs:internal:plugin:load() {
 
   if [[ "$plugin_status1" != "fail" ]]; then
     plugin_init="${plugin_path}/myzs.init"
-    if _myzs:internal:checker:file-exist "${plugin_init}"; then
-      if _myzs:internal:load "${plugin_name} initial file" "${plugin_init}"; then
-        _myzs:internal:metric:log-plugin "$plugin_start_time" "$plugin_action" "$plugin_name" "$plugin_version" "$plugin_status1" "pass"
-        _myzs:internal:completed
-      else
-        _myzs:internal:metric:log-plugin "$plugin_start_time" "$plugin_action" "$plugin_name" "$plugin_version" "$plugin_status1" "fail"
-        _myzs:internal:log:error "Cannot initial myzs.init file"
-        _myzs:internal:completed
-      fi
+    if _myzs:internal:checker:file-exist "$plugin_init"; then
+      _myzs:internal:completed
+
+      # TODO: internal load take around 50ms, improve it before uncomment below code
+      # if _myzs:internal:load "${plugin_name} initial file" "${plugin_init}"; then
+      #   _myzs:internal:metric:log-plugin "$plugin_start_time" "$plugin_action" "$plugin_name" "$plugin_version" "$plugin_status1" "pass"
+      #   _myzs:internal:completed
+      # else
+      #   _myzs:internal:metric:log-plugin "$plugin_start_time" "$plugin_action" "$plugin_name" "$plugin_version" "$plugin_status1" "fail"
+      #   _myzs:internal:log:error "Cannot initial myzs.init file"
+      #   _myzs:internal:completed
+      # fi
     else
       _myzs:internal:metric:log-plugin "$plugin_start_time" "$plugin_action" "$plugin_name" "$plugin_version" "$plugin_status1" "fail"
       _myzs:internal:log:error "MYZS plugin must have myzs.init file on root (${plugin_name})"
