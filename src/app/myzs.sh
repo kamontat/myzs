@@ -35,14 +35,14 @@ myzs-download() {
 
   cd "$MYZS_ROOT" || exit 1
 
-  myzs:pg:mark "Core" "Fetching update from myzs"
-  git fetch >>"${logpath}" || myzs:pg:mark-fail "Cannot fetch data from myzs git"
+  myzs:pg:step "Core" "Fetching update from myzs"
+  git fetch >>"${logpath}" || myzs:pg:mark-fail "Core" "Cannot fetch data from myzs git"
 
-  myzs:pg:mark "Core" "Pulling update from myzs"
-  git pull >>"${logpath}" || myzs:pg:mark-fail "Cannot pull data from myzs git"
+  myzs:pg:step "Core" "Pulling update from myzs"
+  git pull >>"${logpath}" || myzs:pg:mark-fail "Core" "Cannot pull data from myzs git"
 
   for plugin in "${MYZS_LOADING_PLUGINS[@]}"; do
-    myzs:pg:mark "Plugin" "Pulling update from $plugin"
+    myzs:pg:step "Plugin" "Pulling update from $plugin"
     _myzs:internal:plugin:name-deserialize "$plugin" _myzs:internal:plugin:upgrade
   done
 
@@ -100,7 +100,7 @@ myzs-list-modules() {
     local module_status="$3"
     local module_index="$4"
 
-    printf '| %-3s | %-30s | %-30s | %-6s |\n' "${module_index}" "${module_name}" "${module_fullpath}" "${module_status}"
+    printf '| %-3s | %-26s | %-22s | %-6s |\n' "${module_index}" "${module_name}" "${module_fullpath}" "${module_status}"
   }
 
   _myzs:internal:module:loaded-list __myzs_list_modules_internal
@@ -153,15 +153,17 @@ myzs-setup-local() {
 }
 
 myzs-measure() {
-  local cmd="$1"
+  local cmd="$1" exitcode
   shift 1
 
   myzs:pg:cleanup
   myzs:pg:start
 
   "$cmd" "$@"
+  exitcode="$?"
 
   myzs:pg:stop "MEASURE_COUNT" "MEASURE_LOADTIME"
+  return $exitcode
 }
 
 myzs-loadtest() {
