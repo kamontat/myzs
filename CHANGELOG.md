@@ -1,5 +1,23 @@
 # Release notes
 
+## Version 5.5.2 (07 Jun 2021)
+
+- add `myzs-debug` with same parameters with myzs-measure, it will print all executed commands
+- improve `myzs-measure` to expose error code to exit as well
+- improve progressbar on success, skip, and failure case
+- fix manpage error on macos
+- remove duplicate setup with autocd module
+- reduce output length on several place (e.g. progressbar, debug log, or error message)
+- remove some useless debug log to improve load time
+- remove initial `init file` when load plugin, since we didn't use it anywhere
+
+| Type                                 | Load time |
+| ------------------------------------ | --------- |
+| All features and plugins             | 13s:148ms |
+| Exclude performance                  | 9s:177ms  |
+| enabled only error from above config | 8s:667ms  |
+| Enabled 3 plugins from above config  | 4s:723ms  |
+
 ## Version 5.5.1 (05 Jun 2021)
 
 - reduce 5 builtin modules and create separate plugins instead
