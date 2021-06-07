@@ -266,6 +266,7 @@ _myzs:internal:module:total-list() {
 
   local cmd="$1"
 
+  # TODO: cache all plugins to myzs-plugin tmp
   for folder in "${builtin_supported_list[@]}"; do
     plugin_path="${__MYZS__SRC}/$folder"
     if _myzs:internal:checker:folder-exist "$plugin_path"; then
@@ -283,7 +284,6 @@ _myzs:internal:module:total-list() {
     for plugin in "${MYZS_LOADING_PLUGINS[@]}"; do
       plugin_name="${plugin%%#*}"
       plugin_path="${__MYZS__PLG}/${plugin_name}/$folder"
-
       if _myzs:internal:checker:folder-exist "$plugin_path"; then
         for __plugin_component in "$plugin_path"/*.sh; do
           filename="$(basename "${__plugin_component}")"
