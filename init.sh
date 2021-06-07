@@ -88,7 +88,7 @@ fi
 # load myzs plugins
 myzs:pg:mark "Plugin" "Initial myzs plugin list"
 for plugin in "${MYZS_LOADING_PLUGINS[@]}"; do
-  myzs:pg:mark "Plugin" "Downloading ${plugin} plugin"
+  myzs:pg:mark "Plugin" "Loading $plugin"
   if ! _myzs:internal:plugin:name-deserialize "$plugin" _myzs:internal:plugin:load; then
     myzs:pg:mark-fail "Cannot load myzs plugin"
   fi
@@ -120,12 +120,6 @@ _myzs:private:core:load-module() {
   _myzs:internal:completed
 }
 _myzs:internal:module:total-list _myzs:private:core:load-module
-
-# load setup file
-if _myzs:internal:setting:is-enabled "setup-file/automatic"; then
-  myzs:pg:mark "Helper" "Loading setup file"
-  myzs-setup-local
-fi
 
 # loading path if auto open is enabled
 if _myzs:internal:checker:fully-type; then
