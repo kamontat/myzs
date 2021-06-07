@@ -93,9 +93,9 @@ _myzs:internal:checker:fully-type() {
 }
 
 _myzs:internal:checker:mac() {
-  grep -q "darwin" <<<"$(uname -s)"
+  grep -iq "darwin" <<<"$(uname -s)"
 
-  # if grep -q "darwin" <<<"$(uname -s)"; then
+  # if grep -iq "darwin" <<<"$(uname -s)"; then
   #   _myzs:internal:log:debug "You loading on MacOS"
   #   return 0
   # else
