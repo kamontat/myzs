@@ -79,14 +79,14 @@ _myzs:internal:load() {
   local args=("$@")
 
   if _myzs:internal:checker:file-exist "$filepath"; then
-    _myzs:internal:log:debug "source ${filepath} with '${args[*]}'"
+    # _myzs:internal:log:debug "source ${filepath} with '${args[*]}'"
     source "${filepath}" "${args[@]}"
     exitcode=$?
     if [[ "$exitcode" != "0" ]]; then
       _myzs:internal:log:error "Cannot load ${filename} (${filepath}) because source return $exitcode"
       _myzs:internal:failed "$exitcode"
     else
-      _myzs:internal:log:info "Loaded ${filename} (${filepath}) to the system"
+      # _myzs:internal:log:info "Loaded ${filename} (${filepath}) to the system"
       _myzs:internal:completed
     fi
   else
