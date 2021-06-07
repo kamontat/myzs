@@ -38,29 +38,29 @@ fi
 myzs:pg:start
 
 # initial system config
-myzs:pg:mark "Commandline" "Setup system settings"
-_myzs:internal:module:load "builtin#settings/system.sh" || myzs:pg:mark-fail "Cannot load system variable"
+myzs:pg:step "Command" "Setup system settings"
+_myzs:internal:module:load "builtin#settings/system.sh" || myzs:pg:mark-fail "Commandline" "Cannot load system variable"
 
 # initial path config
-myzs:pg:mark "Commandline" "Setup path settings"
-_myzs:internal:module:load "builtin#settings/path.sh" || myzs:pg:mark-fail "Cannot load path variable"
+myzs:pg:step "Command" "Setup path settings"
+_myzs:internal:module:load "builtin#settings/path.sh" || myzs:pg:mark-fail "Commandline" "Cannot load path variable"
 
 # initial zsh config
 if _myzs:internal:checker:fully-type && _myzs:internal:checker:shell:zsh; then
-  myzs:pg:mark "Commandline" "Setup commandline settings"
-  _myzs:internal:module:load "builtin#settings/zsh.sh" || myzs:pg:mark-fail "Cannot load zsh settings"
+  myzs:pg:step "Command" "Setup commandline settings"
+  _myzs:internal:module:load "builtin#settings/zsh.sh" || myzs:pg:mark-fail "Commandline" "Cannot load zsh settings"
 fi
 
 # initial zplug config
 if _myzs:internal:checker:fully-type && _myzs:internal:checker:shell:zsh && _myzs:internal:setting:is-enabled "myzs/zplug"; then
-  myzs:pg:mark "ZPlugin" "Initial zplug configuration"
-  _myzs:internal:module:load "zplug#init.zsh" || myzs:pg:mark-fail "Cannot load zplug initial script"
+  myzs:pg:step "ZPlugin" "Initial zplug configuration"
+  _myzs:internal:module:load "zplug#init.zsh" || myzs:pg:mark-fail "ZPlugin" "Cannot load zplug initial script"
 fi
 
 # load zplug plugins
 if _myzs:internal:checker:fully-type && _myzs:internal:checker:shell:zsh && _myzs:internal:setting:is-enabled "myzs/zplug"; then
-  myzs:pg:mark "ZPlugin" "Initial zplug plugin list"
-  _myzs:internal:module:load "builtin#settings/plugins.sh" || myzs:pg:mark-fail "Cannot load zplug plugins list"
+  myzs:pg:step "ZPlugin" "Initial zplug plugin list"
+  _myzs:internal:module:load "builtin#settings/plugins.sh" || myzs:pg:mark-fail "ZPlugin" "Cannot load zplug plugins list"
 
   myzs:zplug:initial-plugins # initial plugins
 
@@ -73,29 +73,29 @@ if _myzs:internal:checker:fully-type && _myzs:internal:checker:shell:zsh && _myz
     fi
   fi
 
-  myzs:pg:mark "ZPlugin" "Loading zplug plugin list"
+  myzs:pg:step "ZPlugin" "Loaded zplug plugin list"
   # load new plugins to system
   if ! zplug load --verbose >>"$MYZS_ZPLUG_LOGPATH"; then
-    myzs:pg:mark-fail "Cannot load zplug plugin"
+    myzs:pg:mark-fail "ZPlugin" "Cannot load zplug plugin"
   fi
 
-  myzs:pg:mark "ZPlugin" "Setup zplug plugin config"
+  myzs:pg:step "ZPlugin" "Setup zplug plugin config"
   if ! myzs:zplug:setup-plugins; then
-    myzs:pg:mark-fail "Cannot configure zplug plugin"
+    myzs:pg:mark-fail "ZPlugin" "Cannot configure zplug plugin"
   fi
 fi
 
 # load myzs plugins
-myzs:pg:mark "Plugin" "Initial myzs plugin list"
+myzs:pg:step "Plugin" "Initial myzs plugin list"
 for plugin in "${MYZS_LOADING_PLUGINS[@]}"; do
-  myzs:pg:mark "Plugin" "Loading $plugin"
+  myzs:pg:step "Plugin" "Loaded $plugin"
   if ! _myzs:internal:plugin:name-deserialize "$plugin" _myzs:internal:plugin:load; then
-    myzs:pg:mark-fail "Cannot load myzs plugin"
+    myzs:pg:mark-fail "Plugin" "Cannot load myzs plugin"
   fi
 done
 
 # apply all module
-myzs:pg:mark "Module" "Initial modules list"
+myzs:pg:step "Module" "Initial modules list"
 _myzs:private:core:load-module() {
   local module_type="$1" module_name="$2" module_fullpath="$3"
   local module_key
@@ -103,17 +103,18 @@ _myzs:private:core:load-module() {
 
   # TODO: improve throw error if loading module is not exist in existing module
   if [[ "${MYZS_LOADING_MODULES[*]}" =~ $module_key ]]; then
-    myzs:pg:mark "Module" "Loading ${module_name} (${module_type})"
+    myzs:pg:step "Module" "Loaded ${module_name} (${module_type})"
 
     # if myzs is small type, not load anything except alias
     if _myzs:internal:checker:small-type && ! [[ $module_name =~ "alias" ]]; then
-      myzs:pg:mark-fail "cannot load ${module_key} when TYPE is small"
+      myzs:pg:mark-fail "Module" "cannot load ${module_key} when TYPE is small"
     else
-      _myzs:internal:module:load "${module_key}" || myzs:pg:mark-fail "Cannot load $module_fullpath"
+      _myzs:internal:module:load "${module_key}" || myzs:pg:mark-fail "Module" "Cannot load $module_fullpath"
     fi
   else
+    myzs:pg:step-skip "Module" "${module_name} (${module_type})"
     _myzs:internal:module:skip "${module_key}"
-    _myzs:internal:log:warn "skipped module"
+    # _myzs:internal:log:warn "skipped module"
   fi
 
   _myzs:internal:module:cleanup
@@ -124,7 +125,7 @@ _myzs:internal:module:total-list _myzs:private:core:load-module
 # loading path if auto open is enabled
 if _myzs:internal:checker:fully-type; then
   if _myzs:internal:setting:is-enabled "automatic/open-path"; then
-    myzs:pg:mark "Helper" "Loading setup file"
+    myzs:pg:step "Helper" "Loaded setup file"
     __clipboard="$(pbpaste)"
     if _myzs:internal:checker:folder-exist "$__clipboard"; then
       cd "$__clipboard" || echo "$__clipboard not exist!"
