@@ -176,3 +176,12 @@ myzs-loadtest() {
   avg="$((ms / size))"
   printf '%s.%04d (%s)\n' "$avg" "$((avg_10k - (avg * 10000)))" "$ms"
 }
+
+myzs-debug() {
+  local cmd="$1"
+  shift 1
+
+  set -x
+  "$cmd" "$@"
+  set +x
+}
