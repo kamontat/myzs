@@ -17,24 +17,26 @@ export MYZS_LOADING_PLUGINS=(
   "myzs-plugins/core#master"
   "myzs-plugins/editor#master"
   "myzs-plugins/git#master"
-  "myzs-plugins/macos#master"
+  # "myzs-plugins/macos#master"
 
-  "myzs-plugins/thefuck#master"
-  "myzs-plugins/mobile#main"
-  "myzs-plugins/asdf#main"
-  "myzs-plugins/google#main"
-  "myzs-plugins/python#main"
-  "myzs-plugins/golang#main"
-  "myzs-plugins/nodejs#master"
-  "myzs-plugins/docker#master"
-  "kamontat/mplugin-kamontat#master"
-  "kamontat/mplugin-agoda#master"
+  # "myzs-plugins/thefuck#master"
+  # "myzs-plugins/mobile#main"
+  # "myzs-plugins/asdf#main"
+  # "myzs-plugins/google#main"
+  # "myzs-plugins/docker#master"
+
+  # "myzs-plugins/python#main"
+  # "myzs-plugins/golang#main"
+  # "myzs-plugins/nodejs#master"
+
+  # "kamontat/mplugin-kamontat#master"
+  # "kamontat/mplugin-agoda#master"
 )
 
 export MYZS_LOADING_MODULES=(
-  "builtin#app/myzs.sh"   # requires
-  "builtin#alias/myzs.sh" # requires
+  "builtin#app/myzs.sh" # requires
 
+  # "builtin#alias/myzs.sh"
   # "builtin#app/autocd.sh" # add trigger event to cd command to check .myzs-setup file
   "builtin#app/env.sh" # loading .env file in .myzs directory
   # "builtin#app/group.sh" # generator module groups support (not works)
