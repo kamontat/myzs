@@ -14,6 +14,10 @@ myzs:pg:mark-fail() {
   _myzs:internal:log:debug "[PG-FAILURED] $*"
 }
 
+myzs:pg:step-skip() {
+  _myzs:internal:log:debug "[PG-SKIPPED] $*"
+}
+
 myzs:pg:stop() {
   _myzs:internal:log:debug "stop progress bar"
 }
