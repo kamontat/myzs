@@ -35,10 +35,10 @@ export MYZS_LOADING_PLUGINS=(
 
 export MYZS_LOADING_MODULES=(
   "builtin#app/myzs.sh" # requires
+  "builtin#alias/myzs.sh"
 
-  # "builtin#alias/myzs.sh"
-  # "builtin#app/autocd.sh" # add trigger event to cd command to check .myzs-setup file
   "builtin#app/env.sh" # loading .env file in .myzs directory
+  # "builtin#app/autocd.sh" # add trigger event to cd command to check .myzs-setup file
   # "builtin#app/group.sh" # generator module groups support (not works)
 )
 
@@ -47,12 +47,6 @@ MYZS_LOADING_MODULES+=(
   "myzs-plugins/core#alias/shell.sh"
   # "myzs-plugins/editor#app/vscode.sh"
   # "myzs-plugins/git#alias/git.sh"
-)
-
-MYZS_LOADING_MODULES+=(
-  # "myzs-plugins/macos#app/coreutils.sh"
-  # "myzs-plugins/macos#app/macgpg.sh"
-  # "myzs-plugins/macos#app/macos.sh"
 )
 
 ################################
