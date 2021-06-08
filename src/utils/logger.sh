@@ -19,10 +19,13 @@ _myzs:private:log() {
   local logger_level="$1"
   shift
 
-  if [[ "$__MYZS__LOGDIR" != "" ]] && [[ $__MYZS__LOGFILE != "" ]]; then
-    if ! test -d "$__MYZS__LOGDIR"; then
-      mkdir -p "$__MYZS__LOGDIR" >/dev/null
-    fi
+  # cannot log if directory/file is not setup
+  if [[ "$__MYZS__LOGDIR" == "" ]] || [[ $__MYZS__LOGFILE == "" ]]; then
+    return 1
+  fi
+
+  if ! test -d "$__MYZS__LOGDIR"; then
+    mkdir -p "$__MYZS__LOGDIR" >/dev/null
   fi
 
   if _myzs:internal:setting:contains "logger/level" "$logger_level"; then

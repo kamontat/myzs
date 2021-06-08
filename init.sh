@@ -2,9 +2,11 @@
 
 export _MYZS_ROOT="${MYZS_ROOT:-"$HOME/.myzs"}"
 export __MYZS__SRC="${_MYZS_ROOT}/src"
-export __MYZS__HLP="${_MYZS_ROOT}/src/utils/helper"
 export __MYZS__PLG="${_MYZS_ROOT}/plugins"
 export __MYZS__COM="${_MYZS_ROOT}/resources/completion"
+
+export __MYZS__LIB="${__MYZS__SRC}/lib"
+export __MYZS__UTL="${__MYZS__SRC}/utils"
 
 export ZPLUG_HOME="${MYZS_ZPLUG:-${_MYZS_ROOT}/zplug}"
 
@@ -23,16 +25,16 @@ export __MYZS__GROUPS=()
 # ########################## #
 
 # shellcheck disable=SC1091
-source "${__MYZS__HLP}/index.sh"
+source "${__MYZS__UTL}/index.sh"
 
 _myzs:internal:setting:initial
 _myzs:internal:module:initial "$0"
 
 # load progress bar
 if _myzs:internal:checker:fully-type; then
-  _myzs:internal:module:load "builtin#utils/progress.sh"
+  _myzs:internal:module:load "builtin#lib/progress.sh"
 else
-  _myzs:internal:module:load "builtin#utils/dump-progress.sh"
+  _myzs:internal:module:load "builtin#lib/dump-progress.sh"
 fi
 
 myzs:pg:start

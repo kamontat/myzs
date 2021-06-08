@@ -6,9 +6,9 @@ export PG_RESET="\033[0m"
 
 export __MYZS__PG_PROCESS_COUNT=1
 if _myzs:internal:setting:is-disabled "pb"; then
-  export ____MYZS__REVOLVER_CMD="${__MYZS__SRC}/utils/revolver-mock"
+  export ____MYZS__REVOLVER_CMD="${__MYZS__LIB}/revolver-mock"
 else
-  export ____MYZS__REVOLVER_CMD="${__MYZS__REVOLVER_CMD:-${__MYZS__SRC}/utils/revolver}"
+  export ____MYZS__REVOLVER_CMD="${__MYZS__REVOLVER_CMD:-${__MYZS__LIB}/revolver}"
 fi
 
 # convert millisecond to string

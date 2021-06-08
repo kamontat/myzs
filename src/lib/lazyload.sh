@@ -16,7 +16,7 @@ lazy_start() {
 
 # Stop Lazy Loading
 lazy_stop() {
-  TIME=$(($(sec) - $LAZY_START_TIME))
+  TIME=$(($(sec) - LAZY_START_TIME))
 
   "$____MYZS__REVOLVER_CMD" stop
 

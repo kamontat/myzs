@@ -69,14 +69,8 @@ _myzs:internal:plugin:load() {
 
   local repo="git@github.com:$plugin_name.git"
 
-  local logpath="${MYZS_LOGPATH}"
-  if ! test -f "$logpath"; then
-    touch "$logpath"
-  fi
-
-  if ! _myzs:internal:checker:folder-exist "$plugin_folder"; then
-    mkdir "$plugin_folder"
-  fi
+  # assume log is created
+  local logpath="$MYZS_LOGPATH"
 
   if ! _myzs:internal:checker:folder-exist "$plugin_path"; then
     _myzs:internal:log:info "clone new plugin to ${plugin_path}"
