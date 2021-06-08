@@ -3,6 +3,7 @@
 ## Preload
 
 1. `_myzs:internal:call(cmd, ...args)` - execute **_myzs:internal:<cmd>** when it exist, silent ignore if not
+2. `_myzs:internal:call-or(cmd, fallback, ...args)` - execute **_myzs:internal:<cmd>** when it exist, or fallback command if not
 
 ## Database
 
