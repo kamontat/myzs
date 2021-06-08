@@ -143,6 +143,7 @@ _myzs:private:module:checker:validate() {
   if _myzs:internal:checker:file-exist "$_fullpath"; then
     _myzs:internal:completed
   else
+    _myzs:internal:log:error "cannot found module at $_fullpath"
     _myzs:internal:failed
   fi
 }
@@ -219,8 +220,7 @@ _myzs:private:module:load() {
     _myzs:internal:completed
   else
     _myzs:internal:log:debug "module = index:'${module_index}' status:'${module_status}' key:'${module_key}'"
-    _myzs:internal:log:debug "module path = ${module_fullpath}"
-    _myzs:internal:log:debug "module argument = ${args[*]}"
+    _myzs:internal:log:debug "module path = ${module_fullpath} '${args[*]}'"
 
     if [[ "${module_index}" != "" ]] && [[ "${module_index}" != "-1" ]]; then
       _myzs:internal:log:warn "module $__MYZS__CURRENT_MODULE_KEY is existed at #${module_index}; removing"
