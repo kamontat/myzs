@@ -1,6 +1,6 @@
 # Release notes
 
-## Version 5.6.3 (09 Jun 2021)
+## Version 5.5.3 (09 Jun 2021)
 
 - reduce directory check on plugins
 - add new error log when validate module failed
