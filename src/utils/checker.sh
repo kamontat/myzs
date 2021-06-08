@@ -38,13 +38,15 @@ _myzs:internal:checker:command-exist() {
 }
 
 _myzs:internal:checker:file-exist() {
-  if test -f "$1"; then
-    _myzs:internal:log:debug "checking file '$1': EXIST"
-    return 0
-  else
-    _myzs:internal:log:debug "checking file '$1': NOT_FOUND"
-    return 1
-  fi
+  test -f "$1"
+
+  # if test -f "$1"; then
+  #   _myzs:internal:log:debug "checking file '$1': EXIST"
+  #   return 0
+  # else
+  #   _myzs:internal:log:debug "checking file '$1': NOT_FOUND"
+  #   return 1
+  # fi
 }
 
 _myzs:internal:checker:file-contains() {
