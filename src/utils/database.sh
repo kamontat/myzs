@@ -43,7 +43,24 @@ _myzs:internal:db:setter:array() {
 
   _myzs:internal:call log:debug "set $key $name (array)"
   varname="$(_myzs:internal:db:varname "$key" "$name")"
-  export "$varname=($value)"
+  eval "$varname=($value)"
+}
+
+_myzs:internal:db:append:array() {
+  local key="$1" name="$2" varname value
+  shift 2
+  for data in "$@"; do
+    if test -z "$value"; then
+      value="\"$data\""
+    else
+      value="$value \"$data\""
+    fi
+  done
+
+  _myzs:internal:call log:debug "set $key $name (array)"
+  varname="$(_myzs:internal:db:varname "$key" "$name")"
+
+  eval "$varname+=($value)"
 }
 
 _myzs:internal:db:setter:number() {
@@ -72,7 +89,7 @@ _myzs:internal:db:getter:array() {
   local key="$1" name="$2" output="$3"
 
   varname="$(_myzs:internal:db:varname "$key" "$name")"
-  eval "$output=(\${${variable}})"
+  eval "$output=(\${${varname}})"
 }
 
 _myzs:private:db:exec() {
