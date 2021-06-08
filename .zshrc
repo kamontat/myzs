@@ -129,7 +129,7 @@ export MYZS_LOADING_SETTINGS=(
 # export MYZS_ZPLUG=""
 
 ## Override zplug plugins list.
-## NOTES: This will remove all plugins from src/settings/plugins.sh except 'zplug/zplug'
+## NOTES: This will remove all plugins from src/settings/zplugins.sh except 'zplug/zplug'
 ## Uncommand function below
 # myzs:zplug:custom:plugin-list() {
 #   zplug "zsh-users/zsh-autosuggestions"

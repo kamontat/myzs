@@ -10,17 +10,18 @@
 2. `_myzs:internal:db:setter:string(key, name, data)` - save **data** content to **key & name**
 3. `_myzs:internal:db:setter:number(key, name, data)` - mirror `_myzs:internal:db:setter:string`
 4. `_myzs:internal:db:setter:array(key, name, ...args)` - save **args** array to **key & name**
-5. `_myzs:internal:db:setter:disabled(key, name)` - set **key & name** to false
-6. `_myzs:internal:db:setter:enabled(key, name)` - set **key & name** to true
-7. `_myzs:internal:db:getter:string(key, name, [default])` - return data at **key & name**
-8. `_myzs:internal:db:getter:array(key, name, varname)` - get array and set result as varname
-9. `_myzs:internal:db:loader(key, ...args)` - load database format array and saved to key
-10. `_myzs:internal:db:checker:string(key, name, ...args)` - compare each **args** with data get from **key & name**
-11. `_myzs:internal:db:checker:enabled(key, name)` - compare is data on **key & name** is true or not
-12. `_myzs:internal:db:checker:disabled(key, name)` - compare is data on **key & name** is false or not
-13. `_myzs:internal:db:checker:greater-than(key, name, ...args)` - compare each **args** with data get from **key & name**
-14. `_myzs:internal:db:checker:less-than(key, name, ...args)` - compare each **args** with data get from **key & name**
-15. `_myzs:internal:db:checker:contains(key, name, ...args)` - compare each **args** contains data get from **key & name**
+5. `_myzs:internal:db:append:array(key, name, ...args)` - append **args** array to **key & name**
+6. `_myzs:internal:db:setter:disabled(key, name)` - set **key & name** to false
+7. `_myzs:internal:db:setter:enabled(key, name)` - set **key & name** to true
+8. `_myzs:internal:db:getter:string(key, name, [default])` - return data at **key & name**
+9. `_myzs:internal:db:getter:array(key, name, varname)` - get array and set result as varname
+10. `_myzs:internal:db:loader(key, ...args)` - load database format array and saved to key
+11. `_myzs:internal:db:checker:string(key, name, ...args)` - compare each **args** with data get from **key & name**
+12. `_myzs:internal:db:checker:enabled(key, name)` - compare is data on **key & name** is true or not
+13. `_myzs:internal:db:checker:disabled(key, name)` - compare is data on **key & name** is false or not
+14. `_myzs:internal:db:checker:greater-than(key, name, ...args)` - compare each **args** with data get from **key & name**
+15. `_myzs:internal:db:checker:less-than(key, name, ...args)` - compare each **args** with data get from **key & name**
+16. `_myzs:internal:db:checker:contains(key, name, ...args)` - compare each **args** contains data get from **key & name**
 
 ## Checker
 
@@ -90,8 +91,9 @@
 
 1. `_myzs:internal:plugin:name-deserialize(key)` - convert plugin key (<repo>#<version>) to plugin name and version
 2. `_myzs:internal:plugin:name-serialize(name, version)` - convert plugin name and version back to plugin key
-3. `_myzs:internal:plugin:loads(name, version)` - download plugin repository from github and initial to repo
-4. `_myzs:internal:plugin:upgrade(name, version)` - upgrade plugin repository from github and reinitital repo
+3. `_myzs:internal:plugin:install(name, version)` - install plugin repository from github and initial plugin
+4. `_myzs:internal:plugin:upgrade(name, version)` - upgrade plugin repository from github and re-initital plugin
+5. `_myzs:internal:plugin:initial(...args)` - run installing on each **args** input
 
 ## Changelog
 
