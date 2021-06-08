@@ -12,6 +12,11 @@ if [[ "$__MYZS__LOGTYPE" == "auto" ]]; then
   __MYZS__ZPLUG_LOGFILE="zplug-$(date +"%y%m%d").log"
 fi
 
+# auto create directory
+if ! test -d "$__MYZS__LOGDIR"; then
+  mkdir -p "$__MYZS__LOGDIR" >/dev/null
+fi
+
 export MYZS_LOGPATH="${__MYZS__LOGDIR}/${__MYZS__LOGFILE}"
 export MYZS_ZPLUG_LOGPATH="${__MYZS__LOGDIR}/${__MYZS__ZPLUG_LOGFILE}"
 
@@ -38,7 +43,7 @@ _myzs:private:log() {
     module_key="${__MYZS__CURRENT_MODULE_KEY:-unknown}"
 
     # make sure that log-file always exist every log event
-    local filepath="${MYZS_LOGPATH}"
+    local filepath="$MYZS_LOGPATH"
     if ! test -f "$filepath"; then
       touch "$filepath"
     fi
