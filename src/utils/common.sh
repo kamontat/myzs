@@ -69,8 +69,6 @@ _myzs:internal:project:cleanup() {
 
   _myzs:internal:module:cleanup
   _myzs:internal:metric:log-module
-
-  unset __MYZS__LIB __MYZS__UTL __MYZS__COM __MYZS__PLG
 }
 
 _myzs:internal:load() {
