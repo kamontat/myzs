@@ -1,5 +1,7 @@
 # shellcheck disable=SC1090,SC2148
 
+# TODO: refactor and implement metrics to support plugin, module and more
+
 _myzs:internal:module:initial "$0"
 
 export __MYZS__DATADIR="${MYZS_DATADIR:-/tmp/myzs/data}"

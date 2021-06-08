@@ -1,5 +1,8 @@
 # shellcheck disable=SC1090,SC2148
 
+# TODO: implement group modules together and we can load as a group
+# This will allow us to deprecate myzs-setup since group will by more understandable and easier to use
+
 _myzs:internal:module:initial "$0"
 
 export __MYZS__GROUP_PREFIX="__MYZS_GROUPS__"
