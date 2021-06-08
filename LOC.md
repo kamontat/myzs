@@ -2,10 +2,11 @@
 
 | Language     |    files |    blank |  comment |     code |
 | :----------- | -------: | -------: | -------: | -------: |
-| Bourne Shell |       57 |      666 |      333 |     2166 |
+| Bourne Shell |       32 |      608 |      436 |     1927 |
+| Markdown     |        5 |      137 |        0 |      393 |
 | zsh          |        1 |       47 |       73 |      198 |
-| YAML         |        2 |        2 |        9 |       48 |
+| YAML         |        1 |        0 |        0 |       58 |
 | --------     | -------- | -------- | -------- | -------- |
-| SUM:         |       60 |      715 |      415 |     2412 |
+| SUM:         |       39 |      792 |      509 |     2576 |
 
-> generate from `cloc --fullpath . --not-match-d "(zplug)" --not-match-f ".md" --md`
+> generate from `cloc --fullpath . --not-match-d "(zplug|plugins)" --md`

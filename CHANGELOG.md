@@ -1,5 +1,29 @@
 # Release notes
 
+## Version 5.6.3 (09 Jun 2021)
+
+- reduce directory check on plugins
+- add new error log when validate module failed
+- remove variable cleanup because it might use via `myzs-*` commands
+- add new apis `_myzs:internal:call-or` for calling if internal command exist or fallback command
+- reduce more debug log on low level checker
+- auto create directory before anything
+- change zplug plugin to zplugin and myzs-plugin to plugin to avoid confuse
+- now we can append array in database data via `_myzs:internal:db:append:array`
+- implement plugins system to depend on database apis (similar with setting)
+- due to migration plugins system, plugin metrics will disabled for a while
+- improve how plugin method works to simpify custom steps
+- update LOC.md
+
+| Type                               | Tasks | Load time |
+| ---------------------------------- | ----- | --------- |
+| Default config                     | 28    | 5s:122ms  |
+| Enable all log level               | 28    | 5s:607ms  |
+| Enable performance log             | 28    | 6s:702ms  |
+| Enabled all log and performance    | 28    | 7s:166ms  |
+| Enabled all available myzs-plugins | 43    | 7s:368ms  |
+| Enabled all features and plugins   | 43    | 10s:474ms |
+
 ## Version 5.5.2 (07 Jun 2021)
 
 - add `myzs-debug` with same parameters with myzs-measure, it will print all executed commands
