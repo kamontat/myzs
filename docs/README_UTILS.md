@@ -41,7 +41,7 @@ This method is for execute internal command but we not sure is it available or n
 _myzs:internal:call log:debug echo "debug message"
 ```
 
-<p></details>
+</p></details>
 
 ## Database
 
