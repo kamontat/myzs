@@ -13,10 +13,10 @@ myzs:module:new "$0"
 # $2 => function: cmd(module type, module name, module key)
 _myzs:internal:module:name-deserialize() {
   local input="$1" cmd="$2"
-  local module_type="${input%%#*}"
-  local module_name="${input##*#}"
-
   shift 2
+
+  local module_type="${input%%\#*}"
+  local module_name="${input##*\#}"
 
   # add prefix if not exist
   ! [[ $module_name =~ \.sh$ ]] && module_name="${module_name}.sh"
@@ -160,46 +160,58 @@ _myzs:private:module:saved() {
   __MYZS__MODULES+=("${module_type},${module_name},${module_status}")
 }
 
-# load module by name
-_myzs:private:module:load() {
-  local module_index_status module_index module_status module_type module_name module_fullpath
+_myzs:internal:module:query() {
+  local cmd="$1" module_type="$2" module_name="$3"
+  local module_fullpath
 
-  module_type="$1"
-  module_name="$2"
-  export __MYZS__CURRENT_MODULE_KEY="$3" # This will mark module key on log
+  export __MYZS__CURRENT_MODULE_KEY="$4"
 
-  shift 3
+  shift 4
   local args=("$@")
 
   module_fullpath="$(_myzs:private:module:fullpath "${module_type}" "${module_name}")"
-
   # shellcheck disable=SC2207
   module_index_status=($(_myzs:internal:module:index-status "$__MYZS__CURRENT_MODULE_KEY"))
   module_index="${module_index_status[1]}"
   module_status="${module_index_status[2]}"
 
-  ((module_index--)) # change array index start from 1 to start from 0
+  # validate only when old data is exist
+  if test -n "$module_index" && test -n "$module_status"; then
+    ((module_index--)) # change array index start from 1 to start from 0
 
-  # skip modules that already passed
-  if [[ "${module_status}" == "pass" ]]; then
-    _myzs:internal:log:debug "skip module '$__MYZS__CURRENT_MODULE_KEY' because this module has been loaded successfully"
-    return 0
+    # skip modules that already passed
+    if [[ "$module_status" == "pass" ]]; then
+      _myzs:internal:log:debug "skip module '$__MYZS__CURRENT_MODULE_KEY' because this module has been loaded successfully"
+      return 0
+    fi
+
+    _myzs:internal:log:debug "module = index:'${module_index}' status:'${module_status}' key:'$__MYZS__CURRENT_MODULE_KEY'"
+    _myzs:internal:log:debug "module path = ${module_fullpath} '${args[*]}'"
+
+    if [[ "${module_index}" != "" ]] && [[ "${module_index}" != "-1" ]]; then
+      _myzs:internal:log:warn "module $__MYZS__CURRENT_MODULE_KEY is existed at #${module_index}; removing"
+      _myzs:internal:remove-array-index "__MYZS__MODULES" "${module_index}"
+    fi
   fi
 
-  _myzs:internal:log:debug "module = index:'${module_index}' status:'${module_status}' key:'$__MYZS__CURRENT_MODULE_KEY'"
-  _myzs:internal:log:debug "module path = ${module_fullpath} '${args[*]}'"
+  "$cmd" "$__MYZS__CURRENT_MODULE_KEY" "$module_fullpath" "$@"
+}
 
-  if [[ "${module_index}" != "" ]] && [[ "${module_index}" != "-1" ]]; then
-    _myzs:internal:log:warn "module $__MYZS__CURRENT_MODULE_KEY is existed at #${module_index}; removing"
-    _myzs:internal:remove-array-index "__MYZS__MODULES" "${module_index}"
-  fi
+# load module by name
+_myzs:private:module:load() {
+  local module_type module_name module_key
 
-  if _myzs:internal:load "$__MYZS__CURRENT_MODULE_KEY" "$module_fullpath" "${args[@]}"; then
-    _myzs:private:module:saved "$module_type" "$module_name" "$__MYZS__CURRENT_MODULE_KEY" "pass"
-    return 0
+  module_type="$1"
+  module_name="$2"
+  module_key="$3"
+
+  # This allow module to load all existing module in to memory, but it significate increase load time (~42%+)
+  # _myzs:internal:plugin:load "$module_type"
+
+  if _myzs:internal:module:query _myzs:internal:load "$@"; then
+    _myzs:private:module:saved "$module_type" "$module_name" "$module_key" "pass"
   else
-    _myzs:private:module:saved "$module_type" "$module_name" "$__MYZS__CURRENT_MODULE_KEY" "fail"
-    return 2
+    _myzs:private:module:saved "$module_type" "$module_name" "$module_key" "fail"
   fi
 }
 
