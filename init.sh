@@ -55,10 +55,7 @@ fi
 if _myzs:internal:checker:fully-type && _myzs:internal:checker:shell:zsh && _myzs:internal:setting:is-enabled "myzs/zplug"; then
   myzs:pg:step "ZPlugin" "Initial zplug configuration"
   _myzs:internal:module:load "zplug#init.zsh" || myzs:pg:mark-fail "ZPlugin" "Cannot load zplug initial script"
-fi
 
-# load zplug plugins
-if _myzs:internal:checker:fully-type && _myzs:internal:checker:shell:zsh && _myzs:internal:setting:is-enabled "myzs/zplug"; then
   myzs:pg:step "ZPlugin" "Initial zplug plugin list"
   _myzs:internal:module:load "builtin#settings/zplugins.sh" || myzs:pg:mark-fail "ZPlugin" "Cannot load zplug plugins list"
 
