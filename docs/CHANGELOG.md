@@ -1,5 +1,26 @@
 # Release notes
 
+## Version 5.6.0 (09 Jun 2021)
+
+- [BREAK] change `_myzs:internal:module:initial` method to `myzs:module:new`
+- add configable progressbar time format
+- add configable aggregate progressbar in plugin and module
+- add plugin cache to improve load time when we fetch on second time (reduce ~70%)
+- update document about greater and less than data
+- expose module key when deserialize module key
+- remove plugin data from init file
+- remove unused function in modules
+- reduce condition on zplugin loading process
+- move zplug loader to end of init process
+- improve loadtest output
+- add new apis to modified progressbar message
+- add doc to start deploy-plugin
+- create module `autopath` instead of automatic/open-path settings
+- fix title when generator table in myzs-list-module
+- when we run autocompletion on `myzs-load` it will auto load modules on given plugin
+- improve _myzs:internal:changelog:loop to return changelog index as well
+- migrate new format of readme document
+
 ## Version 5.5.3 (09 Jun 2021)
 
 - reduce directory check on plugins
