@@ -51,6 +51,34 @@ if _myzs:internal:checker:fully-type && _myzs:internal:checker:shell:zsh; then
   _myzs:internal:module:load "builtin#settings/zsh.sh" || myzs:pg:mark-fail "Commandline" "Cannot load zsh settings"
 fi
 
+# load myzs plugins
+myzs:pg:step "Plugin" "Initial ${#MYZS_LOADING_PLUGINS[@]} plugins"
+for plugin in "${MYZS_LOADING_PLUGINS[@]}"; do
+  if _myzs:internal:setting:is-disabled "myzs/plugin/aggregation"; then
+    myzs:pg:step "Plugin" "Loaded plugin $plugin"
+    if ! _myzs:internal:plugin:initial "$plugin"; then
+      myzs:pg:mark-fail "Plugin" "Cannot load $plugin plugin"
+      continue
+    fi
+  else
+    _myzs:internal:plugin:initial "$plugin"
+  fi
+done
+
+# load myzs modules
+myzs:pg:step "Module" "Initial ${#MYZS_LOADING_MODULES[@]} modules"
+for module in "${MYZS_LOADING_MODULES[@]}"; do
+  if _myzs:internal:setting:is-disabled "myzs/module/aggregation"; then
+    myzs:pg:step "Module" "Loaded module $module"
+    if ! _myzs:internal:module:load "$module"; then
+      myzs:pg:mark-fail "Module" "Cannot load $module module"
+      continue
+    fi
+  else
+    _myzs:internal:module:load "$module"
+  fi
+done
+
 # initial zplug config
 if _myzs:internal:checker:fully-type && _myzs:internal:checker:shell:zsh && _myzs:internal:setting:is-enabled "myzs/zplug"; then
   myzs:pg:step "ZPlugin" "Initial zplug configuration"
@@ -79,27 +107,6 @@ if _myzs:internal:checker:fully-type && _myzs:internal:checker:shell:zsh && _myz
   myzs:pg:step "ZPlugin" "Setup zplug plugin config"
   if ! myzs:zplug:setup-plugins; then
     myzs:pg:mark-fail "ZPlugin" "Cannot configure zplug plugin"
-  fi
-fi
-
-# load myzs plugins
-myzs:pg:step "Plugin" "Initial myzs plugin list"
-_myzs:internal:plugin:initial "${MYZS_LOADING_PLUGINS[@]}" || myzs:pg:mark-fail "Plugin" "Cannot load myzs plugin"
-
-# load myzs modules
-myzs:pg:step "Module" "Initial modules list"
-_myzs:internal:module:initial "${MYZS_LOADING_MODULES[@]}" || myzs:pg:mark-fail "Module" "Cannot load myzs module"
-
-# loading path if auto open is enabled
-if _myzs:internal:checker:fully-type; then
-  if _myzs:internal:setting:is-enabled "automatic/open-path"; then
-    myzs:pg:step "Helper" "Loaded setup file"
-    __clipboard="$(pbpaste)"
-    if _myzs:internal:checker:folder-exist "$__clipboard"; then
-      cd "$__clipboard" || echo "$__clipboard not exist!"
-    fi
-
-    unset __clipboard
   fi
 fi
 
