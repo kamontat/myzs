@@ -1,28 +1,167 @@
 # List of utilities inside this directory
 
+- [Preload](#preload)
+- [Database](#database)
+  - [deprecated docs](#deprecated-docs)
+- [Checker](#checker)
+- [Logger](#logger)
+- [Common](#common)
+- [Setting](#setting)
+- [Module](#module)
+- [Plugin](#plugin)
+- [Changelog](#changelog)
+- [Metric](#metric)
+- [Zplug](#zplug)
+
 ## Preload
 
-1. `_myzs:internal:call(cmd, ...args)` - execute **_myzs:internal:<cmd>** when it exist, silent ignore if not
-2. `_myzs:internal:call-or(cmd, fallback, ...args)` - execute **_myzs:internal:<cmd>** when it exist, or fallback command if not
+<details>
+  <summary>
+    <strong>_myzs:internal:call(cmd, ...args)</strong> - execute _myzs:internal:[cmd] if exist, silent ignore
+  </summary>
+
+This method is for execute internal command but we not sure is it available or not
+
+```bash
+# e.g. with debug log
+_myzs:internal:call log:debug "debug message"
+```
+</details>
+
+
+<details>
+  <summary>
+    <strong>_myzs:internal:call-or(cmd, fallback, ...args)</strong> - execute _myzs:internal:[cmd] if exist, or fallback command
+  </summary>
+
+This method is for execute internal command but we not sure is it available or not
+
+```bash
+# e.g. with debug log or echo if log not available
+_myzs:internal:call log:debug echo "debug message"
+```
+</details>
 
 ## Database
 
-1. `_myzs:internal:db:varname(key, name)` - combine **key** and **name** to data key
-2. `_myzs:internal:db:setter:string(key, name, data)` - save **data** content to **key & name**
-3. `_myzs:internal:db:setter:number(key, name, data)` - mirror `_myzs:internal:db:setter:string`
-4. `_myzs:internal:db:setter:array(key, name, ...args)` - save **args** array to **key & name**
-5. `_myzs:internal:db:append:array(key, name, ...args)` - append **args** array to **key & name**
-6. `_myzs:internal:db:setter:disabled(key, name)` - set **key & name** to false
-7. `_myzs:internal:db:setter:enabled(key, name)` - set **key & name** to true
-8. `_myzs:internal:db:getter:string(key, name, [default])` - return data at **key & name**
-9. `_myzs:internal:db:getter:array(key, name, varname)` - get array and set result as varname
-10. `_myzs:internal:db:loader(key, ...args)` - load database format array and saved to key
-11. `_myzs:internal:db:checker:string(key, name, ...args)` - compare each **args** with data get from **key & name**
-12. `_myzs:internal:db:checker:enabled(key, name)` - compare is data on **key & name** is true or not
-13. `_myzs:internal:db:checker:disabled(key, name)` - compare is data on **key & name** is false or not
-14. `_myzs:internal:db:checker:greater-than(key, name, ...args)` - compare each **args** with data get from **key & name**
-15. `_myzs:internal:db:checker:less-than(key, name, ...args)` - compare each **args** with data get from **key & name**
-16. `_myzs:internal:db:checker:contains(key, name, ...args)` - compare each **args** contains data get from **key & name**
+<details>
+  <summary>
+    <strong>_myzs:internal:db:varname(key, name)</strong> - convert key and name to database key
+  </summary>
+
+Usually we would use this directly, but I expose this method for client convenience
+
+```bash
+ # e.g. generator variable by combine key and name
+_myzs:internal:db:varname "setting" "data-setup"
+```
+</details>
+
+
+<details>
+  <summary>
+    <strong>_myzs:internal:db:setter:string(key, name, data)</strong> - save data to database key
+  </summary>
+
+We will create variable with given key and name, with data inside
+
+```bash
+ # e.g. setup setting color to blue
+_myzs:internal:db:setter:string "setting" "color" "blue"
+```
+</details>
+
+
+<details>
+  <summary>
+    <strong>_myzs:internal:db:setter:number(key, name, data)</strong> - same with `_myzs:internal:db:setter:string(key, name, data)`
+  </summary>
+
+We will create variable with given key and name, with data inside
+
+```bash
+ # e.g. setup batch size to 15
+_myzs:internal:db:setter:string "setting" "batch-size" 15
+```
+</details>
+
+
+<details>
+  <summary>
+    <strong>_myzs:internal:db:setter:array(key, name, ...args)</strong> - save args to database key as array type
+  </summary>
+
+We will create variable with given key and name, with initial array data to that variable name
+
+```bash
+ # e.g. setup support ids to 5, 6, 7, and 8
+_myzs:internal:db:setter:array "setting" "support-ids" 5 6 7 8
+```
+</details>
+
+
+<details>
+  <summary>
+    <strong>_myzs:internal:db:setter:enabled(key, name)</strong> - mark database key as true
+  </summary>
+
+Internally, we use _myzs:internal:db:setter:string to set value as 'true'
+
+```bash
+ # e.g. enable module experiment
+_myzs:internal:db:setter:enabled "module" "experiment"
+```
+</details>
+
+
+<details>
+  <summary>
+    <strong>_myzs:internal:db:setter:disabled(key, name)</strong> - mark database key as false
+  </summary>
+
+Internally, we use _myzs:internal:db:setter:string to set value as 'false'
+
+```bash
+ # e.g. disabled module experiment
+_myzs:internal:db:setter:disabled "module" "experiment"
+```
+</details>
+
+
+<details>
+  <summary>
+    <strong>_myzs:internal:db:append:array(key, name, ...args)</strong> - append array args to database key
+  </summary>
+
+We will append or create data to given key and name variable
+
+```bash
+ # e.g. add more element in support ids
+_myzs:internal:db:append:array "setting" "support-ids" 10, 11, 12
+```
+</details>
+
+
+
+
+
+
+
+
+
+
+
+### deprecated docs
+
+1. `_myzs:internal:db:getter:string(key, name, [default])` - return data at **key & name**
+2. `_myzs:internal:db:getter:array(key, name, varname)` - get array and set result as varname
+3.  `_myzs:internal:db:loader(key, ...args)` - load database format array and saved to key
+4.  `_myzs:internal:db:checker:string(key, name, ...args)` - compare each **args** with data get from **key & name**
+5.  `_myzs:internal:db:checker:enabled(key, name)` - compare is data on **key & name** is true or not
+6.  `_myzs:internal:db:checker:disabled(key, name)` - compare is data on **key & name** is false or not
+7.  `_myzs:internal:db:checker:greater-than(key, name, ...args)` - compare each **args** with data get from **key & name**
+8.  `_myzs:internal:db:checker:less-than(key, name, ...args)` - compare each **args** with data get from **key & name**
+9.  `_myzs:internal:db:checker:contains(key, name, ...args)` - compare each **args** contains data get from **key & name**
 
 ## Checker
 
