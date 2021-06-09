@@ -15,11 +15,25 @@ fi
 _myzs:pg:private:time:convert() {
   ! $PG_FORMAT_TIME && echo "$1" && return 0
 
-  local ms="$1"
+  local ms="$1" time_format
+  time_format="$(myzs:setting:get "pb/timer/format")"
 
-  # TODO: support configable %m:%s:%ms | %s:%ms
-  printf '%0ds:%0dms' $((ms % 60000 / 1000)) $((ms % 1000)) # disable minutes
-  # printf '%0dm:%0ds:%0dms' $((ms / 60000)) $((ms % 60000 / 1000)) $((ms % 1000))
+  local total_minute total_second total_millisecond
+  total_minute="$(printf '%01dm' "$((ms / 60000))")"
+  total_second="$(printf '%01ds' "$((ms / 1000))")"
+  total_millisecond="$(printf '%01dms' "$ms")"
+
+  second="$(printf '%02ds' "$((ms % 60000 / 1000))")" # time in seconds in 1 minute
+  millisecond="$(printf '%03dms' "$((ms % 1000))")"   # time in millisecond in 1 second
+
+  output="$time_format"
+  output="${output/\%M/$total_minute}"      # total minute is %M
+  output="${output/\%S/$total_second}"      # total second is %S
+  output="${output/\%L/$total_millisecond}" # total millisecond is %L
+  output="${output/\%s/$second}"            # second is %s
+  output="${output/\%l/$millisecond}"       # second is %l
+
+  printf '%s' "$output"
 }
 
 # convert input to log message format

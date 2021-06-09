@@ -98,7 +98,7 @@ _myzs:private:core:load-module() {
   local module_key
   module_key="$(_myzs:internal:module:name-serialize "${module_type}" "${module_name}")"
 
-  # TODO: improve throw error if loading module is not exist in existing module
+  # TODO: improve throw error if loading module is not exist in existing plugin
   if [[ "${MYZS_LOADING_MODULES[*]}" =~ $module_key ]]; then
     myzs:pg:step "Module" "Loaded ${module_name} (${module_type})"
 

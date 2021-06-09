@@ -92,6 +92,10 @@ export MYZS_LOADING_SETTINGS=(
   "$" string pb/title/length "8"
   # full message shift when print progress bar
   "$" string pb/message/length "68"
+  # timer format in progressbar
+  # %M - total minute, %S - total second, %L - total millisecond
+  # %s - second, %l - millisecond
+  "$" string pb/timer/format "%S:%l" # %L
   # minimum millisecond will be shown as danger color
   "$" string pb/timer/danger-color "600"
   # minimum millisecond will be shown as warning color
