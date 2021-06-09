@@ -32,7 +32,7 @@ _myzs:internal:call log:debug "debug message"
 <details>
   <summary>
     <strong>_myzs:internal:call-or(cmd, fallback, ...args)</strong> - execute _myzs:internal:[cmd] if exist, or fallback command
-  </summary>
+  </summary><p>
 
 This method is for execute internal command but we not sure is it available or not
 
@@ -41,7 +41,7 @@ This method is for execute internal command but we not sure is it available or n
 _myzs:internal:call log:debug echo "debug message"
 ```
 
-</details>
+<p></details>
 
 ## Database
 
@@ -56,6 +56,7 @@ Usually we would use this directly, but I expose this method for client convenie
  # e.g. generator variable by combine key and name
 _myzs:internal:db:varname "setting" "data-setup"
 ```
+
 </details>
 
 
