@@ -11,7 +11,7 @@
 echo "[1/7] Prepare and update version:
         1. update \$__MYZS__VERSION
         2. update \$__MYZS__LAST_UPDATED
-        3. update CHANGELOG.md file"
+        3. update docs/CHANGELOG.md file"
 
 echo "[2/7] List all tags that already exist:"
 git tag --column

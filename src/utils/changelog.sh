@@ -5,7 +5,7 @@ myzs:module:new "$0"
 # $1 is command to run
 #    fn arguments = "index" "version" "date" "description"
 _myzs:internal:changelog:loop() {
-  local cl="$_MYZS_ROOT/CHANGELOG.md"
+  local cl="$_MYZS_ROOT/docs/CHANGELOG.md"
 
   # changelogs array format
   # [ <version_number> <release_date> <description_per_line> ]

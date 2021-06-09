@@ -76,7 +76,7 @@ License    '$__MYZS__LICENSE'
 }
 
 myzs-list-changelogs() {
-  local cl="$_MYZS_ROOT/CHANGELOG.md"
+  local cl="$_MYZS_ROOT/docs/CHANGELOG.md"
 
   if _myzs:internal:checker:file-exist "$cl"; then
     cat "$cl"
