@@ -17,17 +17,17 @@ export MYZS_LOADING_PLUGINS=(
   "myzs-plugins/core#master"
   "myzs-plugins/editor#master"
   "myzs-plugins/git#master"
-  # "myzs-plugins/macos#master"
+  "myzs-plugins/macos#master"
 
-  # "myzs-plugins/thefuck#master"
-  # "myzs-plugins/mobile#main"
-  # "myzs-plugins/asdf#main"
-  # "myzs-plugins/google#main"
-  # "myzs-plugins/docker#master"
+  "myzs-plugins/thefuck#master"
+  "myzs-plugins/mobile#main"
+  "myzs-plugins/asdf#main"
+  "myzs-plugins/google#main"
+  "myzs-plugins/docker#master"
 
-  # "myzs-plugins/python#main"
-  # "myzs-plugins/golang#main"
-  # "myzs-plugins/nodejs#master"
+  "myzs-plugins/python#main"
+  "myzs-plugins/golang#main"
+  "myzs-plugins/nodejs#master"
 
   # "kamontat/mplugin-kamontat#master"
   # "kamontat/mplugin-agoda#master"
@@ -37,7 +37,9 @@ export MYZS_LOADING_MODULES=(
   "builtin#app/myzs.sh" # requires
   "builtin#alias/myzs.sh"
 
-  "builtin#app/env.sh" # loading .env file in .myzs directory
+  "builtin#app/env.sh"      # loading .env file in .myzs directory
+  "builtin#app/autopath.sh" # move to path from clipboard if folder is exist
+
   # "builtin#app/autocd.sh" # add trigger event to cd command to check .myzs-setup file
   # "builtin#app/group.sh" # generator module groups support (not works)
 )
@@ -46,7 +48,7 @@ MYZS_LOADING_MODULES+=(
   "myzs-plugins/core#alias/short.sh"
   "myzs-plugins/core#alias/shell.sh"
   # "myzs-plugins/editor#app/vscode.sh"
-  # "myzs-plugins/git#alias/git.sh"
+  "myzs-plugins/git#alias/git.sh"
 )
 
 ################################
@@ -71,12 +73,15 @@ export MYZS_LOADING_SETTINGS=(
   # for custom plugins look to `Zsh dependencies plugins` section
   "$" enabled myzs/zplug
 
+  # Enabled this meaning progressbar step when we load plugin to be one 1 task
+  "$" enabled myzs/plugin/aggregation
+
+  # Enabled this meaning progressbar step when we load plugin to be one 1 task
+  "$" enabled myzs/module/aggregation
+
   # List of enabled log level, this is case insensitive
   # "error" "warn" "info" "debug"
   "$" array logger/level "error"
-
-  # checking copy data. if it path go to that path automatically
-  "$" enabled automatic/open-path
 
   # when checking auto setup file,
   # it will use this list to file the exist file and load to enviroment
@@ -95,7 +100,7 @@ export MYZS_LOADING_SETTINGS=(
   # timer format in progressbar
   # %M - total minute, %S - total second, %L - total millisecond
   # %s - second, %l - millisecond
-  "$" string pb/timer/format "%S:%l" # %L
+  "$" string pb/timer/format "%L"
   # minimum millisecond will be shown as danger color
   "$" string pb/timer/danger-color "600"
   # minimum millisecond will be shown as warning color
