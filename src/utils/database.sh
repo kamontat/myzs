@@ -108,12 +108,6 @@ _myzs:private:db:exec() {
   fi
 }
 
-# store data in variable by input key
-# $1 - data key
-# $@ - data templates
-# data template must start with "$" next is setter name and value
-# e.g. _myzs:internal:db:loader "key" "$" "string" "data/example" "hello"
-# result will be __MYZS_DATABASE__KEY_DATA_EXAMPLE="hello"
 _myzs:internal:db:loader() {
   local key="$1" cmd="" args=()
   shift
@@ -144,7 +138,7 @@ _myzs:internal:db:loader() {
 # checking input **key & name** data via
 # trying to check with other args, if any of them return true, checker will return true
 # support only string | number | boolean, but not array
-_myzs:private:db:checker() {
+_myzs:private:db:checker:or() {
   local cmd="$1" key="$2" name="$3" __vtest=""
   shift 3
 
@@ -156,6 +150,20 @@ _myzs:private:db:checker() {
   done
 
   return 1
+}
+
+_myzs:private:db:checker:and() {
+  local cmd="$1" key="$2" name="$3" __vtest=""
+  shift 3
+
+  __vtest="$(_myzs:internal:db:getter:string "$key" "$name")"
+  for matcher in "$@"; do
+    if ! "$cmd" "$__vtest" "$matcher"; then
+      return 1
+    fi
+  done
+
+  return 0
 }
 
 # this can use in `_myzs:private:db:checker`
@@ -183,35 +191,33 @@ _myzs:private:db:checker:contains() {
 }
 
 _myzs:internal:db:checker:string() {
-  _myzs:private:db:checker \
+  _myzs:private:db:checker:or \
     _myzs:private:db:checker:equals "$@"
 }
 
 # use this when default value is disabled (false)
 _myzs:internal:db:checker:enabled() {
-  _myzs:private:db:checker \
+  _myzs:private:db:checker:or \
     _myzs:private:db:checker:equals "$1" "$2" "true" "TRUE" "True"
 }
 
 # use this when default value is enabled (true)
 _myzs:internal:db:checker:disabled() {
-  _myzs:private:db:checker \
+  _myzs:private:db:checker:or \
     _myzs:private:db:checker:equals "$1" "$2" "false" "FALSE" "False"
 }
 
-# $setting > $B || $setting > $C ...
 _myzs:internal:db:checker:greater-than() {
-  _myzs:private:db:checker \
+  _myzs:private:db:checker:or \
     _myzs:private:db:checker:greater-than "$@"
 }
 
-# $setting < $B || $setting < $C ...
 _myzs:internal:db:checker:less-than() {
-  _myzs:private:db:checker \
+  _myzs:private:db:checker:or \
     _myzs:private:db:checker:less-than "$@"
 }
 
 _myzs:internal:db:checker:contains() {
-  _myzs:private:db:checker \
+  _myzs:private:db:checker:or \
     _myzs:private:db:checker:contains "$@"
 }
