@@ -22,10 +22,10 @@
 
 This method is for execute internal command but we not sure is it available or not
 
-```bash
+<code>
 # e.g. with debug log
 _myzs:internal:call log:debug "debug message"
-```
+</code>
 </details>
 
 
