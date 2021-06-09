@@ -120,9 +120,6 @@ _myzs:internal:plugin:upgrade() {
 }
 
 _myzs:internal:plugin:initial() {
-  local plugins=("$@")
-
-  for plugin in "${plugins[@]}"; do
-    _myzs:internal:plugin:name-deserialize "$plugin" _myzs:internal:plugin:install
-  done
+  local plugin="$1"
+  _myzs:internal:plugin:name-deserialize "$plugin" _myzs:internal:plugin:install
 }

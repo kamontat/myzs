@@ -183,23 +183,23 @@ _myzs:private:module:load() {
   # skip modules that already passed
   if [[ "${module_status}" == "pass" ]]; then
     _myzs:internal:log:debug "skip module '$__MYZS__CURRENT_MODULE_KEY' because this module has been loaded successfully"
-    _myzs:internal:completed
+    return 0
+  fi
+
+  _myzs:internal:log:debug "module = index:'${module_index}' status:'${module_status}' key:'$__MYZS__CURRENT_MODULE_KEY'"
+  _myzs:internal:log:debug "module path = ${module_fullpath} '${args[*]}'"
+
+  if [[ "${module_index}" != "" ]] && [[ "${module_index}" != "-1" ]]; then
+    _myzs:internal:log:warn "module $__MYZS__CURRENT_MODULE_KEY is existed at #${module_index}; removing"
+    _myzs:internal:remove-array-index "__MYZS__MODULES" "${module_index}"
+  fi
+
+  if _myzs:internal:load "$__MYZS__CURRENT_MODULE_KEY" "$module_fullpath" "${args[@]}"; then
+    _myzs:private:module:saved "$module_type" "$module_name" "$__MYZS__CURRENT_MODULE_KEY" "pass"
+    return 0
   else
-    _myzs:internal:log:debug "module = index:'${module_index}' status:'${module_status}' key:'$__MYZS__CURRENT_MODULE_KEY'"
-    _myzs:internal:log:debug "module path = ${module_fullpath} '${args[*]}'"
-
-    if [[ "${module_index}" != "" ]] && [[ "${module_index}" != "-1" ]]; then
-      _myzs:internal:log:warn "module $__MYZS__CURRENT_MODULE_KEY is existed at #${module_index}; removing"
-      _myzs:internal:remove-array-index "__MYZS__MODULES" "${module_index}"
-    fi
-
-    if _myzs:internal:load "$__MYZS__CURRENT_MODULE_KEY" "$module_fullpath" "${args[@]}"; then
-      _myzs:private:module:saved "$module_type" "$module_name" "$__MYZS__CURRENT_MODULE_KEY" "pass"
-      _myzs:internal:completed
-    else
-      _myzs:private:module:saved "$module_type" "$module_name" "$__MYZS__CURRENT_MODULE_KEY" "fail"
-      _myzs:internal:failed 2
-    fi
+    _myzs:private:module:saved "$module_type" "$module_name" "$__MYZS__CURRENT_MODULE_KEY" "fail"
+    return 2
   fi
 }
 
@@ -289,12 +289,5 @@ _myzs:internal:module:loaded-list() {
     if ! $cmd "$module_type" "$module_name" "$module_status" "$current" "$size" "$module_csv" "${args[@]}"; then
       return $?
     fi
-  done
-}
-
-# initial input modules array via `_myzs:internal:module:load`
-_myzs:internal:module:initial() {
-  for module in "$@"; do
-    _myzs:internal:module:load "$module"
   done
 }
