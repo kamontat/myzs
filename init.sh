@@ -28,7 +28,7 @@ export __MYZS__GROUPS=()
 source "${__MYZS__UTL}/index.sh"
 
 _myzs:internal:setting:initial
-_myzs:internal:module:initial "$0"
+myzs:module:new "$0"
 
 # load progress bar
 if _myzs:internal:checker:fully-type; then
@@ -91,33 +91,9 @@ fi
 myzs:pg:step "Plugin" "Initial myzs plugin list"
 _myzs:internal:plugin:initial "${MYZS_LOADING_PLUGINS[@]}" || myzs:pg:mark-fail "Plugin" "Cannot load myzs plugin"
 
-# apply all module
+# load myzs modules
 myzs:pg:step "Module" "Initial modules list"
-_myzs:private:core:load-module() {
-  local module_type="$1" module_name="$2" module_fullpath="$3"
-  local module_key
-  module_key="$(_myzs:internal:module:name-serialize "${module_type}" "${module_name}")"
-
-  # TODO: improve throw error if loading module is not exist in existing plugin
-  if [[ "${MYZS_LOADING_MODULES[*]}" =~ $module_key ]]; then
-    myzs:pg:step "Module" "Loaded ${module_name} (${module_type})"
-
-    # if myzs is small type, not load anything except alias
-    if _myzs:internal:checker:small-type && ! [[ $module_name =~ "alias" ]]; then
-      myzs:pg:mark-fail "Module" "cannot load ${module_key} when TYPE is small"
-    else
-      _myzs:internal:module:load "${module_key}" || myzs:pg:mark-fail "Module" "Cannot load $module_fullpath"
-    fi
-  else
-    myzs:pg:step-skip "Module" "${module_name} (${module_type})"
-    _myzs:internal:module:skip "${module_key}"
-    # _myzs:internal:log:warn "skipped module"
-  fi
-
-  _myzs:internal:module:cleanup
-  _myzs:internal:completed
-}
-_myzs:internal:module:total-list _myzs:private:core:load-module
+_myzs:internal:module:initial "${MYZS_LOADING_MODULES[@]}" || myzs:pg:mark-fail "Module" "Cannot load myzs module"
 
 # loading path if auto open is enabled
 if _myzs:internal:checker:fully-type; then
