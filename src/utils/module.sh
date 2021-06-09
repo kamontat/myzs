@@ -1,6 +1,6 @@
 # shellcheck disable=SC1090,SC2148
 
-_myzs:internal:module:initial "$0"
+myzs:module:new "$0"
 
 # NOTES: MUST NOT USE $module_path as variable name
 
@@ -10,7 +10,7 @@ _myzs:internal:module:initial "$0"
 
 # convert module key to module name and type
 # $1 => input module key
-# $2 => function: cmd(module type, module name)
+# $2 => function: cmd(module type, module name, module key)
 _myzs:internal:module:name-deserialize() {
   local input="$1" cmd="$2"
   local module_type="${input%%#*}"
@@ -20,10 +20,10 @@ _myzs:internal:module:name-deserialize() {
 
   # add prefix if not exist
   ! [[ $module_name =~ \.sh$ ]] && module_name="${module_name}.sh"
-
+  # add module type if not exist
   [[ "$module_type" == "$module_name" ]] && module_type="builtin"
 
-  $cmd "$module_type" "$module_name" "$@"
+  $cmd "$module_type" "$module_name" "${module_type}#${module_name}" "$@"
 }
 
 # convert module name and type to module key
@@ -77,7 +77,7 @@ _myzs:private:module:search-name-internal() {
 }
 
 _myzs:private:module:search-name() {
-  local _search_module_type="$1" _search_module_name="$2" _cmd="$3"
+  local _search_module_type="$1" _search_module_name="$2" _cmd="$4"
 
   _myzs:internal:module:loaded-list _myzs:private:module:search-name-internal "${_search_module_type}" "${_search_module_name}" "${_cmd}"
 }
@@ -152,7 +152,7 @@ _myzs:private:module:checker:validate() {
 _myzs:internal:module:checker:validate() {
   local input="$1"
   shift 1
-  _myzs:internal:module:name-deserialize "$input" _myzs:private:module:checker:validate "$@"
+  _myzs:internal:module:name-deserialize "$input" _myzs:private:module:checker:validate
 }
 
 _myzs:private:module:fullpath() {
@@ -175,40 +175,38 @@ _myzs:private:module:fullpath() {
 _myzs:internal:module:fullpath() {
   local _input="$1"
   shift 1
-  _myzs:internal:module:name-deserialize "$_input" _myzs:private:module:fullpath "$@"
+  _myzs:internal:module:name-deserialize "$_input" _myzs:private:module:fullpath
 }
 
 _myzs:private:module:saved() {
   local module_type="$1"
   local module_name="$2"
-  local module_status="$3"
+  local module_key="$3"
+  local module_status="$4"
 
   export __MYZS__CURRENT_MODULE_TYPE="${module_type}"
   export __MYZS__CURRENT_MODULE_NAME="${module_name}"
   export __MYZS__CURRENT_MODULE_STATUS="${module_status}"
-  export __MYZS__CURRENT_MODULE_KEY
-  __MYZS__CURRENT_MODULE_KEY="$(_myzs:internal:module:name-serialize "${__MYZS__CURRENT_MODULE_TYPE}" "${__MYZS__CURRENT_MODULE_NAME}")"
+  export __MYZS__CURRENT_MODULE_KEY="${module_key}"
 
   __MYZS__MODULES+=("${module_type},${module_name},${module_status}")
 }
 
 # load module by name
 _myzs:private:module:load() {
-  local module_index_status module_index module_status module_key module_type module_name module_fullpath
+  local module_index_status module_index module_status module_type module_name module_fullpath
 
   module_type="$1"
   module_name="$2"
-  module_key="$(_myzs:internal:module:name-serialize "${module_type}" "${module_name}")"
-  export __MYZS__CURRENT_MODULE_KEY="${module_key}" # This move module key update before it will log to file
+  export __MYZS__CURRENT_MODULE_KEY="$3" # This will mark module key on log
 
-  shift 2
+  shift 3
   local args=("$@")
 
-  module_key="$(_myzs:internal:module:name-serialize "${module_type}" "${module_name}")"
   module_fullpath="$(_myzs:private:module:fullpath "${module_type}" "${module_name}")"
 
   # shellcheck disable=SC2207
-  module_index_status=($(_myzs:internal:module:index-status "${module_key}"))
+  module_index_status=($(_myzs:internal:module:index-status "$__MYZS__CURRENT_MODULE_KEY"))
   module_index="${module_index_status[1]}"
   module_status="${module_index_status[2]}"
 
@@ -216,10 +214,10 @@ _myzs:private:module:load() {
 
   # skip modules that already passed
   if [[ "${module_status}" == "pass" ]]; then
-    _myzs:internal:log:debug "skip module '${module_key}' because this module has been loaded successfully"
+    _myzs:internal:log:debug "skip module '$__MYZS__CURRENT_MODULE_KEY' because this module has been loaded successfully"
     _myzs:internal:completed
   else
-    _myzs:internal:log:debug "module = index:'${module_index}' status:'${module_status}' key:'${module_key}'"
+    _myzs:internal:log:debug "module = index:'${module_index}' status:'${module_status}' key:'$__MYZS__CURRENT_MODULE_KEY'"
     _myzs:internal:log:debug "module path = ${module_fullpath} '${args[*]}'"
 
     if [[ "${module_index}" != "" ]] && [[ "${module_index}" != "-1" ]]; then
@@ -227,11 +225,11 @@ _myzs:private:module:load() {
       _myzs:internal:remove-array-index "__MYZS__MODULES" "${module_index}"
     fi
 
-    if _myzs:internal:load "$module_key" "$module_fullpath" "${args[@]}"; then
-      _myzs:private:module:saved "$module_type" "$module_name" "pass"
+    if _myzs:internal:load "$__MYZS__CURRENT_MODULE_KEY" "$module_fullpath" "${args[@]}"; then
+      _myzs:private:module:saved "$module_type" "$module_name" "$__MYZS__CURRENT_MODULE_KEY" "pass"
       _myzs:internal:completed
     else
-      _myzs:private:module:saved "$module_type" "$module_name" "fail"
+      _myzs:private:module:saved "$module_type" "$module_name" "$__MYZS__CURRENT_MODULE_KEY" "fail"
       _myzs:internal:failed 2
     fi
   fi
@@ -246,14 +244,14 @@ _myzs:internal:module:load() {
 
 # mark module name as skip
 _myzs:private:module:skip() {
-  _myzs:private:module:saved "$1" "$2" "skip"
+  _myzs:private:module:saved "$1" "$2" "$3" "skip"
 }
 
 # mark module name as skip
 _myzs:internal:module:skip() {
   local input="$1"
   shift 1
-  _myzs:internal:module:name-deserialize "$input" _myzs:private:module:skip "$@"
+  _myzs:internal:module:name-deserialize "$input" _myzs:private:module:skip
 }
 
 # Input callback receive callback(type, name, path)
@@ -323,5 +321,12 @@ _myzs:internal:module:loaded-list() {
     if ! $cmd "$module_type" "$module_name" "$module_status" "$current" "$size" "$module_csv" "${args[@]}"; then
       return $?
     fi
+  done
+}
+
+# initial input modules array via `_myzs:internal:module:load`
+_myzs:internal:module:initial() {
+  for module in "$@"; do
+    _myzs:internal:module:load "$module"
   done
 }

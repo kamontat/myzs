@@ -50,7 +50,7 @@
 1. `_myzs:internal:completed` - return zero exit code
 2. `_myzs:internal:failed(number)` - return non-zero exit code
 3. `_myzs:internal:shell([zsh], [bash], [fish])` - return input start base on current shell
-4. `_myzs:internal:module:initial($0)` - initial module, should add to first line of code
+4. `myzs:module:new($0)` - initial module, should add to first line of code
 5. `_myzs:internal:module:cleanup(key)` - cleanup module data with optional module_key
 6. `_myzs:internal:project:cleanup` - cleaning .zshrc, must add to end of code in .zshrc file
 7. `_myzs:internal:load(name, path)` - load path via source "path" and log result to log file
@@ -75,7 +75,7 @@
 
 ## Module
 
-1. `_myzs:internal:module:name-deserialize(key)` - convert module key to module type and name
+1. `_myzs:internal:module:name-deserialize(key, cmd)` - convert module key and call cmd with cmd(type, name, key)
 2. `_myzs:internal:module:name-serialize(type, name)` - convert module type and name back to key 
 3. `_myzs:internal:module:checker:validate(name)` - check is input a valid module
 4. `_myzs:internal:module:index(name)` - get module index or -1 if not exist
