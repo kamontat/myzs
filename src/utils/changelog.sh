@@ -3,7 +3,7 @@
 myzs:module:new "$0"
 
 # $1 is command to run
-#    fn arguments = "version" "date" "description"
+#    fn arguments = "index" "version" "date" "description"
 _myzs:internal:changelog:loop() {
   local cl="$_MYZS_ROOT/CHANGELOG.md"
 
@@ -32,7 +32,7 @@ _myzs:internal:changelog:loop() {
         descriptions="${descriptions}\n${desc}"
       fi
     done <"$cl"
-    
+
     # final check
     if _myzs:internal:checker:string-exist "$descriptions"; then
       changelogs+=("$descriptions")
@@ -43,12 +43,14 @@ _myzs:internal:changelog:loop() {
     local cmd="$1"
     local size="${#changelogs[@]}"
 
+    local c=1
     for ((i = 1; i < size; i += 3)); do
       version="${changelogs[i]}"
       date="${changelogs[i + 1]}"
       description="${changelogs[i + 2]}"
 
-      $cmd "$version" "$date" "$description"
+      $cmd "$c" "$version" "$date" "$description"
+      ((c++))
     done
   else
     _myzs:internal:log:error "changelog not found at $cl"
