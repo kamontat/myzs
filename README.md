@@ -36,14 +36,27 @@ All configuration already listed in `.zshrc` file.
 
 ### Tips
 
-1. Improve start time: below setup will improve start time up to 50%
+I attach a lot of features including debugging so by default I might enable some settings / modules depend on my personal needs. This is a list of features you might set differently to improve load time. Your point of view is on `$MYZS_LOADING_SETTINGS` and `$MYZS_LOADING_MODULES`
+
+1. progressbar - by default I will always enabled progressbar to improve UX (improving ~7.3%)
+   1. aggregate data - plugins and modules tend to have many of it, we can aggregate result and report once with setting below (improving ~30.4%)
 
 ```bash
-export MYZS_LOADING_SETTINGS=(
-  "$" disabled pb                # disable progress bar
-  "$" disabled metric            # disable metrics collection
-  "$" array logger/level "error" # disable only error log
-)
+"$" disabled pb # MYZS_LOADING_SETTINGS
+"$" enabled myzs/plugin/aggregation
+"$" enabled myzs/module/aggregation
+```
+
+2. metrics - currently metric apis subject to changes a lot so now it not improve anything yet
+
+```bash
+"$" disabled metric # MYZS_LOADING_SETTINGS
+```
+
+3. logging - on normal situation only error log should enough to make script works and idenify problem if any (improving ~7.8%)
+
+```bash
+"$" array logger/level "error" # MYZS_LOADING_SETTINGS
 ```
 
 ## Plugin
