@@ -40,6 +40,7 @@ This method is for execute internal command but we not sure is it available or n
 # e.g. with debug log or echo if log not available
 _myzs:internal:call log:debug echo "debug message"
 ```
+
 </details>
 
 ## Database
