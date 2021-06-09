@@ -8,6 +8,8 @@
 # set -v #VERBOSE - Display shell input lines as they are read.
 # set -n #EVALUATE - Check syntax of the script but don't execute.
 
+# You must execute this with source "deploy-plugins.sh" since this script will depend on myzs function
+
 upload() {
   local plugin_name="$1"
 
