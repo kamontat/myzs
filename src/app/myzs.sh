@@ -92,7 +92,7 @@ myzs-list-modules() {
 
   ! _myzs:internal:checker:string-exist "${__MYZS__MODULES[*]}" && echo "Cannot find any modules exist" && exit 2
 
-  printf '| %-3s | %-30s | %-30s | %-6s |\n' "[#]" "[module type]" "[module name]" "[stat]"
+  printf '| %-3s | %-26s | %-22s | %-6s |\n' "[#]" "[module type]" "[module name]" "[stat]"
 
   __myzs_list_modules_internal() {
     local module_name="$1"
