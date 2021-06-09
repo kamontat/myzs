@@ -141,6 +141,8 @@ _myzs:internal:db:loader() {
   fi
 }
 
+# checking input **key & name** data via
+# trying to check with other args, if any of them return true, checker will return true
 # support only string | number | boolean, but not array
 _myzs:private:db:checker() {
   local cmd="$1" key="$2" name="$3" __vtest=""
@@ -197,13 +199,13 @@ _myzs:internal:db:checker:disabled() {
     _myzs:private:db:checker:equals "$1" "$2" "false" "FALSE" "False"
 }
 
-# $setting > $B && $setting > $C ...
+# $setting > $B || $setting > $C ...
 _myzs:internal:db:checker:greater-than() {
   _myzs:private:db:checker \
     _myzs:private:db:checker:greater-than "$@"
 }
 
-# $setting < $B && $setting < $C ...
+# $setting < $B || $setting < $C ...
 _myzs:internal:db:checker:less-than() {
   _myzs:private:db:checker \
     _myzs:private:db:checker:less-than "$@"
