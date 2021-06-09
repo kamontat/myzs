@@ -17,8 +17,6 @@ export __MYZS__LAST_UPDATED="09 Jun 2021"
 export __MYZS__LICENSE="AGPL-3.0 License"
 
 export __MYZS__MODULES=()
-export __MYZS__PLUGINS=()
-export __MYZS__GROUPS=()
 
 # ########################## #
 # Start loading dependencies #
