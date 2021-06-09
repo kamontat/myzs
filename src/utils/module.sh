@@ -43,15 +43,6 @@ _myzs:internal:module:name-serialize() {
   fi
 }
 
-_myzs:private:module:index() {
-  echo "$4" # current index
-}
-
-# get module index
-_myzs:internal:module:index() {
-  _myzs:internal:module:search-name "$1" _myzs:private:module:index
-}
-
 _myzs:private:module:index-status() {
   echo "$4" "$3" # index, status
 }
@@ -89,29 +80,6 @@ _myzs:internal:module:search-name() {
   local _cmd="$2"
 
   _myzs:internal:module:name-deserialize "${_input}" _myzs:private:module:search-name "${_cmd}"
-}
-
-_myzs:private:module:search-status() {
-  local _module_type="$1" _module_name="$2" _module_status="$3"
-  local _current_index="$4" _total_index="$5"
-  local _module_csv="$6"
-
-  local _search_module_status="$7" _searched_function="$8"
-
-  if [[ "$_search_module_status" == "$_module_status" ]]; then
-    $_searched_function "${_module_type}" "${_module_name}" "${_module_status}" "${_current_index}" "${_total_index}" "${_module_csv}"
-  else
-    _myzs:internal:completed
-  fi
-}
-
-# _myzs:internal:module:search-status "(pass|fail|skip)" existing_function
-# existing_function "module type" "module name" "module status" "current index" "total index" "module csv"
-_myzs:internal:module:search-status() {
-  local _module_status="$1"
-  local _cmd="$2"
-
-  _myzs:internal:module:loaded-list _myzs:private:module:search-status "${_module_status}" "${_cmd}"
 }
 
 _myzs:private:module:search-module-type() {
@@ -254,7 +222,7 @@ _myzs:internal:module:skip() {
   _myzs:internal:module:name-deserialize "$input" _myzs:private:module:skip
 }
 
-# Input callback receive callback(type, name, path)
+# @deprecated Input callback receive callback(type, name, path)
 _myzs:internal:module:total-list() {
   local folder filename dirname __builtin_component __plugin_component
   local plugin plugin_name plugin_path
