@@ -48,7 +48,7 @@ _myzs:internal:timestamp-second() {
   date +%s
 }
 
-_myzs:internal:module:initial() {
+myzs:module:new() {
   _myzs:internal:log:info "initial module '${__MYZS__CURRENT_MODULE_KEY}' at '$1'"
 }
 

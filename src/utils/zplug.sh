@@ -1,6 +1,6 @@
 # shellcheck disable=SC1090,SC2148
 
-_myzs:internal:module:initial "$0"
+myzs:module:new "$0"
 
 myzs:zplug:checker:plugin-installed() {
   local name="$1" # full name from plugin

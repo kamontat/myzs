@@ -1,13 +1,13 @@
 # shellcheck disable=SC1090,SC2148
 
-_myzs:internal:module:initial "$0"
+myzs:module:new "$0"
 
 # load environment
 export __MYZS__ENVFILE="$_MYZS_ROOT/.env"
 if _myzs:internal:checker:file-exist "$__MYZS__ENVFILE"; then
   myzs:pg:step "Helper" "Loaded environment variable"
 
-  _myzs:internal:module:initial "$__MYZS__ENVFILE"
+  myzs:module:new "$__MYZS__ENVFILE"
 
   env_list=()
   while IFS= read -r line; do

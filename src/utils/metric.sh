@@ -2,7 +2,7 @@
 
 # TODO: refactor and implement metrics to support plugin, module and more
 
-_myzs:internal:module:initial "$0"
+myzs:module:new "$0"
 
 export __MYZS__DATADIR="${MYZS_DATADIR:-/tmp/myzs/data}"
 export MYZS_MODULE_METRICPATH="$__MYZS__DATADIR/modules.csv"

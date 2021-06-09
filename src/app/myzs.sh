@@ -1,6 +1,6 @@
 # shellcheck disable=SC1091,SC2148
 
-_myzs:internal:module:initial "$0"
+myzs:module:new "$0"
 
 # myzs-upload - upload only myzs
 # myzs-upload all - upload myzs and currently loaded plugins
@@ -113,7 +113,7 @@ myzs-list-modules() {
 # param $1 - module name in src only
 #       $2 - string as 'debug' to print debug information
 myzs-load() {
-  _myzs:internal:module:initial "app/myzs.sh#myzs-load"
+  myzs:module:new "app/myzs.sh#myzs-load"
 
   local module_type="$1"
   local module_name="$2"
@@ -138,7 +138,7 @@ myzs-load() {
 
 # run myzs load set file: $PWD/.myzs-setup
 myzs-setup-local() {
-  _myzs:internal:module:initial "app/myzs.sh#myzs-setup-local"
+  myzs:module:new "app/myzs.sh#myzs-setup-local"
 
   local fullpath="" current="${1:-$PWD}"
   local filenames=()

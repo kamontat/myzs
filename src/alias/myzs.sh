@@ -1,6 +1,6 @@
 # shellcheck disable=SC1090,SC2148
 
-_myzs:internal:module:initial "$0"
+myzs:module:new "$0"
 
 _myzs:internal:alias "mupload" "myzs-upload"
 _myzs:internal:alias "mdownload" "myzs-download"

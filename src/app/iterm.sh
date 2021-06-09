@@ -1,6 +1,6 @@
 # shellcheck disable=SC1090,SC2148
 
-_myzs:internal:module:initial "$0"
+myzs:module:new "$0"
 
 export __ITERM_INTEGRATION="${HOME}/.iterm2_shell_integration.zsh"
 
