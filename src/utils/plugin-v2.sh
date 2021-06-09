@@ -1,6 +1,6 @@
 # shellcheck disable=SC1090,SC2148
 
-_myzs:internal:module:initial "$0"
+myzs:module:new "$0"
 
 export __MYZS__PLUGIN_KEY="plugin"
 
@@ -36,6 +36,12 @@ _myzs:internal:plugin:name-serialize() {
   fi
 }
 
+# show whether plugin is loaded and completed
+_myzs:private:plugin:is-done() {
+  local plugin_name="$1" plugin_version="$2"
+  _myzs:internal:db:checker:string "$__MYZS__PLUGIN_KEY" "$plugin_name-status" "pass" "skip"
+}
+
 # _myzs:private:plugin:saved $name $version (pass|fail|skip|unknown)
 _myzs:private:plugin:saved() {
   local plugin_name="$1" plugin_version="$2" plugin_status="${3:-unknown}"
@@ -50,6 +56,11 @@ _myzs:internal:plugin:install() {
   local plugin_name="$1" plugin_version="$2" plugin_status="pass"
   local plugin_path="${__MYZS__PLG}/$plugin_name"
   local plugin_repo="git@github.com:$plugin_name.git" # TODO: change this to configable data, default git clone using ssh
+
+  # skip install when it initial on current terminal session
+  if _myzs:private:plugin:is-done "$plugin_name" "$plugin_version"; then
+    return 0
+  fi
 
   # clone repository if not exist
   if ! _myzs:internal:checker:folder-exist "$plugin_path"; then
