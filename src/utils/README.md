@@ -78,15 +78,13 @@
 1. `_myzs:internal:module:name-deserialize(key, cmd)` - convert module key and call cmd with cmd(type, name, key)
 2. `_myzs:internal:module:name-serialize(type, name)` - convert module type and name back to key 
 3. `_myzs:internal:module:checker:validate(name)` - check is input a valid module
-4. `_myzs:internal:module:index(name)` - get module index or -1 if not exist
-5. `_myzs:internal:module:search-name(name, cmd)` - search module key and start callback
-6. `_myzs:internal:module:search-module-type(type, cmd)` - search module by type and start callback
-7. `_myzs:internal:module:search-status(status, cmd)` - search module by status (pass|fail|skip) and start callback
-8. `_myzs:internal:module:fullpath(name)` - get module path by name
-9. `_myzs:internal:module:load(filename, filepath)` - load file as module
-10. `_myzs:internal:module:skip(filename, filepath)` - mark file as skipped module
-11. `_myzs:internal:module:loaded-list(cmd)` - loop loaded modules with status
-12. `_myzs:internal:module:total-list(cmd)` - loop all exist modules and myzs builtin and plugins
+4. `_myzs:internal:module:search-name(name, cmd)` - search module key and start callback
+5. `_myzs:internal:module:search-module-type(type, cmd)` - search module by type and start callback
+6. `_myzs:internal:module:fullpath(name)` - get module path by name
+7. `_myzs:internal:module:load(filename, filepath)` - load file as module
+8.  `_myzs:internal:module:skip(filename, filepath)` - mark file as skipped module
+9.  `_myzs:internal:module:loaded-list(cmd)` - loop loaded modules with status
+10. `_myzs:internal:module:total-list(cmd)` - loop all exist modules and myzs builtin and plugins
 
 ## Plugin
 
