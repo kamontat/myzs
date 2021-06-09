@@ -152,6 +152,11 @@ myzs:pg:step() {
   myzs:pg:private:mark "C" "$@"
 }
 
+# modified msg of current step
+myzs:pg:msg() {
+  PG_PREV_MSG=$(_myzs:pg:private:message:format "$@")
+}
+
 # start skipping step
 myzs:pg:step-skip() {
   local title="$1"
