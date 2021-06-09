@@ -2,15 +2,10 @@
 
 This is a configable rc file (shell initial file) mainly support `zshrc`, with possible to support bash.
 
-## Table of Content
-
-1. [Dependencies](#dependencies)
-2. [Usage](#usage)
-
-## Dependencies
-
-1. [zplug](https://github.com/zplug/zplug): for plugin manangement
-2. [gitgo](https://github.com/kamontat/gitgo): for git commit management
+- [Development](./docs/DEV.md)
+- [Utilities](./docs/README_UTILS.md)
+- [Plugins](./docs/README_PLUGINS.md)
+- [Line of Code](./docs/LOC.md)
 
 ## Usage
 
@@ -29,6 +24,13 @@ You need to copy the application place to correct location and every work fine.
 1. Fork the project
 2. Clone project via `git clone $HOME/.myzs` or download by Github UI
 3. Link `.zshrc` from myzs to root $HOME via `ln -s "$HOME/.myzs/.zshrc" "$HOME/.zshrc"`.
+
+### Command
+
+utils script for manage this project.
+
+1. `./scripts/command.sh install` - This will install command to current .zshrc files
+2. `./scripts/command.sh uninstall` - This will uninstall this project add delete all file
 
 ## Configuration
 
@@ -59,21 +61,7 @@ I attach a lot of features including debugging so by default I might enable some
 "$" array logger/level "error" # MYZS_LOADING_SETTINGS
 ```
 
-## Plugin
+## Dependencies
 
-Plugin is a repository contains multiple module together, that support loading only with first load.
-The myzs will clone plugin repository to local and initial them with some scripts.
-Plugin can upgrade via myzs-download (mdownload) command. All myzs plugin has listed at [myzs-plugins](https://github.com/myzs-plugins). And this is a [template](https://github.com/myzs-plugins/template).
-
-## Module
-
-## Command
-
-I create command utils script for manage this project.
-
-1. `./scripts/command.sh install` - This will install command to current .zshrc files
-2. `./scripts/command.sh uninstall` - This will uninstall this project add delete all file
-
-## Developer Documentation
-
-1. Helper: [README.md](./src/utils/helper/README.md)
+1. [zplug](https://github.com/zplug/zplug): for plugin manangement
+2. [gitgo](https://github.com/kamontat/gitgo): for git commit management
