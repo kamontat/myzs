@@ -31,6 +31,9 @@ __myzs-load-module-list() {
 
   # shellcheck disable=SC2154
   _myzs:internal:module:search-module-type "${words[2]}" __myzs_completion-get-module
+  if [[ ${#__myzs_completion_modules[@]} -lt 1 ]]; then
+    _myzs:internal:plugin:load "${words[2]}"
+  fi
 
   _describe 'modules list' "(${__myzs_completion_modules[*]})"
 }
