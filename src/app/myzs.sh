@@ -50,6 +50,9 @@ myzs-download() {
 }
 
 myzs-info() {
+  local app_type
+  app_type="$(_myzs:internal:db:getter:string "setting" "type")"
+
   echo "# Introduction
 
 MYZS is a configable zsh initial scripts (known as .zshrc).
@@ -62,7 +65,7 @@ You can upgrade version by run 'myzs-download' to fetch latest version.
 1. Current user:         ${USER}
 2. Application location: ${_MYZS_ROOT}
 3. Application version:  ${__MYZS__VERSION}
-4. Application type:     ${__MYZS_SETTINGS__MYZS_TYPE}
+4. Application type:     ${app_type}
 5. Log location:         ${MYZS_LOGPATH}
 6. Loading time:         ${STARTUP_LOADTIME}
 7. Loaded time:          ${__MYZS__FINISH_TIME}
