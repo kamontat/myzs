@@ -100,7 +100,7 @@ export MYZS_LOADING_SETTINGS=(
   # timer format in progressbar
   # %M - total minute, %S - total second, %L - total millisecond
   # %s - second, %l - millisecond
-  "$" string pb/timer/format "%L"
+  "$" string pb/timer/format "%S:%l"
   # minimum millisecond will be shown as danger color
   "$" string pb/timer/danger-color "600"
   # minimum millisecond will be shown as warning color
