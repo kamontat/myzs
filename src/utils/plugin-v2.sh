@@ -63,7 +63,8 @@ _myzs:internal:plugin:install() {
   local plugin_repo="git@github.com:$plugin_name.git" # TODO: change this to configable data, default git clone using ssh
 
   # skip install when it initial on current terminal session
-  if _myzs:private:plugin:is "$plugin_name" "$plugin_version" "clone" "load"; then
+  if _myzs:internal:db:checker:enabled "plugin/cache" &&
+    _myzs:private:plugin:is "$plugin_name" "$plugin_version" "clone" "load"; then
     return 0
   fi
 
