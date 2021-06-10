@@ -40,15 +40,17 @@ export MYZS_LOADING_MODULES=(
   "builtin#app/env.sh"      # loading .env file in .myzs directory
   "builtin#app/autopath.sh" # move to path from clipboard if folder is exist
 
-  # "builtin#app/autocd.sh" # add trigger event to cd command to check .myzs-setup file
+  "builtin#app/autocd.sh" # add trigger event to cd command to check .myzs-setup file
   # "builtin#app/group.sh" # generator module groups support (not works)
 )
 
 MYZS_LOADING_MODULES+=(
   "myzs-plugins/core#alias/short.sh"
-  "myzs-plugins/core#alias/shell.sh"
+  # "myzs-plugins/core#alias/shell.sh"
+
   # "myzs-plugins/editor#app/vscode.sh"
-  "myzs-plugins/git#alias/git.sh"
+
+  # "myzs-plugins/git#alias/git.sh"
 )
 
 ################################
@@ -67,17 +69,21 @@ export MYZS_LOADING_SETTINGS=(
   # Accept values: FULLY | SMALL
   #   1. FULLY -> full command with advance support on zsh script
   #   2. SMALL -> small utils with alias for bash and server bash
-  "$" string myzs/type "${_MYZS_TYPE:-FULLY}"
+  "$" string type "${_MYZS_TYPE:-FULLY}"
 
   # enabled or disabled zplug modules and plugins
   # for custom plugins look to `Zsh dependencies plugins` section
-  "$" enabled myzs/zplug
+  "$" enabled zplug
 
   # Enabled this meaning progressbar step when we load plugin to be one 1 task
-  "$" enabled myzs/plugin/aggregation
+  "$" enabled plugin/aggregation
+
+  # We will if plugin have loaded before, we will skip it
+  # if disable is setting we will process every plugin
+  "$" enabled plugin/cache
 
   # Enabled this meaning progressbar step when we load plugin to be one 1 task
-  "$" enabled myzs/module/aggregation
+  "$" enabled module/aggregation
 
   # List of enabled log level, this is case insensitive
   # "error" "warn" "info" "debug"
