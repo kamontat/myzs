@@ -1,5 +1,9 @@
 # Release notes
 
+## Version 5.6.2 (10 Jun 2021)
+
+- fix application type missing on `myzs-info`
+
 ## Version 5.6.1 (10 Jun 2021)
 
 - change default time format to `%S:%l` (1s:200ms)
