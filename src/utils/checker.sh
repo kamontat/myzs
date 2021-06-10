@@ -87,11 +87,11 @@ _myzs:internal:checker:string-exist() {
 }
 
 _myzs:internal:checker:small-type() {
-  _myzs:internal:setting:is "myzs/type" "SMALL"
+  _myzs:internal:setting:is "type" "SMALL"
 }
 
 _myzs:internal:checker:fully-type() {
-  _myzs:internal:setting:is "myzs/type" "FULLY"
+  _myzs:internal:setting:is "type" "FULLY"
 }
 
 _myzs:internal:checker:mac() {

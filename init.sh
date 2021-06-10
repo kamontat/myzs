@@ -11,9 +11,9 @@ export __MYZS__UTL="${__MYZS__SRC}/utils"
 export ZPLUG_HOME="${MYZS_ZPLUG:-${_MYZS_ROOT}/zplug}"
 
 export __MYZS__OWNER="Kamontat Chantrachirathumrong"
-export __MYZS__VERSION="5.6.0"
+export __MYZS__VERSION="5.6.1"
 export __MYZS__SINCE="21 Apr 2018"
-export __MYZS__LAST_UPDATED="09 Jun 2021"
+export __MYZS__LAST_UPDATED="10 Jun 2021"
 export __MYZS__LICENSE="AGPL-3.0 License"
 
 export __MYZS__MODULES=()
@@ -54,7 +54,7 @@ fi
 # load myzs plugins
 myzs:pg:step "Plugin" "Initial ${#MYZS_LOADING_PLUGINS[@]} plugins"
 for plugin in "${MYZS_LOADING_PLUGINS[@]}"; do
-  if _myzs:internal:setting:is-disabled "myzs/plugin/aggregation"; then
+  if _myzs:internal:setting:is-disabled "plugin/aggregation"; then
     myzs:pg:step "Plugin" "Loaded plugin $plugin"
     if ! _myzs:internal:plugin:initial "$plugin"; then
       myzs:pg:mark-fail "Plugin" "Cannot load $plugin plugin"
@@ -68,7 +68,7 @@ done
 # load myzs modules
 myzs:pg:step "Module" "Initial ${#MYZS_LOADING_MODULES[@]} modules"
 for module in "${MYZS_LOADING_MODULES[@]}"; do
-  if _myzs:internal:setting:is-disabled "myzs/module/aggregation"; then
+  if _myzs:internal:setting:is-disabled "module/aggregation"; then
     myzs:pg:step "Module" "Loaded module $module"
     if ! _myzs:internal:module:load "$module"; then
       myzs:pg:mark-fail "Module" "Cannot load $module module"
@@ -80,7 +80,9 @@ for module in "${MYZS_LOADING_MODULES[@]}"; do
 done
 
 # initial zplug config
-if _myzs:internal:checker:fully-type && _myzs:internal:checker:shell:zsh && _myzs:internal:setting:is-enabled "myzs/zplug"; then
+if _myzs:internal:checker:fully-type &&
+  _myzs:internal:checker:shell:zsh &&
+  _myzs:internal:setting:is-enabled "zplug"; then
   myzs:pg:step "ZPlugin" "Initial zplug configuration"
   _myzs:internal:module:load "zplug#init.zsh" || myzs:pg:mark-fail "ZPlugin" "Cannot load zplug initial script"
 
