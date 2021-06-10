@@ -11,7 +11,7 @@ This is a configable rc file (shell initial file) mainly support `zshrc`, with p
 
 This project wroted all with shell script. 
 No installation require and support MacOS and Linux and Window (with `Windows Subsystem for Linux` installed).
-You need to copy the application place to correct location and every work fine.
+You need to copy the application place to correct location and every work fine. Always check configuration before use it because configuration might not suit for you ([config](#configuration)).
 
 ### Automatic
 

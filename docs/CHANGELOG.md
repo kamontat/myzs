@@ -1,5 +1,21 @@
 # Release notes
 
+## Version 5.6.1 (10 Jun 2021)
+
+- change default time format to `%S:%l` (1s:200ms)
+- remove myzs/ prefix in settings
+- add configable caching plugins in settings (`plugin/cache`)
+- significate reduce load time from `~5s -> ~3s` and `~10s -> ~5s`
+- disable plugins module by default except some of core modules and builtin module
+
+| Type                           | Tasks | Load time |
+| ------------------------------ | ----- | --------- |
+| Default config                 | 10    | 3s:181ms  |
+| Second load on default config  | 10    | 2s:319ms  |
+| Enable all log level           | 10    | 3s:570ms  |
+| Enable performance log         | 10    | 3s:800ms  |
+| Enable all log and performance | 10    | 4s:179ms  |
+
 ## Version 5.6.0 (09 Jun 2021)
 
 - [BREAK] change `_myzs:internal:module:initial` method to `myzs:module:new`
