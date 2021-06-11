@@ -6,8 +6,12 @@ myzs:pg:start() {
   _myzs:internal:log:debug "start dump progress bar"
 }
 
-myzs:pg:mark() {
+myzs:pg:step() {
   _myzs:internal:log:debug "[PG-COMPLETED] $*"
+}
+
+myzs:pg:msg() {
+  _myzs:internal:log:debug "[PG-CHANGE] $*"
 }
 
 myzs:pg:mark-fail() {
