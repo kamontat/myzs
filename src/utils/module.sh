@@ -182,7 +182,7 @@ _myzs:internal:module:query() {
     # skip modules that already passed
     if [[ "$module_status" == "pass" ]]; then
       _myzs:internal:log:debug "skip module '$__MYZS__CURRENT_MODULE_KEY' because this module has been loaded successfully"
-      return 0
+      return 255
     fi
 
     _myzs:internal:log:debug "module = index:'${module_index}' status:'${module_status}' key:'$__MYZS__CURRENT_MODULE_KEY'"
@@ -199,18 +199,18 @@ _myzs:internal:module:query() {
 
 # load module by name
 _myzs:private:module:load() {
-  local module_type module_name module_key
-
-  module_type="$1"
-  module_name="$2"
-  module_key="$3"
+  local module_type="$1" module_name="$2" module_key="$3" exitcode="0"
 
   # This allow module to load all existing module in to memory, but it significate increase load time (~42%+)
   # _myzs:internal:plugin:load "$module_type"
 
-  if _myzs:internal:module:query _myzs:internal:load "$@"; then
+  # exitcode 255 meaning module has been loaded, will ignore
+  _myzs:internal:module:query _myzs:internal:load "$@"
+  exitcode="$?"
+
+  if [[ $exitcode == 0 ]]; then
     _myzs:private:module:saved "$module_type" "$module_name" "$module_key" "pass"
-  else
+  elif [[ $exitcode != 255 ]]; then
     _myzs:private:module:saved "$module_type" "$module_name" "$module_key" "fail"
   fi
 }
