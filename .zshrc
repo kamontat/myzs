@@ -101,40 +101,41 @@ export MYZS_LOADING_SETTINGS=(
   "$" array setup-file/list "myzs-setup" ".myzs-setup"
 
   # enabled or disabled progress bar
-  "$" enabled pb
+  "$" enabled pg
   # If this is true, the application will trace each component in difference lines
-  "$" disabled pb/performance
+  "$" disabled pg/performance
   # progress bar style (listed at src/utils/revolver)
-  "$" string pb/style "bouncingBall"
+  "$" string pg/style "bouncingBall"
   # title shift when price progress bar
-  "$" string pb/title/length "8"
+  "$" string pg/title/length "8"
   # full message shift when print progress bar
-  "$" string pb/message/length "68"
+  "$" string pg/message/length "68"
   # timer format in progressbar
   # %M - total minute, %S - total second, %L - total millisecond
   # %s - second, %l - millisecond
-  "$" string pb/timer/format "%S:%l"
+  "$" string pg/timer/format "%S:%l"
   # minimum millisecond will be shown as danger color
-  "$" string pb/timer/danger-color "600"
+  "$" string pg/timer/danger-color "600"
   # minimum millisecond will be shown as warning color
-  "$" string pb/timer/warn-color "200"
+  "$" string pg/timer/warn-color "200"
   # loading message color
-  "$" string pb/color/loading "$(tput setaf 6)"
+  "$" string pg/color/loading "$(tput setaf 6)"
   # complete status indicator
-  "$" string pb/color/completed "$(tput setaf 10)"
+  "$" string pg/color/completed "$(tput setaf 10)"
   # skip status indicator
-  "$" string pb/color/skipped "$(tput setaf 11)"
+  "$" string pg/color/skipped "$(tput setaf 11)"
   # fail status indicator
-  "$" string pb/color/failed "$(tput setaf 9)"
+  "$" string pg/color/failed "$(tput setaf 9)"
   # time danger color
-  "$" string pb/color/time-danger "$(tput setaf 1)"
+  "$" string pg/color/time-danger "$(tput setaf 1)"
   # time warning color
-  "$" string pb/color/time-warn "$(tput setaf 3)"
+  "$" string pg/color/time-warn "$(tput setaf 3)"
   # normal time color
-  "$" string pb/color/time "$(tput setaf 14)"
+  "$" string pg/color/time "$(tput setaf 14)"
 
   # enabled module group (beta)
   "$" enabled group
+  "$" enabled group/pg
 
   # enabled data metric (beta)
   "$" enabled metrics

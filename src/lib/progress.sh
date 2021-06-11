@@ -5,7 +5,7 @@ myzs:module:new "$0"
 export PG_RESET="\033[0m"
 
 export __MYZS__PG_PROCESS_COUNT=1
-if _myzs:internal:setting:is-disabled "pb"; then
+if _myzs:internal:setting:is-disabled "pg"; then
   export ____MYZS__REVOLVER_CMD="${__MYZS__LIB}/revolver-mock"
 else
   export ____MYZS__REVOLVER_CMD="${__MYZS__REVOLVER_CMD:-${__MYZS__LIB}/revolver}"
@@ -16,7 +16,7 @@ _myzs:pg:private:time:convert() {
   ! $PG_FORMAT_TIME && echo "$1" && return 0
 
   local ms="$1" time_format
-  time_format="$(myzs:setting:get "pb/timer/format")"
+  time_format="$(myzs:setting:get "pg/timer/format")"
 
   local total_minute total_second total_millisecond
   total_minute="$(printf '%01dm' "$((ms / 60000))")"
@@ -41,7 +41,7 @@ _myzs:pg:private:message:format() {
   local title="$1"
   shift
   local message="$*"
-  printf "[ %-$(myzs:setting:get "pb/title/length")s ] %s" "$title" "$message"
+  printf "[ %-$(myzs:setting:get "pg/title/length")s ] %s" "$title" "$message"
 }
 
 # create full output message
@@ -56,15 +56,15 @@ _myzs:pg:private:message() {
   dur="$(_myzs:pg:private:time:convert "${raw_time}")"
   message="$*"
 
-  if _myzs:internal:setting:less-than "pb/timer/danger-color" "$raw_time"; then
-    time_color="$(myzs:setting:get "pb/color/time-danger")"
-  elif _myzs:internal:setting:less-than "pb/timer/warn-color" "$raw_time"; then
-    time_color="$(myzs:setting:get "pb/color/time-warn")"
+  if _myzs:internal:setting:less-than "pg/timer/danger-color" "$raw_time"; then
+    time_color="$(myzs:setting:get "pg/color/time-danger")"
+  elif _myzs:internal:setting:less-than "pg/timer/warn-color" "$raw_time"; then
+    time_color="$(myzs:setting:get "pg/color/time-warn")"
   else
-    time_color="$(myzs:setting:get "pb/color/time")"
+    time_color="$(myzs:setting:get "pg/color/time")"
   fi
 
-  printf "${color}[%s]${PG_RESET} %-$(myzs:setting:get "pb/message/length")s done in ${time_color}%s${PG_RESET}." "$symbol" "$message" "$dur"
+  printf "${color}[%s]${PG_RESET} %-$(myzs:setting:get "pg/message/length")s done in ${time_color}%s${PG_RESET}." "$symbol" "$message" "$dur"
 }
 
 _myzs:pg:private:log:completed() {
@@ -72,7 +72,7 @@ _myzs:pg:private:log:completed() {
   shift
   local message="$*"
 
-  _myzs:pg:private:message "$(myzs:setting:get "pb/color/completed")" "+" "$dur" "$message"
+  _myzs:pg:private:message "$(myzs:setting:get "pg/color/completed")" "+" "$dur" "$message"
 }
 
 _myzs:pg:private:log:skipped() {
@@ -80,7 +80,7 @@ _myzs:pg:private:log:skipped() {
   shift
   local message="$*"
 
-  _myzs:pg:private:message "$(myzs:setting:get "pb/color/skipped")" "*" "$dur" "$message"
+  _myzs:pg:private:message "$(myzs:setting:get "pg/color/skipped")" "*" "$dur" "$message"
 }
 
 _myzs:pg:private:log:failured() {
@@ -88,7 +88,7 @@ _myzs:pg:private:log:failured() {
   shift
   local message="$*"
 
-  _myzs:pg:private:message "$(myzs:setting:get "pb/color/failed")" "-" "$dur" "$message"
+  _myzs:pg:private:message "$(myzs:setting:get "pg/color/failed")" "-" "$dur" "$message"
 }
 
 _myzs:pg:private:log() {
@@ -116,7 +116,7 @@ PG_PREV_STATE="C" # C = completed, F = failured, S = skipped, U = unknown
 myzs:pg:start() {
   local message
   message="${1:-Initialization shell. Please Wait...}"
-  "${____MYZS__REVOLVER_CMD}" -s "$(myzs:setting:get "pb/style" "dots")" start "$(myzs:setting:get "pb/color/loading")${message}"
+  "${____MYZS__REVOLVER_CMD}" -s "$(myzs:setting:get "pg/style" "dots")" start "$(myzs:setting:get "pg/color/loading")${message}"
 
   PG_START_TIME="$(_myzs:internal:timestamp-millisecond)"
   PG_PREV_TIME="$(_myzs:internal:timestamp-millisecond)"
@@ -130,7 +130,7 @@ myzs:pg:private:mark() {
   TIME=$(($(_myzs:internal:timestamp-millisecond) - PG_PREV_TIME))
 
   # always print data if state is return failure, otherwise print only performance is enabled
-  if _myzs:internal:setting:is-enabled "pb/performance"; then
+  if _myzs:internal:setting:is-enabled "pg/performance"; then
     _myzs:pg:private:log "$PG_PREV_STATE" "$TIME" "$PG_PREV_MSG"
   elif [[ "$PG_PREV_STATE" == "F" ]]; then
     _myzs:pg:private:log "$PG_PREV_STATE" "$TIME" "$PG_PREV_MSG"
@@ -148,7 +148,7 @@ myzs:pg:private:mark() {
 
 # start normal step
 myzs:pg:step() {
-  "${____MYZS__REVOLVER_CMD}" -s "$(myzs:setting:get "pb/style" "dots")" update "$(myzs:setting:get "pb/color/loading")$2.."
+  "${____MYZS__REVOLVER_CMD}" -s "$(myzs:setting:get "pg/style" "dots")" update "$(myzs:setting:get "pg/color/loading")$2.."
   myzs:pg:private:mark "C" "$@"
 }
 
@@ -162,7 +162,7 @@ myzs:pg:step-skip() {
   local title="$1"
   shift
 
-  "${____MYZS__REVOLVER_CMD}" -s "$(myzs:setting:get "pb/style" "dots")" update "$(myzs:setting:get "pb/color/loading")$2.."
+  "${____MYZS__REVOLVER_CMD}" -s "$(myzs:setting:get "pg/style" "dots")" update "$(myzs:setting:get "pg/color/loading")$2.."
   myzs:pg:private:mark "S" "$title" "Skipped: $*"
 }
 
@@ -179,7 +179,7 @@ myzs:pg:stop() {
 
   TIME=$(($(_myzs:internal:timestamp-millisecond) - PG_PREV_TIME))
 
-  if _myzs:internal:setting:is-enabled "pb/performance"; then
+  if _myzs:internal:setting:is-enabled "pg/performance"; then
     _myzs:pg:private:log "$PG_PREV_STATE" "$TIME" "$PG_PREV_MSG"
   fi
 
@@ -188,7 +188,7 @@ myzs:pg:stop() {
   TIME=$(($(_myzs:internal:timestamp-millisecond) - PG_START_TIME))
   load_time="$(_myzs:pg:private:time:convert "${TIME}")"
 
-  printf "$(myzs:setting:get "pb/color/completed")[+]${PG_RESET} %-$(myzs:setting:get "pb/message/length")s      in $(myzs:setting:get "pb/color/time")%s${PG_RESET}." "$(_myzs:pg:private:message:format "Done" "Initialization $__MYZS__PG_PROCESS_COUNT tasks")" "${load_time}"
+  printf "$(myzs:setting:get "pg/color/completed")[+]${PG_RESET} %-$(myzs:setting:get "pg/message/length")s      in $(myzs:setting:get "pg/color/time")%s${PG_RESET}." "$(_myzs:pg:private:message:format "Done" "Initialization $__MYZS__PG_PROCESS_COUNT tasks")" "${load_time}"
   echo
 
   export "$count_varname"="${__MYZS__PG_PROCESS_COUNT}"
