@@ -57,7 +57,7 @@ _myzs:internal:db:append:array() {
     fi
   done
 
-  _myzs:internal:call log:debug "set $key $name (array)"
+  _myzs:internal:call log:debug "set $key $name=(array)"
   varname="$(_myzs:internal:db:varname "$key" "$name")"
 
   eval "$varname+=($value)"
@@ -97,9 +97,9 @@ _myzs:private:db:exec() {
   shift 2
 
   # first try database setter, then $key setter
-  if "${__MYZS__DATABASE_SETTER_PREFIX}:${cmd}" "$key" "$@"; then
+  if "${__MYZS__DATABASE_SETTER_PREFIX}:${cmd}" "$key" "$@" 2>/dev/null; then
     return 0
-  elif "_myzs:internal:$key:setter:$cmd" "$key" "$@"; then
+  elif "_myzs:internal:${key}:setter:${cmd}" "$@" 2>/dev/null; then
     return 0
   else
     return 1
@@ -107,13 +107,15 @@ _myzs:private:db:exec() {
 }
 
 _myzs:internal:db:loader() {
-  local key="$1" cmd="" args=()
+  local key="$1" cmd="" args=() exitcode=0
   shift
 
   for data in "$@"; do
     if [[ "$data" == "$" ]]; then
       if [[ "${#args[@]}" -gt 0 ]]; then
-        _myzs:private:db:exec "$cmd" "$key" "${args[@]}"
+        if ! _myzs:private:db:exec "$cmd" "$key" "${args[@]}"; then
+          ((exitcode++))
+        fi
 
         cmd="" # reset data
         args=()
@@ -129,8 +131,12 @@ _myzs:internal:db:loader() {
 
   # for final command
   if [[ "${#args[@]}" -gt 0 ]]; then
-    _myzs:private:db:exec "$cmd" "$key" "${args[@]}"
+    if ! _myzs:private:db:exec "$cmd" "$key" "${args[@]}"; then
+      ((exitcode++))
+    fi
   fi
+
+  return "$exitcode"
 }
 
 # checking input **key & name** data via
