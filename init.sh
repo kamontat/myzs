@@ -79,6 +79,11 @@ for module in "${MYZS_LOADING_MODULES[@]}"; do
   fi
 done
 
+if _myzs:internal:setting:is-enabled "group"; then
+  myzs:pg:step "Group" "Initial group data"
+  _myzs:internal:group:initial "${MYZS_LOADING_GROUPS[@]}" || myzs:pg:mark-fail "Group" "Cannot load $? group"
+fi
+
 # initial zplug config
 if _myzs:internal:checker:fully-type &&
   _myzs:internal:checker:shell:zsh &&
