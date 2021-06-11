@@ -41,7 +41,6 @@ export MYZS_LOADING_MODULES=(
   "builtin#app/autopath.sh" # move to path from clipboard if folder is exist
 
   "builtin#app/autocd.sh" # add trigger event to cd command to check .myzs-setup file
-  # "builtin#app/group.sh" # generator module groups support (not works)
 )
 
 MYZS_LOADING_MODULES+=(
@@ -51,6 +50,14 @@ MYZS_LOADING_MODULES+=(
   # "myzs-plugins/editor#app/vscode.sh"
 
   # "myzs-plugins/git#alias/git.sh"
+)
+
+# custom define group
+# This will by loaded only if app/group.sh is enabled
+export MYZS_LOADING_GROUPS=(
+  "$" group "shell" "myzs-plugins/core#alias/shell.sh"
+  "$" group "dev" "myzs-plugins/editor#app/vscode.sh" "myzs-plugins/git#alias/git.sh"
+  "$" group "golang" "myzs-plugins/editor#app/vscode.sh" "myzs-plugins/git#alias/git.sh" "myzs-plugins/golang#app/go.sh"
 )
 
 ################################
@@ -125,6 +132,9 @@ export MYZS_LOADING_SETTINGS=(
   "$" string pb/color/time-warn "$(tput setaf 3)"
   # normal time color
   "$" string pb/color/time "$(tput setaf 14)"
+
+  # enabled module group (beta)
+  "$" enabled group
 
   # enabled data metric (beta)
   "$" enabled metrics
