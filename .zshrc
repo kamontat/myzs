@@ -135,7 +135,6 @@ export MYZS_LOADING_SETTINGS=(
 
   # enabled module group (beta)
   "$" enabled group
-  "$" enabled group/pg
 
   # enabled data metric (beta)
   "$" enabled metrics
