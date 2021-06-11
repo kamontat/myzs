@@ -41,7 +41,7 @@ _myzs:internal:db:setter:array() {
     fi
   done
 
-  _myzs:internal:call log:debug "set $key $name (array)"
+  _myzs:internal:call log:debug "set $key $name=(array)"
   varname="$(_myzs:internal:db:varname "$key" "$name")"
   eval "$varname=($value)"
 }
@@ -95,8 +95,6 @@ _myzs:internal:db:getter:array() {
 _myzs:private:db:exec() {
   local cmd="$1" key="$2"
   shift 2
-
-  # "${__MYZS__DATABASE_SETTER_PREFIX}:${cmd}" "$key" "$@"
 
   # first try database setter, then $key setter
   if "${__MYZS__DATABASE_SETTER_PREFIX}:${cmd}" "$key" "$@"; then
