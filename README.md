@@ -44,7 +44,7 @@ I attach a lot of features including debugging so by default I might enable some
    1. aggregate data - plugins and modules tend to have many of it, we can aggregate result and report once with setting below (improving ~30.4%)
 
 ```bash
-"$" disabled pb # MYZS_LOADING_SETTINGS
+"$" disabled pg # MYZS_LOADING_SETTINGS
 "$" enabled myzs/plugin/aggregation
 "$" enabled myzs/module/aggregation
 ```
