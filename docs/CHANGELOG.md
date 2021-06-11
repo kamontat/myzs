@@ -1,5 +1,25 @@
 # Release notes
 
+## Version 5.7.0 (12 Jun 2021)
+
+- [BREAK] change all `pb/*` setting to `pg/*` instead
+- new loading variable called `MYZS_LOADING_GROUPS` with same format of settings but command type is only **group**
+- new task on initialization for loading group data
+- first working apis for group feature, toggle via setting `group`
+- [TODO] create `myzs-group` (alias `mx`) for loading group to main commandline
+- [TODO] create zsh-completion for `myzs-group` by getting list of group from database apis
+- [TODO] note group apis in documentation
+- reduce number of files by reduce v1 of plugins and settings util
+- [TODO] refactor utils `index.sh` file and use module:load as much as possible
+- did not load certain utils if feature of that utils is disabled, currently support group and metrics
+- cleanup comments on database apis
+- fix metric methods not found when we disable them
+- fix module always add to module csv even we skip them
+- fix database custom setter didn't work
+- fix plugin cache isn't works on 5.6.x
+- fix pg (progressbar) command not found when run with small type
+- [TODO] add load time table
+
 ## Version 5.6.2 (10 Jun 2021)
 
 - fix application type missing on `myzs-info`
