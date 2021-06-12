@@ -1,0 +1,139 @@
+#compdef myzs
+
+_myzs_command_load_plugin_list() {
+  local __myzs_completion_plugins=('builtin')
+  local plugin_name
+
+  __myzs_completion-get-plugin() {
+    local __myzs_completion_plugin_name="$1"
+    __myzs_completion_plugins+=("'${__myzs_completion_plugin_name}'")
+  }
+
+  for plugin in "${MYZS_LOADING_PLUGINS[@]}"; do
+    plugin_name="$(echo "$plugin" | cut -d\# -f1)" # alternative for zsh completion
+    __myzs_completion-get-plugin "${plugin_name}"
+  done
+
+  _describe 'plugins list' "(${__myzs_completion_plugins[*]})"
+}
+
+_myzs_command_load_module_list() {
+  local __myzs_completion_modules=()
+
+  __myzs_completion-get-module() {
+    local __myzs_completion_module_name="$2" __myzs_completion_module_status="$3" __myzs_completion_module_index="$4"
+    if [[ "$__myzs_completion_module_status" == "skip" ]] || [[ "$__myzs_completion_module_status" == "fail" ]]; then # listed only skip or fail module
+      __myzs_completion_modules+=("'${__myzs_completion_module_name}:module id ${__myzs_completion_module_index} (status = ${__myzs_completion_module_status})'")
+    fi
+  }
+
+  # shellcheck disable=SC2154
+  _myzs:internal:module:search-module-type "${words[2]}" __myzs_completion-get-module
+  if [[ ${#__myzs_completion_modules[@]} -lt 1 ]]; then
+    _myzs:internal:plugin:load "${words[2]}"
+  fi
+
+  _describe 'modules list' "(${__myzs_completion_modules[*]})"
+}
+
+_myzs_command_load() {
+  local state ret=1
+  _arguments '1: :->plugin-name' '2: :->module-name'
+
+  case $state in
+    plugin-name)
+      _myzs_command_load_plugin_list && ret=$?
+      ;;
+    module-name)
+      _myzs_command_load_module_list && ret=$?
+      ;;
+  esac
+
+  return $ret
+}
+
+_myzs_command_loads() {
+  local __myzs_completion_groups=()
+  _myzs:internal:db:getter:array "$__MYZS__GROUP_PREFIX" "list" __myzs_completion_groups
+
+  _arguments '1: :->group-name'
+  case $state in
+    group-name)
+      _describe 'group list' "(${__myzs_completion_groups[*]})"
+      ;;
+  esac
+}
+
+_myzs_command_deploy() {
+  local -a commands
+  commands=(
+    'app:only application.'
+    'plugin:only plugin.'
+    'all:both app and plugin.'
+  )
+
+  if (( CURRENT == 2 )); then
+    _describe -t commands 'subcommands' commands
+  fi
+}
+
+_myzs_command_upgrade() {
+  local -a commands
+  commands=(
+    'all:both app and plugin.'
+    'app:only application.'
+    'plugin:only plugin.'
+  )
+
+  if (( CURRENT == 2 )); then
+    _describe -t commands 'subcommands' commands
+  fi
+}
+
+_myzs_command_info() {
+  _message "no more arguments"
+}
+
+_myzs_command_changelogs() {
+  _message "no more arguments"
+}
+
+_myzs_command_modules() {
+  _message "no more arguments"
+}
+
+_myzs_commands() {
+  local -a commands
+  commands=(
+    'load:loading module into current commandline.'
+    'loads:loading multiple modules via group feature.'
+    'deploy:deploy myzs to repository.'
+    'upgrade:upgrade myzs from repository.'
+    'info:show information about myzs.'
+    'changelogs:show release note of myzs versions.'
+    'modules:show current loaded module and status.'
+  )
+
+  if (( CURRENT == 2 )); then
+    _describe -t commands 'commands' commands
+  fi
+}
+
+_myzs() {
+  local cmd ret=1
+  _arguments '1:cmd:->commands' '*::arg:->args'
+
+  case $state in
+    commands)
+      _myzs_commands && ret=$?
+      ;;
+    args)
+      cmd="${words[1]}"
+      "_myzs_command_$cmd" && ret=$? # mark as completed, if myzs_command return zero exitcode
+      ;;
+  esac
+
+  return $ret
+}
+
+_myzs "$@"
