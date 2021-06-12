@@ -5,9 +5,22 @@ We will maintain not more than 10 minor version changes.
 ## Unreleased
 
 - [TODO] add load time table
-- [TODO] note group apis in documentation
+- [TODO] migrate all utils docs to new format
 - [TODO] refactor utils `index.sh` file and use module:load as much as possible
 - [TODO] update completion to removed if feature is disabled
+
+## Version 5.7.1 (12 Jun 2021)
+
+- disabled `app/autocd.sh` in favar of group module feature is faster and easier to use
+
+| Type                           | Tasks | Load time |
+| ------------------------------ | ----- | --------- |
+| Default config                 | 11    | 3s:463ms  |
+| Second load on default config  | 11    | 2s:682ms  |
+| Disable group feature          | 10    | 3s:250ms  |
+| Enable all log level           | 11    | 4s:138ms  |
+| Enable performance log         | 11    | 4s:334ms  |
+| Enable all log and performance | 11    | 4s:664ms  |
 
 ## Version 5.7.0 (12 Jun 2021)
 

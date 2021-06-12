@@ -87,7 +87,7 @@ export MYZS_LOADING_SETTINGS=(
   "$" enabled plugin/aggregation
 
   # We will if plugin have loaded before, we will skip it
-  # if disable is setting we will process every plugin
+  # if disabled is setting we will process every plugin
   "$" enabled plugin/cache
 
   # Enabled this meaning progressbar step when we load plugin to be one 1 task
