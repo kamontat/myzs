@@ -276,17 +276,146 @@ _myzs:internal:db:checker:contains "plugin" "list" "myzs-plugins/core"
 
 ## Checker
 
-1. `_myzs:internal:checker:shell:bash` - check current shell is bash?
-2. `_myzs:internal:checker:shell:zsh` - check current shell is zsh?
-3. `_myzs:internal:checker:shell:fish` - check current shell is fish?
-4. `_myzs:internal:checker:command-exist(string)` - check is input string is executable?
-5. `_myzs:internal:checker:file-exist(string)` - check is input path is file?
-6. `_myzs:internal:checker:folder-exist(string)` - check is input path is folder?
-7. `_myzs:internal:checker:file-contains(string, search)` - check is file content contains search string?
-8. `_myzs:internal:checker:string-exist(string)` - check is input string is empty or not?
-9. `_myzs:internal:checker:small-type` - check type of config is small?
-10. `_myzs:internal:checker:fully-type` - check type of config is fully?
-11. `_myzs:internal:checker:mac` - check is current os is macos?
+<details>
+  <summary>
+    <strong>_myzs:internal:checker:shell:bash</strong> - check current shell is bash?
+  </summary>
+
+Return as non-zero code if current shell is not bash
+
+```bash
+# e.g. check current shell type
+_myzs:internal:checker:shell:bash
+```
+</details>
+
+
+<details>
+  <summary>
+    <strong>_myzs:internal:checker:shell:zsh</strong> - check current shell is zsh?
+  </summary>
+
+Return as non-zero code if current shell is not zsh
+
+```bash
+# e.g. check current shell type
+_myzs:internal:checker:shell:zsh
+```
+</details>
+
+
+<details>
+  <summary>
+    <strong>_myzs:internal:checker:string-exist(string)</strong> - check string is not empty?
+  </summary>
+
+Input as command string and return zero if input string is exist
+
+```bash
+# e.g. check is input == "" (empty string) or not
+_myzs:internal:checker:string-exist ""
+```
+</details>
+
+
+<details>
+  <summary>
+    <strong>_myzs:internal:checker:command-exist(string)</strong> - check string is executable?
+  </summary>
+
+Input as command string, and will check whether command is executable
+
+```bash
+# e.g. check is grep command exist or not
+_myzs:internal:checker:command-exist "grep"
+```
+</details>
+
+
+<details>
+  <summary>
+    <strong>_myzs:internal:checker:file-exist(string)</strong> - check filepath is available and correct
+  </summary>
+
+Input filepath and will check is input file is exist or not
+Will return non-zero if file is not exist or it's not file (for example it's directory)
+
+```bash
+# e.g. check is data.txt in tmp directory is exist or not
+_myzs:internal:checker:file-exist "/tmp/data.txt"
+```
+</details>
+
+
+<details>
+  <summary>
+    <strong>_myzs:internal:checker:folder-exist(string)</strong> - check dirpath is available and correct
+  </summary>
+
+Input dirpath and will check is input directory is exist or not.
+Will return non-zero if directory is not exist or it's not directory
+
+```bash
+# e.g. check is caching is exist and it's directory
+_myzs:internal:checker:folder-exist "/tmp/caching"
+```
+</details>
+
+
+<details>
+  <summary>
+    <strong>_myzs:internal:checker:file-contains(string, search)</strong> - file content must contains search string
+  </summary>
+
+read file content from input filepath string, and check if it contains input string or not
+
+```bash
+# e.g. data.txt is contains 'hello world' or not
+_myzs:internal:checker:file-contains "./data.txt" "hello world"
+```
+</details>
+
+
+<details>
+  <summary>
+    <strong>_myzs:internal:checker:small-type</strong> - myzs type is small, or not?
+  </summary>
+
+reading data from myzs setting, and check type
+
+```bash
+# e.g. current terminal loading with small type
+_myzs:internal:checker:small-type
+```
+</details>
+
+
+<details>
+  <summary>
+    <strong>_myzs:internal:checker:fully-type</strong> - myzs type is fully, or not?
+  </summary>
+
+reading data from myzs setting, and check type
+
+```bash
+# e.g. current terminal loading with fully type
+_myzs:internal:checker:fully-type
+```
+</details>
+
+
+<details>
+  <summary>
+    <strong>_myzs:internal:checker:mac</strong> - check is current os is macos?
+  </summary>
+
+return zero code if current os is macos
+
+```bash
+# e.g. running on macos
+_myzs:internal:checker:mac
+```
+</details>
 
 ## Logger
 
