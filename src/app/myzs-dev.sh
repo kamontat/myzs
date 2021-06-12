@@ -2,7 +2,7 @@
 
 myzs:module:new "$0"
 
-myzs-measure() {
+_myzs:internal:app:measure() {
   local cmd="$1" exitcode
   shift 1
 
@@ -16,7 +16,7 @@ myzs-measure() {
   return $exitcode
 }
 
-myzs-loadtest() {
+_myzs:internal:app:loadtest() {
   local size="$1" ms=0 avg_10k
   shift 1
   for ((i = 0; i < size; i++)); do
@@ -30,7 +30,7 @@ myzs-loadtest() {
   printf '%-8s: %sms\n' "average" "$ms"
 }
 
-myzs-debug() {
+_myzs:internal:app:debug() {
   local cmd="$1"
   shift 1
 
