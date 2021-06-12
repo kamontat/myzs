@@ -37,6 +37,8 @@ export MYZS_LOADING_MODULES=(
   "builtin#app/myzs.sh" # requires
   "builtin#alias/myzs.sh"
 
+  "builtin#app/myzs-dev.sh" # several command for start myzs debugger
+
   "builtin#app/env.sh"      # loading .env file in .myzs directory
   "builtin#app/autopath.sh" # move to path from clipboard if folder is exist
 
@@ -46,9 +48,7 @@ export MYZS_LOADING_MODULES=(
 MYZS_LOADING_MODULES+=(
   "myzs-plugins/core#alias/short.sh"
   # "myzs-plugins/core#alias/shell.sh"
-
   # "myzs-plugins/editor#app/vscode.sh"
-
   # "myzs-plugins/git#alias/git.sh"
 )
 
