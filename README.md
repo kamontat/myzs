@@ -5,6 +5,7 @@ This is a configable rc file (shell initial file) mainly support `zshrc`, with p
 - [Development](./docs/DEV.md)
 - [Utilities](./docs/README_UTILS.md)
 - [Plugins](./docs/README_PLUGINS.md)
+- [Changelog](./docs/CHANGELOG.md)
 - [Line of Code](./docs/LOC.md)
 
 ## Usage
