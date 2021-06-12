@@ -21,10 +21,6 @@ _myzs:internal:checker:shell:zsh() {
   _myzs:private:checker:shell "zsh"
 }
 
-_myzs:internal:checker:shell:fish() {
-  _myzs:private:checker:shell "fish"
-}
-
 _myzs:internal:checker:command-exist() {
   command -v "$1" &>/dev/null
 
