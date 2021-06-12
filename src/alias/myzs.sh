@@ -2,6 +2,8 @@
 
 myzs:module:new "$0"
 
+_myzs:internal:alias "mz" "myzs"
+
 _myzs:internal:alias "mdp" "myzs deploy"
 _myzs:internal:alias "mup" "myzs upgrade"
 
