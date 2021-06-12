@@ -5,14 +5,24 @@ myzs:module:new "$0"
 export SHELL_FILE="${SHELL_FILE:-/etc/shells}"
 export MYZS_DEFAULT_SHELL="${MYZS_DEFAULT_SHELL:-$SHELL}"
 
-export PATH="/bin"        # bin
-export PATH="/sbin:$PATH" # sbin
+etc_paths="/etc/paths"
+if test -f "$etc_paths"; then
+  export PATH=""
+  while read -r p; do
+    PATH="$p:$PATH"
+  done <"$etc_paths"
 
-export PATH="/usr/bin:$PATH"  # user bin
-export PATH="/usr/sbin:$PATH" # user sbin
+  export PATH
+else
+  export PATH="/bin"        # bin
+  export PATH="/sbin:$PATH" # sbin
 
-export PATH="/usr/local/bin:$PATH"  # local user bin
-export PATH="/usr/local/sbin:$PATH" # local user sbin
+  export PATH="/usr/bin:$PATH"  # user bin
+  export PATH="/usr/sbin:$PATH" # user sbin
+
+  export PATH="/usr/local/bin:$PATH"  # local user bin
+  export PATH="/usr/local/sbin:$PATH" # local user sbin
+fi
 
 export LANG="${LANG:-en_US.UTF-8}"
 export LC_CTYPE="${LC_CTYPE:-en_US.UTF-8}"
