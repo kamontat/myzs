@@ -8,6 +8,12 @@ We will maintain not more than 10 minor version changes.
 - [TODO] migrate all utils docs to new format
 - [TODO] refactor utils `index.sh` file and use module:load as much as possible
 - [TODO] update completion to removed if feature is disabled
+- [TODO] improve getting path list and make it configable
+- [TODO] refactor `settings/path.sh` and `settings/system.sh`
+
+## Version 5.7.2 (12 Jun 2021)
+
+- getting path list from `/etc/paths` and `/etc/paths.d`
 
 ## Version 5.7.1 (12 Jun 2021)
 
