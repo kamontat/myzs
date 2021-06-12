@@ -1,16 +1,31 @@
 # Release notes
 
+We will maintain not more than 10 minor version changes.
+
+## Unreleased
+
+- [TODO] add load time table
+- [TODO] note group apis in documentation
+- [TODO] refactor utils `index.sh` file and use module:load as much as possible
+- [TODO] update completion to removed if feature is disabled
+
 ## Version 5.7.0 (12 Jun 2021)
 
 - [BREAK] change all `pb/*` setting to `pg/*` instead
+- [BREAK] change `myzs-*` commands to single `myzs` command with subcommand instead
+  - `myzs-upload`          changes to `myzs deploy [all|app|plugin]`  (alias `mdp`)
+  - `myzs-download`        changes to `myzs upgrade [all|app|plugin]` (alias `mup`)
+  - `myzs-info`            changes to `myzs info`                     (alias `mi`)
+  - `myzs-load`            changes to `myzs load`                     (alias `ml`)
+  - `myzs-list-changelogs` changes to `myzs changelogs`               (alias `mcs`)
+  - `myzs-list-modules`    changes to `myzs modules`                  (alias `mms`)
 - new loading variable called `MYZS_LOADING_GROUPS` with same format of settings but command type is only **group**
 - new task on initialization for loading group data
-- first working apis for group feature, toggle via setting `group`
-- [TODO] create `myzs-group` (alias `mx`) for loading group to main commandline
-- [TODO] create zsh-completion for `myzs-group` by getting list of group from database apis
-- [TODO] note group apis in documentation
+- new group feature for grouping multiple modules from different plugins together, you can toggle via setting `group`
+- new myzs subcommand called `loads` (alias `mls`) for loading group to current terminal
+- migrate several utils document format to new version using details in Github
+- migrate all `myzs-*` completion to `myzs` command instead
 - reduce number of files by reduce v1 of plugins and settings util
-- [TODO] refactor utils `index.sh` file and use module:load as much as possible
 - did not load certain utils if feature of that utils is disabled, currently support group and metrics
 - cleanup comments on database apis
 - fix metric methods not found when we disable them
@@ -18,7 +33,6 @@
 - fix database custom setter didn't work
 - fix plugin cache isn't works on 5.6.x
 - fix pg (progressbar) command not found when run with small type
-- [TODO] add load time table
 
 ## Version 5.6.2 (10 Jun 2021)
 
