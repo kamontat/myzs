@@ -11,6 +11,7 @@
 - [Changelog](#changelog)
 - [Metric](#metric)
 - [Zplug](#zplug)
+- [Group](#group)
 
 ## Preload
 
@@ -419,10 +420,60 @@ _myzs:internal:checker:mac
 
 ## Logger
 
-1. `_myzs:internal:log:debug` - log **debug** message to log file
-2. `_myzs:internal:log:info` - log **info** message to log file
-3. `_myzs:internal:log:warn` - log **warn** message to log file
-4. `_myzs:internal:log:error` - log **error** message to log file
+<details>
+  <summary>
+    <strong>_myzs:internal:log:debug(...args)</strong> - log debug message to log file
+  </summary>
+
+formatted debug message and write to log file ($MYZS_LOGPATH)
+
+```bash
+# e.g. print debug message to log file
+_myzs:internal:log:debug "this is debug message"
+```
+</details>
+
+
+<details>
+  <summary>
+    <strong>_myzs:internal:log:info(...args)</strong> - log info message to log file
+  </summary>
+
+formatted info message and write to log file ($MYZS_LOGPATH)
+
+```bash
+# e.g. print info message to log file
+_myzs:internal:log:info "this is info message"
+```
+</details>
+
+
+<details>
+  <summary>
+    <strong>_myzs:internal:log:warn(...args)</strong> - log warn message to log file
+  </summary>
+
+formatted warn message and write to log file ($MYZS_LOGPATH)
+
+```bash
+# e.g. print warn message to log file
+_myzs:internal:log:warn "this is warn message"
+```
+</details>
+
+
+<details>
+  <summary>
+    <strong>_myzs:internal:log:error(...args)</strong> - log error message to log file
+  </summary>
+
+formatted error message and write to log file ($MYZS_LOGPATH)
+
+```bash
+# e.g. print error message to log file
+_myzs:internal:log:error "this is error message"
+```
+</details>
 
 ## Common
 
@@ -484,3 +535,8 @@ _myzs:internal:checker:mac
 ## Zplug
 
 1. `myzs:zplug:checker:plugin-installed` - check is zplug plugin installed
+
+## Group
+
+1. `_myzs:internal:group:initial(...args)` - parse formated args and install as group data
+2. `_myzs:internal:group:load(name)` - load group name to current terminal
