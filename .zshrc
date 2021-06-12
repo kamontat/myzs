@@ -42,7 +42,8 @@ export MYZS_LOADING_MODULES=(
   "builtin#app/env.sh"      # loading .env file in .myzs directory
   "builtin#app/autopath.sh" # move to path from clipboard if folder is exist
 
-  "builtin#app/autocd.sh" # add trigger event to cd command to check .myzs-setup file
+  # @deprecated in faver of group
+  # "builtin#app/autocd.sh" # add trigger event to cd command to check .myzs-setup file
 )
 
 MYZS_LOADING_MODULES+=(
