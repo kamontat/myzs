@@ -2,13 +2,15 @@
 
 myzs:module:new "$0"
 
-_myzs:internal:alias "mupload" "myzs-upload"
-_myzs:internal:alias "mdownload" "myzs-download"
+_myzs:internal:alias "mdp" "myzs deploy"
+_myzs:internal:alias "mup" "myzs upgrade"
 
-_myzs:internal:alias "minfo" "myzs-info"
-_myzs:internal:alias "mlc" "myzs-list-changelogs"
-_myzs:internal:alias "mlm" "myzs-list-modules"
+_myzs:internal:alias "mi" "myzs info"
+_myzs:internal:alias "mcs" "myzs changelogs"
+_myzs:internal:alias "mms" "myzs modules"
 
-_myzs:internal:alias "mload" "myzs-load"
-_myzs:internal:alias "mz" "myzs-load"
-_myzs:internal:alias "mlocal" "myzs-setup-local"
+_myzs:internal:alias "ml" "myzs load"
+_myzs:internal:alias "mls" "myzs loads"
+
+# @deprecated
+_myzs:internal:alias "msl" "myzs-setup-local"
