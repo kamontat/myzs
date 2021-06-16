@@ -4,12 +4,15 @@ We will maintain not more than 10 minor version changes.
 
 ## Unreleased
 
-- [TODO] add load time table
+- [TODO] add load time table each release that might effect performance
 - [TODO] migrate all utils docs to new format
 - [TODO] refactor utils `index.sh` file and use module:load as much as possible
 - [TODO] update completion to removed if feature is disabled
 - [TODO] improve getting path list and make it configable
 - [TODO] refactor `settings/path.sh` and `settings/system.sh`
+- [TODO] support loading group inside group to simplify group list
+- [TODO] re-enabled myzs.init files to initial some data before and after run plugins
+- [TODO] defined exitcode as constants and use everywhere
 
 ## Version 5.7.2 (12 Jun 2021)
 
