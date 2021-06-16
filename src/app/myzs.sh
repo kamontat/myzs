@@ -72,14 +72,14 @@ _myzs:internal:app:load() {
 
   if _myzs:internal:module:checker:validate "$module_key"; then
     if _myzs:internal:module:load "$module_key" "${args[@]}"; then
-      _myzs:internal:completed
+      return 0
     else
       _myzs:internal:log:warn "loading module return error"
-      _myzs:internal:failed 2
+      return 2
     fi
   else
     _myzs:internal:log:warn "invalid modules ($module_key)"
-    _myzs:internal:failed 3
+    return 3
   fi
 }
 
@@ -121,7 +121,7 @@ _myzs:internal:app:changelogs() {
     cat "$cl"
   else
     echo "Cannot found any notes" >&2
-    _myzs:internal:failed 2
+    return 2
   fi
 }
 

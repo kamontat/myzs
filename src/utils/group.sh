@@ -25,7 +25,7 @@ _myzs:internal:group:setter:group() {
   return 0
 }
 
-# load module from group into main commandline
+# load modules from group into main commandline
 _myzs:internal:group:load() {
   local group_name="$1" groups=() module_list=()
   _myzs:internal:db:getter:array "$__MYZS__GROUP_PREFIX" "list" groups

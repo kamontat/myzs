@@ -63,7 +63,7 @@ _myzs:private:module:search-name-internal() {
   if [[ "$_search_module_type" == "$_module_type" ]] && [[ "$_search_module_name" == "$_module_name" ]]; then
     $_searched_function "${_module_type}" "${_module_name}" "${_module_status}" "${_current_index}" "${_total_index}" "${_module_csv}"
   else
-    _myzs:internal:completed
+    return 0
   fi
 }
 
@@ -92,7 +92,7 @@ _myzs:private:module:search-module-type() {
   if [[ "$_search_module_type" == "$_module_type" ]]; then
     $_searched_function "${_module_type}" "${_module_name}" "${_module_status}" "${_current_index}" "${_total_index}" "${_module_csv}"
   else
-    _myzs:internal:completed
+    return 0
   fi
 }
 
@@ -109,10 +109,10 @@ _myzs:private:module:checker:validate() {
 
   _fullpath="$(_myzs:private:module:fullpath "${_module_type}" "${_module_name}")"
   if _myzs:internal:checker:file-exist "$_fullpath"; then
-    _myzs:internal:completed
+    return 0
   else
     _myzs:internal:log:error "cannot found module at $_fullpath"
-    _myzs:internal:failed
+    return 1
   fi
 }
 
@@ -274,7 +274,7 @@ _myzs:internal:module:total-list() {
     done
   done
 
-  _myzs:internal:completed
+  return 0
 }
 
 # @param    $1 cmd "module type" "module name" "module status" "current index" "total index" "module csv"
@@ -289,7 +289,7 @@ _myzs:internal:module:loaded-list() {
   shift 1
   local args=("$@")
 
-  ! _myzs:internal:checker:command-exist "${cmd}" && echo "Input command ${cmd} is not valid" && _myzs:internal:failed "2"
+  ! _myzs:internal:checker:command-exist "${cmd}" && echo "Input command ${cmd} is not valid" && return 2
 
   local size=0 current=0
   size="${#__MYZS__MODULES[@]}"

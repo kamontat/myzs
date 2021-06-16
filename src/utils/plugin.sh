@@ -33,7 +33,7 @@ _myzs:internal:plugin:name-serialize() {
     echo "${plugin_name}#main"
   else
     echo "unknown"
-    _myzs:internal:failed 3
+    return 3
   fi
 }
 

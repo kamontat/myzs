@@ -2,29 +2,15 @@
 
 # set -x # enable DEBUG MODE
 
-_myzs:private:return() {
-  return "$1"
-}
-
-_myzs:internal:completed() {
-  _myzs:private:return "0"
-}
-
-_myzs:internal:failed() {
-  _myzs:private:return "${1:-1}"
-}
-
-# Usage: _myzs:internal:shell [zsh_string] [bash_string] [fish_string]
-# Ex1:   _myzs:internal:shell             => zsh|bash|fish
-# Ex2:   _myzs:internal:shell "z" "b" "f" => z|b|f
+# Usage: _myzs:internal:shell [zsh_string] [bash_string]
+# Ex1:   _myzs:internal:shell             => zsh|bash
+# Ex2:   _myzs:internal:shell "z" "b" => z|b
 _myzs:internal:shell() {
-  local zsh="${1:-zsh}" bash="${1:-bash}" fish="${1:-fish}"
+  local zsh="${1:-zsh}" bash="${1:-bash}"
   if _myzs:internal:checker:shell:zsh; then
     echo "$zsh"
   elif _myzs:internal:checker:shell:bash; then
     echo "$bash"
-  elif _myzs:internal:checker:shell:fish; then
-    echo "$fish"
   fi
 }
 
@@ -82,14 +68,14 @@ _myzs:internal:load() {
     exitcode=$?
     if [[ "$exitcode" != "0" ]]; then
       _myzs:internal:log:error "Cannot load ${filename} (${filepath}) because source return $exitcode"
-      _myzs:internal:failed "$exitcode"
+      return "$exitcode"
     else
       # _myzs:internal:log:info "Loaded ${filename} (${filepath}) to the system"
-      _myzs:internal:completed
+      return 0
     fi
   else
     _myzs:internal:log:warn "Cannot load ${filename} (${filepath}) because file is missing"
-    _myzs:internal:failed 4
+    return 4
   fi
 }
 
