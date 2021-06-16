@@ -477,19 +477,73 @@ _myzs:internal:log:error "this is error message"
 
 ## Common
 
-1. `_myzs:internal:completed` - return zero exit code
-2. `_myzs:internal:failed(number)` - return non-zero exit code
-3. `_myzs:internal:shell([zsh], [bash], [fish])` - return input start base on current shell
-4. `myzs:module:new($0)` - initial module, should add to first line of code
-5. `_myzs:internal:module:cleanup(key)` - cleanup module data with optional module_key
-6. `_myzs:internal:project:cleanup` - cleaning .zshrc, must add to end of code in .zshrc file
-7. `_myzs:internal:load(name, path)` - load path via source "path" and log result to log file
-8. `_myzs:internal:alias(key, value)` - alias key to value (ignore is key is existed)
-9. `_myzs:internal:alias-force(key, value)` - alias key to value
-10. `_myzs:internal:fpath-push(...path)` - push all input path to the end of fpath array
-11. `_myzs:internal:manpath-push(...path)` - push all input path to the end of manpath array
-12. `_myzs:internal:path-push(...path)` - push all input path to the end of path variable
-13. `_myzs:internal:path-append(...path)` - append all input path to a first of path variable
+<details>
+  <summary>
+    <strong>myzs:module:new($0)</strong> - start new module $0 is module filepath
+  </summary>
+
+This will initial and notify script to know that new module is created
+
+```bash
+# e.g. initial new module
+myzs:module:new "$0"
+```
+</details>
+
+
+<details>
+  <summary>
+    <strong>_myzs:internal:module:cleanup(key)</strong> - cleanup module with optional module key
+  </summary>
+
+It will cleanup module from given key if no key provided it will try to find current module from memory
+
+```bash
+# e.g. cleanup builtin/core
+_myzs:internal:module:cleanup "builtin#app/core.sh"
+```
+</details>
+
+
+<details>
+  <summary>
+    <strong>_myzs:internal:project:cleanup</strong> - cleanup whole project
+  </summary>
+
+This must be called only on the end of `.zshrc` file
+
+```bash
+# e.g. cleanup project
+_myzs:internal:project:cleanup
+```
+</details>
+
+
+<details>
+  <summary>
+    <strong>_myzs:internal:shell([zsh], [bash])</strong> - return input base on current shell
+  </summary>
+
+It's will check current shell name and return input string base on shell that you on
+
+```bash
+# e.g. on bash shell, this will return bash
+#      on zsh  shell, this will return zsh
+_myzs:internal:shell
+# e.g. on bash shell, this will return bbb
+#      on zsh  shell, this will return zzz
+_myzs:internal:shell 'zzz' 'bbb'
+```
+</details>
+
+
+1. `_myzs:internal:load(name, path)` - load path via source "path" and log result to log file
+2. `_myzs:internal:alias(key, value)` - alias key to value (ignore is key is existed)
+3. `_myzs:internal:alias-force(key, value)` - alias key to value
+4.  `_myzs:internal:fpath-push(...path)` - push all input path to the end of fpath array
+5.  `_myzs:internal:manpath-push(...path)` - push all input path to the end of manpath array
+6.  `_myzs:internal:path-push(...path)` - push all input path to the end of path variable
+7.  `_myzs:internal:path-append(...path)` - append all input path to a first of path variable
 
 ## Setting
 
@@ -511,8 +565,8 @@ _myzs:internal:log:error "this is error message"
 4. `_myzs:internal:module:search-name(name, cmd)` - search module key and start callback
 5. `_myzs:internal:module:search-module-type(type, cmd)` - search module by type and start callback
 6. `_myzs:internal:module:fullpath(name)` - get module path by name
-7. `_myzs:internal:module:load(filename, filepath)` - load file as module
-8.  `_myzs:internal:module:skip(filename, filepath)` - mark file as skipped module
+7. `_myzs:internal:module:load(name, filepath)` - load file as module
+8.  `_myzs:internal:module:skip(name, filepath)` - mark file as skipped module
 9.  `_myzs:internal:module:loaded-list(cmd)` - loop loaded modules with status
 10. `_myzs:internal:module:total-list(cmd)` - loop all exist modules and myzs builtin and plugins
 
