@@ -74,7 +74,7 @@ _myzs:internal:load() {
       return 0
     fi
   else
-    _myzs:internal:log:warn "Cannot load ${filename} (${filepath}) because file is missing"
+    _myzs:internal:log:error "Cannot load ${filename} (${filepath}) because file is missing"
     return 4
   fi
 }
