@@ -135,7 +135,7 @@ _myzs:private:module:fullpath() {
     _result_path="${__MYZS__PLG}/${_module_type}/${_module_name}"
   fi
 
-  _myzs:internal:log:info "convert module name $_module_name (type = ${_module_type}) to path $_result_path"
+  _myzs:internal:log:debug "convert module name $_module_name (type = ${_module_type}) to path $_result_path"
 
   echo "$_result_path"
 }

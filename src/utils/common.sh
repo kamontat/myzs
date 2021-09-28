@@ -35,7 +35,7 @@ _myzs:internal:remove-array-index() {
 }
 
 myzs:module:new() {
-  _myzs:internal:log:info "initial module '${__MYZS__CURRENT_MODULE_KEY}' at '$1'"
+  _myzs:internal:log:debug "initial module '${__MYZS__CURRENT_MODULE_KEY}' at '$1'"
 }
 
 _myzs:internal:module:cleanup() {
