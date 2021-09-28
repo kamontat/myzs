@@ -179,21 +179,3 @@ myzs() {
     return 1
   fi
 }
-
-# run myzs load set file: $PWD/.myzs-setup
-myzs-setup-local() {
-  echo "!! This setup local is deprecated. Please use group feature instead !!" >&2
-
-  myzs:module:new "app/myzs.sh#myzs-setup-local"
-
-  local fullpath="" current="${1:-$PWD}"
-  local filenames=()
-  myzs:setting:get-array "setup-file/list" filenames
-
-  for name in "${filenames[@]}"; do
-    fullpath="${current}/${name}"
-    if _myzs:internal:checker:file-exist "$fullpath"; then
-      _myzs:internal:load "local-setup" "$fullpath"
-    fi
-  done
-}

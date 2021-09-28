@@ -13,6 +13,3 @@ _myzs:internal:alias "mms" "myzs modules"
 
 _myzs:internal:alias "ml" "myzs load"
 _myzs:internal:alias "mls" "myzs loads"
-
-# @deprecated
-_myzs:internal:alias "msl" "myzs-setup-local"

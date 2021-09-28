@@ -2,9 +2,6 @@
 
 # This apis if load only if group is enabled
 
-# TODO: implement group modules together and we can load as a group
-# This will allow us to deprecate myzs-setup since group will by more understandable and easier to use
-
 myzs:module:new "$0"
 
 export __MYZS__GROUP_PREFIX="group"

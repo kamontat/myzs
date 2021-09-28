@@ -9,6 +9,7 @@
 
 # This shouldn't be changes, except you install the application to difference
 export MYZS_ROOT="$HOME/.myzs"
+export MYZS_TYPE="FULLY"
 
 ################################
 # Plugins and Modules          #
@@ -43,9 +44,6 @@ export MYZS_LOADING_MODULES=(
 
   "builtin#app/env.sh"      # loading .env file in .myzs directory
   "builtin#app/autopath.sh" # move to path from clipboard if folder is exist
-
-  # @deprecated in faver of group
-  # "builtin#app/autocd.sh" # add trigger event to cd command to check .myzs-setup file
 )
 
 MYZS_LOADING_MODULES+=(
@@ -56,7 +54,7 @@ MYZS_LOADING_MODULES+=(
 )
 
 # custom define group
-# This will by loaded only if app/group.sh is enabled
+# This will by loaded only if group setting is enabled
 export MYZS_LOADING_GROUPS=(
   "$" group "shell" "myzs-plugins/core#alias/shell.sh"
   "$" group "dev" "myzs-plugins/editor#app/vscode.sh" "myzs-plugins/git#alias/git.sh"
@@ -80,7 +78,7 @@ export MYZS_LOADING_SETTINGS=(
   # Accept values: FULLY | SMALL
   #   1. FULLY -> full command with advance support on zsh script
   #   2. SMALL -> small utils with alias for bash and server bash
-  "$" string type "${_MYZS_TYPE:-FULLY}"
+  "$" string type "${MYZS_TYPE:-FULLY}"
 
   # enabled or disabled zplug modules and plugins
   # for custom plugins look to `Zsh dependencies plugins` section
@@ -98,11 +96,7 @@ export MYZS_LOADING_SETTINGS=(
 
   # List of enabled log level, this is case insensitive
   # "error" "warn" "info" "debug"
-  "$" array logger/level "error"
-
-  # when checking auto setup file,
-  # it will use this list to file the exist file and load to enviroment
-  "$" array setup-file/list "myzs-setup" ".myzs-setup"
+  "$" array logger/level "error" "warn" "info" "debug"
 
   # enabled or disabled progress bar
   "$" enabled pg
