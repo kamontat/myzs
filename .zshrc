@@ -96,7 +96,7 @@ export MYZS_LOADING_SETTINGS=(
 
   # List of enabled log level, this is case insensitive
   # "error" "warn" "info" "debug"
-  "$" array logger/level "error" "warn" "info" "debug"
+  "$" array logger/level "error" "warn"
 
   # enabled or disabled progress bar
   "$" enabled pg
