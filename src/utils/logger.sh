@@ -34,13 +34,12 @@ _myzs:private:log() {
   fi
 
   if _myzs:internal:setting:contains "logger/level" "$logger_level"; then
-    local datetime module_key
+    local datetime
 
     datetime="$(date)"
     if [[ "$__MYZS__LOGTYPE" == "auto" ]]; then
       datetime="$(date +"%H:%M:%S")"
     fi
-    module_key="${__MYZS__CURRENT_MODULE_KEY:-unknown}"
 
     # make sure that log-file always exist every log event
     local filepath="$MYZS_LOGPATH"
@@ -48,7 +47,7 @@ _myzs:private:log() {
       touch "$filepath"
     fi
 
-    printf '%s %-5s [%s]: %s\n' "$datetime" "$logger_level" "$module_key" "$*" >>"$filepath"
+    printf '%s %-5s: %s\n' "$datetime" "$logger_level" "$*" >>"$filepath"
   fi
 
   return 0
