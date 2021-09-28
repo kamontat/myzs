@@ -21,29 +21,25 @@ printf "[3/7] Enter release version: (current=%s)" "${__MYZS__VERSION}"
 if ! git tag | grep -q "^${__MYZS__VERSION}$"; then
   VERSION="$__MYZS__VERSION"
   echo
+
+  # checking
+  test -z "$VERSION" && exit 1
+
+  echo "[4/7] Add all changes to git"
+  git add .
+
+  echo "[5/7] Commit all changes with release version message"
+  git commit --allow-empty -m "chore(release): version $VERSION"
+
+  echo "[6/7] create new git tag called $VERSION"
+  git tag "$VERSION"
+
+  echo "[7/7] push all changes and tag to Github repository"
+  git push && git push --tag
+
+  unset VERSION
 else
   echo
   printf "[error] current version have been released, look to [1/7] step"
   echo
-
-  exit 1
-  # read -r ans
-  # VERSION="$ans"
 fi
-
-# checking
-test -z "$VERSION" && exit 1
-
-echo "[4/7] Add all changes to git"
-git add .
-
-echo "[5/7] Commit all changes with release version message"
-git commit --allow-empty -m "chore(release): version $VERSION"
-
-echo "[6/7] create new git tag called $VERSION"
-git tag "$VERSION"
-
-echo "[7/7] push all changes and tag to Github repository"
-git push && git push --tag
-
-unset VERSION
