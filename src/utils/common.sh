@@ -14,6 +14,11 @@ _myzs:internal:shell() {
   fi
 }
 
+# Get timestamp in second
+_myzs:internal:timestamp-second() {
+  date +%s
+}
+
 # Get timestamp in millisecond
 _myzs:internal:timestamp-millisecond() {
   if command -v "gdate" &>/dev/null; then
@@ -27,11 +32,6 @@ _myzs:internal:timestamp-millisecond() {
 # $2 = index (start with 0)
 _myzs:internal:remove-array-index() {
   eval "$1=( \"\${$1[@]:0:$2}\" \"\${$1[@]:$(($2 + 1))}\" )"
-}
-
-# Get timestamp in second
-_myzs:internal:timestamp-second() {
-  date +%s
 }
 
 myzs:module:new() {
