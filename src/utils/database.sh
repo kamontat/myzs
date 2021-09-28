@@ -57,7 +57,7 @@ _myzs:internal:db:append:array() {
     fi
   done
 
-  _myzs:internal:call log:debug "set $key $name=(array)"
+  _myzs:internal:call log:debug "append $key $name=(array)"
   varname="$(_myzs:internal:db:varname "$key" "$name")"
 
   eval "$varname+=($value)"
