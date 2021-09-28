@@ -1,6 +1,7 @@
 # shellcheck disable=SC1090,SC2148
 
 # set -x # enable DEBUG MODE
+# zmodload zsh/zprof # enable profiling
 
 ################################
 # Core setup                   #
@@ -25,6 +26,7 @@ export MYZS_LOADING_PLUGINS=(
   "myzs-plugins/google#main"
   "myzs-plugins/docker#master"
 
+  "myzs-plugins/pack#main"
   "myzs-plugins/python#main"
   "myzs-plugins/golang#main"
   "myzs-plugins/nodejs#master"
@@ -58,7 +60,8 @@ MYZS_LOADING_MODULES+=(
 export MYZS_LOADING_GROUPS=(
   "$" group "shell" "myzs-plugins/core#alias/shell.sh"
   "$" group "dev" "myzs-plugins/editor#app/vscode.sh" "myzs-plugins/git#alias/git.sh"
-  "$" group "golang" "myzs-plugins/editor#app/vscode.sh" "myzs-plugins/git#alias/git.sh" "myzs-plugins/golang#app/go.sh"
+  "$" group "docker" "myzs-plugins/docker#alias/docker.sh" "myzs-plugins/pack#app/main.sh"
+  "$" group "golang" "builtin#groups/dev" "myzs-plugins/git#alias/git.sh" "myzs-plugins/golang#app/go.sh"
 )
 
 ################################
@@ -83,12 +86,12 @@ export MYZS_LOADING_SETTINGS=(
   # for custom plugins look to `Zsh dependencies plugins` section
   "$" enabled zplug
 
-  # Enabled this meaning progressbar step when we load plugin to be one 1 task
-  "$" enabled plugin/aggregation
-
   # We will if plugin have loaded before, we will skip it
   # if disabled is setting we will process every plugin
   "$" enabled plugin/cache
+
+  # Enabled this meaning progressbar step when we load plugin to be one 1 task
+  "$" enabled plugin/aggregation
 
   # Enabled this meaning progressbar step when we load plugin to be one 1 task
   "$" enabled module/aggregation
