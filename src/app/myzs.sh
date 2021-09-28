@@ -83,6 +83,11 @@ _myzs:internal:app:load() {
   fi
 }
 
+# myzs loads <group_name>
+_myzs:internal:app:loads() {
+  _myzs:internal:group:load "$1"
+}
+
 # myzs info
 _myzs:internal:app:info() {
   local app_type
@@ -113,8 +118,8 @@ License    '$__MYZS__LICENSE'
 "
 }
 
-# myzs changelogs
-_myzs:internal:app:changelogs() {
+# myzs changelog
+_myzs:internal:app:changelog() {
   local cl="$_MYZS_ROOT/docs/CHANGELOG.md"
 
   if _myzs:internal:checker:file-exist "$cl"; then
@@ -149,9 +154,17 @@ _myzs:internal:app:modules() {
   printf 'Total %s modules\n' "${#__MYZS__MODULES[@]}"
 }
 
-# myzs loads <group_name>
-_myzs:internal:app:loads() {
-  _myzs:internal:group:load "$1"
+_myzs:internal:app:help() {
+  echo "# Help
+$ myzs [modules|info|changelog|load|loads|deploy|upgrade]
+  - load <plugin_name> <module_name> - load single module
+  - loads <group_name>               - load modules group
+  - modules                          - list all modules
+  - info                             - show myzs information
+  - changelog                        - show myzs changelog
+  - deploy [(all|app|plugin)]        - deploy myzs new version
+  - upgrade [(all|app|plugin)]       - upgrade local version to latest
+"
 }
 
 myzs() {
