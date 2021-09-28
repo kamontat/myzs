@@ -14,6 +14,16 @@ We will maintain not more than 10 minor version changes.
 - [TODO] re-enabled myzs.init files to initial some data before and after run plugins
 - [TODO] defined exitcode as constants and use everywhere
 
+## Version 5.7.3 (28 Sep 2021)
+
+- add myzs help for more command detail
+- change `myzs changelogs` to `myzs changelog`
+- remove module key in logging since it didn't work correctly
+- remove myzs-setup feature, use group instead
+- change some of info log to debug
+- move some of warning log to error
+- fix `myzs deploy` didn't work when it failed
+
 ## Version 5.7.2 (12 Jun 2021)
 
 - getting path list from `/etc/paths` and `/etc/paths.d`
