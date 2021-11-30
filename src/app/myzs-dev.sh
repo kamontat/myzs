@@ -20,14 +20,14 @@ _myzs:internal:app:loadtest() {
   local size="$1" ms=0 avg_10k
   shift 1
   for ((i = 0; i < size; i++)); do
-    myzs-measure "$@" >/dev/null
+    _myzs:internal:app:measure "$@" >/dev/null
     ((ms += MEASURE_LOADTIME_MS)) # sum loadtime
   done
 
   avg_10k="$(((ms * 10000) / size))"
   avg="$((ms / size))"
-  printf '%-8s: %s.%04dms\n' "total" "$avg" "$((avg_10k - (avg * 10000)))"
-  printf '%-8s: %sms\n' "average" "$ms"
+  printf '%-8s: %s.%04dms\n' "average" "$avg" "$((avg_10k - (avg * 10000)))"
+  printf '%-8s: %sms\n' "total" "$ms"
 }
 
 _myzs:internal:app:debug() {
