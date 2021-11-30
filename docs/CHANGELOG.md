@@ -14,6 +14,11 @@ We will maintain not more than 10 minor version changes.
 - [TODO] re-enabled myzs.init files to initial some data before and after run plugins
 - [TODO] defined exitcode as constants and use everywhere
 
+## Version 5.7.4 (30 Nov 2021)
+
+- fix perf usage didn't works in zsh
+- add thefuck module as dev group
+
 ## Version 5.7.3 (28 Sep 2021)
 
 - add myzs help for more command detail

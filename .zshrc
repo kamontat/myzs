@@ -57,7 +57,7 @@ MYZS_LOADING_MODULES+=(
 # This will by loaded only if group setting is enabled
 export MYZS_LOADING_GROUPS=(
   "$" group "shell" "myzs-plugins/core#alias/shell.sh"
-  "$" group "dev" "myzs-plugins/editor#app/vscode.sh" "myzs-plugins/git#alias/git.sh"
+  "$" group "dev" "myzs-plugins/editor#app/vscode.sh" "myzs-plugins/git#alias/git.sh" "myzs-plugins/thefuck#app/fuck.sh"
   "$" group "docker" "myzs-plugins/docker#alias/docker.sh" "myzs-plugins/pack#app/main.sh"
   "$" group "golang" "builtin#groups/dev" "myzs-plugins/git#alias/git.sh" "myzs-plugins/golang#app/go.sh"
 )
@@ -178,3 +178,6 @@ fi
 ################################
 
 _myzs:internal:project:cleanup
+
+# When enabled profiling
+# zprof
