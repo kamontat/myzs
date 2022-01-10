@@ -50,7 +50,8 @@ MYZS_LOADING_MODULES+=(
   "myzs-plugins/core#alias/short.sh"
   # "myzs-plugins/core#alias/shell.sh"
   # "myzs-plugins/editor#app/vscode.sh"
-  # "myzs-plugins/git#alias/git.sh"
+  "myzs-plugins/git#alias/git.sh"
+  "myzs-plugins/macos#app/homebrew.sh"
 )
 
 # custom define group

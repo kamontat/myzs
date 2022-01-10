@@ -39,7 +39,7 @@ myzs:zplug:initial-plugins() {
     # zplug "laggardkernel/zsh-thefuck"
 
     # load after compinit
-    zplug "zdharma/fast-syntax-highlighting", defer:2
+    zplug "zsh-users/zsh-syntax-highlighting", defer:2
     zplug "zsh-users/zsh-history-substring-search", defer:2
     # zplug "kiurchv/asdf.plugin.zsh", defer:2
 
