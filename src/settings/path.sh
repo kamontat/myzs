@@ -15,7 +15,7 @@ _myzs:internal:path-push "/usr/local/opt/openssl"
 
 _myzs:internal:path-push "/usr/local/opt/coreutils/libexec/gnubin"
 
-_myzs:internal:path-push "/Users/kamontat/.rbenv/shims"
+_myzs:internal:path-push "$HOME/.rbenv/shims"
 
 _myzs:internal:path-push "/usr/local/opt/coreutils/libexec/gnubin"
 
