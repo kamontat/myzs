@@ -8,7 +8,7 @@ _myzs:internal:alias "mdp" "myzs deploy"
 _myzs:internal:alias "mup" "myzs upgrade"
 
 _myzs:internal:alias "mi" "myzs info"
-_myzs:internal:alias "mcs" "myzs changelogs"
+_myzs:internal:alias "mcs" "myzs changelog"
 _myzs:internal:alias "mms" "myzs modules"
 
 _myzs:internal:alias "ml" "myzs load"

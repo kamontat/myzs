@@ -94,7 +94,7 @@ _myzs_command_info() {
   _message "no more arguments"
 }
 
-_myzs_command_changelogs() {
+_myzs_command_changelog() {
   _message "no more arguments"
 }
 
@@ -110,7 +110,7 @@ _myzs_commands() {
     'deploy:deploy myzs to repository.'
     'upgrade:upgrade myzs from repository.'
     'info:show information about myzs.'
-    'changelogs:show release note of myzs versions.'
+    'changelog:show release note of myzs versions.'
     'modules:show current loaded module and status.'
   )
 
