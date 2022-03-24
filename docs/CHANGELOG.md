@@ -14,6 +14,10 @@ We will maintain not more than 10 minor version changes.
 - [TODO] re-enabled myzs.init files to initial some data before and after run plugins
 - [TODO] defined exitcode as constants and use everywhere
 
+## Version 5.7.7 (24 Mar 2022)
+
+- fix auto-complete of myzs changelogs (since `v5.7.3`)
+
 ## Version 5.7.6 (24 Mar 2022)
 
 - add `node` group for lts and yarn support
