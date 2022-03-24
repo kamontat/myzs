@@ -14,6 +14,11 @@ We will maintain not more than 10 minor version changes.
 - [TODO] re-enabled myzs.init files to initial some data before and after run plugins
 - [TODO] defined exitcode as constants and use everywhere
 
+## Version 5.7.6 (24 Mar 2022)
+
+- add `node` group for lts and yarn support
+- fix fixed username in $PATH variable
+
 ## Version 5.7.4 (30 Nov 2021)
 
 - fix perf usage didn't works in zsh
