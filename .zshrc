@@ -61,6 +61,7 @@ export MYZS_LOADING_GROUPS=(
   "$" group "dev" "myzs-plugins/editor#app/vscode.sh" "myzs-plugins/git#alias/git.sh" "myzs-plugins/thefuck#app/fuck.sh"
   "$" group "docker" "myzs-plugins/docker#alias/docker.sh" "myzs-plugins/pack#app/main.sh"
   "$" group "golang" "builtin#groups/dev" "myzs-plugins/git#alias/git.sh" "myzs-plugins/golang#app/go.sh"
+  "$" group "node" "myzs-plugins/nodejs#settings/yarn.sh" "myzs-plugins/nodejs#settings/lts.sh"
 )
 
 ################################
@@ -172,7 +173,7 @@ fi
 # Appending by user or scripts #
 ################################
 
-# doing something
+# doing something else
 
 ################################
 #           Cleanup            #
