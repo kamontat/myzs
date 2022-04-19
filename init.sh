@@ -25,9 +25,6 @@ export __MYZS__MODULES=()
 # shellcheck disable=SC1091
 source "${__MYZS__UTL}/index.sh"
 
-_myzs:internal:setting:initial
-myzs:module:new "$0"
-
 # load progress bar
 if _myzs:internal:checker:fully-type; then
   _myzs:internal:module:load "builtin#lib/progress.sh"
