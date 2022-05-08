@@ -3,6 +3,15 @@
 # set -x # enable DEBUG MODE
 # zmodload zsh/zprof # enable profiling
 
+# enable advance profiling
+# zmodload zsh/datetime
+# setopt PROMPT_SUBST
+# PS4='+$EPOCHREALTIME %N:%i> '
+# logfile=$(mktemp zsh_profile.XXXXXXXX)
+# echo "Logging to $logfile"
+# exec 3>&2 2>$logfile
+# setopt XTRACE
+
 ################################
 # Core setup                   #
 ################################
@@ -30,6 +39,7 @@ export MYZS_LOADING_PLUGINS=(
   "myzs-plugins/pack#main"
   "myzs-plugins/python#main"
   "myzs-plugins/golang#main"
+  "myzs-plugins/rust#main"
   "myzs-plugins/nodejs#master"
 
   # "kamontat/mplugin-kamontat#master"
@@ -137,7 +147,7 @@ export MYZS_LOADING_SETTINGS=(
   "$" enabled group
 
   # enabled data metric (beta)
-  "$" enabled metrics
+  "$" disabled metrics
 )
 
 ################################
@@ -183,3 +193,7 @@ _myzs:internal:project:cleanup
 
 # When enabled profiling
 # zprof
+
+# When enabled advance profiling
+# unsetopt XTRACE
+# exec 2>&3 3>&-
