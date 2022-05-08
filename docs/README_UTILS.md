@@ -537,13 +537,56 @@ _myzs:internal:shell 'zzz' 'bbb'
 </details>
 
 
-1. `_myzs:internal:load(name, path)` - load path via source "path" and log result to log file
-2. `_myzs:internal:alias(key, value)` - alias key to value (ignore is key is existed)
-3. `_myzs:internal:alias-force(key, value)` - alias key to value
-4.  `_myzs:internal:fpath-push(...path)` - push all input path to the end of fpath array
-5.  `_myzs:internal:manpath-push(...path)` - push all input path to the end of manpath array
-6.  `_myzs:internal:path-push(...path)` - push all input path to the end of path variable
-7.  `_myzs:internal:path-append(...path)` - append all input path to a first of path variable
+<details>
+  <summary>
+    <strong>_myzs:internal:load(name, path)</strong> - source input "path"
+  </summary>
+
+This will load input path to current shell env and write result to log file.
+Exit code:
+- 0   - successfully
+- 4   - file not found
+- ANY - error code from input file
+
+```bash
+# source file from /tmp/test.sh
+_myzs:internal:load "test" "/tmp/test.sh"
+```
+</details>
+
+
+<details>
+  <summary>
+    <strong>_myzs:internal:alias(key, value)</strong> - safe create alias
+  </summary>
+
+Safe create alias only if command is not existed
+
+```bash
+# alias b to boom
+_myzs:internal:alias "b" "boom"
+```
+</details>
+
+
+<details>
+  <summary>
+    <strong>_myzs:internal:alias-force(key, value)</strong> - force create alias
+  </summary>
+
+Create alias or overwrite if it existed
+
+```bash
+# alias b to boom
+_myzs:internal:alias "b" "boom"
+```
+</details>
+
+
+1.  `_myzs:internal:fpath-push(...path)` - push all input path to the end of fpath array
+2.  `_myzs:internal:manpath-push(...path)` - push all input path to the end of manpath array
+3.  `_myzs:internal:path-push(...path)` - push all input path to the end of path variable
+4.  `_myzs:internal:path-append(...path)` - append all input path to a first of path variable
 
 ## Setting
 
