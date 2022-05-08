@@ -11,9 +11,9 @@ export __MYZS__UTL="${__MYZS__SRC}/utils"
 export ZPLUG_HOME="${MYZS_ZPLUG:-${_MYZS_ROOT}/zplug}"
 
 export __MYZS__OWNER="Kamontat Chantrachirathumrong"
-export __MYZS__VERSION="5.7.7"
+export __MYZS__VERSION="5.7.8"
 export __MYZS__SINCE="21 Apr 2018"
-export __MYZS__LAST_UPDATED="24 Mar 2022"
+export __MYZS__LAST_UPDATED="08 May 2022"
 export __MYZS__LICENSE="AGPL-3.0 License"
 
 export __MYZS__MODULES=()
