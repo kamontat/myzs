@@ -6,7 +6,7 @@ export __MYZS__PLUGIN_KEY="plugin"
 
 # convert plugin key to plugin name and version
 # $1 => input plugin key
-# $2 => function: cmd(plugin name, plugin version)
+# $2 => function: cmd(plugin name, plugin version, input)
 _myzs:internal:plugin:name-deserialize() {
   local input="$1" cmd="$2"
   shift 2
