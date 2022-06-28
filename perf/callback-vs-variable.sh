@@ -1,5 +1,20 @@
 # shellcheck disable=SC2148
 
+# Summary: Callback is faster than variable
+
+# Variable Statistics:
+# real  0m1.654s
+# user  0m1.515s
+# sys   0m0.105s
+# bash  ./perf/callback-vs-variable.sh var  1.52s user 0.11s system 97% cpu 1.660 total
+
+# Callback Statistics:
+# real  0m1.480s
+# user  0m1.356s
+# sys   0m0.097s
+# bash  ./perf/callback-vs-variable.sh  1.36s user 0.10s system 97% cpu 1.489 total
+
+
 # zmodload zsh/zprof # enable profiling
 
 export __test_run_iteration=500
