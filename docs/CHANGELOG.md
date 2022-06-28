@@ -14,6 +14,11 @@ We will maintain not more than 10 minor version changes.
 - [TODO] re-enabled myzs.init files to initial some data before and after run plugins
 - [TODO] defined exitcode as constants and use everywhere
 
+## Version 5.7.9 (28 Jun 2022)
+
+- add new possible plugins
+- prepare design review for next major version
+
 ## Version 5.7.8 (08 May 2022)
 
 - add new rust plugins
