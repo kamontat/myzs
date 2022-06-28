@@ -40,7 +40,10 @@ export MYZS_LOADING_PLUGINS=(
   "myzs-plugins/python#main"
   "myzs-plugins/golang#main"
   "myzs-plugins/rust#main"
+  "myzs-plugins/dotnet#main"
   "myzs-plugins/nodejs#master"
+
+  "myzs-plugins/java#main"
 
   # "kamontat/mplugin-kamontat#master"
   # "kamontat/mplugin-agoda#master"
